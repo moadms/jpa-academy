@@ -76,6 +76,75 @@ export interface CheatSheetDoc {
   contentMarkdown: string;
 }
 
+export interface LearningPathwayStage {
+  stageNumber: number;
+  id: string;
+  title: string;
+  subtitle: string;
+  estimatedDuration: string;
+  mindsetQuote: string;
+  visualArchitectureDiagram: string;
+  keyConcepts: {
+    title: string;
+    description: string;
+    warningTrap: string;
+    engineeringRule: string;
+  }[];
+  actionChecklist: string[];
+}
+
+export interface CoachManifesto {
+  title: string;
+  salutation: string;
+  introManifesto: string;
+  theTruthAboutMoroccanRecruiters: string;
+  theThreePillarsOfVictory: {
+    pillar: string;
+    explanation: string;
+    actionableHabit: string;
+  }[];
+  roiCalculation: {
+    title: string;
+    withoutPreparation: string;
+    withDisciplinedPreparation: string;
+    differenceDh: string;
+  };
+}
+
+export interface PsychologicalTechnique {
+  id: string;
+  title: string;
+  context: string;
+  seniorMindset: string;
+  methodologySteps: string[];
+  exactScriptOrPhrase: string;
+  rookieMistake: string;
+}
+
+export interface MoroccanTechVideo {
+  id: string;
+  title: string;
+  showOrPodcast: string;
+  speakers: string[];
+  duration: string;
+  language: 'Darija 🇲🇦' | 'Français 🇫🇷' | 'Mixte Darija / FR';
+  youtubeId: string;
+  badge: string;
+  summary: string;
+  keyPointsCovered: string[];
+  whyEveryMoroccanEngineerMustWatch: string;
+}
+
+export interface MemoryFlashcard {
+  id: string;
+  category: string;
+  frontQuestion: string;
+  frontHint: string;
+  backCoreConcept: string;
+  backDiagramAscii?: string;
+  backSeniorRule: string;
+}
+
 // -------------------------------------------------------------
 // MODULE 1 : JVM & RAM INTERNALS
 // -------------------------------------------------------------
@@ -870,7 +939,7 @@ export const moroccanPfeCompanies: PfeCompanyInfo[] = [
   {
     name: 'CGI Maroc',
     city: 'Casablanca / Rabat / Fès',
-    hub: 'Rabat Madinat Al Irfane & CasaNearshore',
+    hub: 'Rabat Madinat Al Irfane, CasaNearshore & Fès Shore',
     hiringScope: 'Multinationale canadienne de conseil et de services en technologies. Très forte présence institutionnelle au Maroc, partenaires des ministères et grandes institutions bancaires européennes.',
     salaryPfe: '3 500 à 4 500 DH net / mois',
     salaryJuniorCdi: '10 500 à 13 000 DH net / mois',
@@ -887,8 +956,212 @@ export const moroccanPfeCompanies: PfeCompanyInfo[] = [
       '4. Validation RH'
     ],
     insiderAdvice: 'CGI cherche des ingénieurs rigoureux, capables de s\'intégrer rapidement dans des projets d\'envergure avec des clients français ou canadiens. Mettez en avant vos capacités de communication et votre travail d\'équipe.'
+  },
+  {
+    name: 'ALTEN Maroc',
+    city: 'Fès / Rabat / Casablanca',
+    hub: 'Fès Shore, Technopolis Rabat & Casanearshore',
+    hiringScope: 'Acteur mondial de l\'ingénierie et du conseil en technologies. Forts départements de développement logiciel automobile, télécoms et digital banking.',
+    salaryPfe: '3 000 à 4 500 DH net / mois',
+    salaryJuniorCdi: '9 500 à 12 500 DH net / mois',
+    requiredSkills: [
+      'Java 11/17 & Spring Boot',
+      'Angular / Typescript',
+      'REST APIs & Architecture MVC',
+      'Git, Maven, Jenkins'
+    ],
+    selectionSteps: [
+      '1. Entretien RH téléphonique de préqualification',
+      '2. Test technique en ligne (QCM logique & Java)',
+      '3. Entretien technique avec un Manager Technique'
+    ],
+    insiderAdvice: 'ALTEN est une excellente école pour démarrer sa carrière. Préparez bien les fondamentaux de la programmation orientée objet (Polymorphisme, Héritage, Encapsulation).'
+  },
+  {
+    name: 'Sofrecom Maroc (Groupe Orange)',
+    city: 'Rabat / Casablanca',
+    hub: 'Rabat Technopolis & Casanearshore',
+    hiringScope: 'Filiale stratégique du groupe Orange. Conçoit les plateformes digitales, applications télécoms et systèmes de facturation du groupe à l\'international.',
+    salaryPfe: '4 000 à 5 500 DH net / mois',
+    salaryJuniorCdi: '11 500 à 14 000 DH net / mois',
+    requiredSkills: [
+      'Java / Spring Cloud Microservices',
+      'Angular / React moderne',
+      'Docker, Kubernetes, OpenShift',
+      'Bon niveau de communication en français et anglais'
+    ],
+    selectionSteps: [
+      '1. Dépôt de candidature Orange Jobs',
+      '2. Test d\'évaluation technique en ligne',
+      '3. Entretien avec un Scrum Master / Lead Dev',
+      '4. Entretien RH'
+    ],
+    insiderAdvice: 'Sofrecom a une très forte culture agile et collaborative. Insistez sur votre compréhension du cycle DevOps et des microservices Spring Cloud.'
+  },
+  {
+    name: 'Inetum Maroc (Ex-Gfi)',
+    city: 'Casablanca / Rabat',
+    hub: 'Casablanca Sidi Maârouf & Technopolis',
+    hiringScope: 'Entreprise de services numériques internationale présente dans plus de 27 pays. Grands projets pour le secteur public marocain et les banques.',
+    salaryPfe: '3 500 à 4 500 DH net / mois',
+    salaryJuniorCdi: '10 000 à 12 500 DH net / mois',
+    requiredSkills: [
+      'Java / JEE, Spring Boot',
+      'Angular, PrimeNG',
+      'SQL Server, PostgreSQL',
+      'UML et conception fonctionnelle'
+    ],
+    selectionSteps: [
+      '1. Screening RH',
+      '2. Entretien technique avec un architecte applicatif',
+      '3. Validation finale'
+    ],
+    insiderAdvice: 'Montrez votre rigueur dans la modélisation UML et la transformation d\'un besoin métier en code propre et documenté.'
+  },
+  {
+    name: 'Cnexia (Filiale Altice / SFR)',
+    city: 'Fès / Rabat',
+    hub: 'Fès Shore & Technopolis',
+    hiringScope: 'Hub technologique dédié au groupe SFR / Altice. Développement des solutions internes et portails clients télécoms à fort trafic.',
+    salaryPfe: '3 500 à 5 000 DH net / mois',
+    salaryJuniorCdi: '11 000 à 13 500 DH net / mois',
+    requiredSkills: [
+      'Java 17, Spring Boot, Spring Batch',
+      'Angular / Vue.js',
+      'Bases NoSQL (MongoDB) et relationnelles',
+      'Kafka / RabbitMQ'
+    ],
+    selectionSteps: [
+      '1. Contact RH & Test en ligne',
+      '2. Entretien technique approfondi',
+      '3. Entretien managérial'
+    ],
+    insiderAdvice: 'Préparez les notions de traitement par lots (Spring Batch) et de scalabilité sous forte volumétrie de données.'
+  },
+  {
+    name: 'SQLI Maroc',
+    city: 'Rabat / Casablanca / Oujda',
+    hub: 'Rabat Madinat Al Irfane, Casanearshore & Technopole Oujda',
+    hiringScope: 'Agence européenne leader dans l\'e-commerce et la transformation digitale (Adobe, commerces connectés, plateformes Java).',
+    salaryPfe: '3 500 à 4 500 DH net / mois',
+    salaryJuniorCdi: '10 500 à 13 000 DH net / mois',
+    requiredSkills: [
+      'Java / Spring Boot',
+      'E-commerce & REST APIs',
+      'React ou Angular',
+      'Design Patterns (Factory, Strategy, Observer)'
+    ],
+    selectionSteps: [
+      '1. Test d\'évaluation en ligne (CodinGame)',
+      '2. Entretien technique avec un Lead Developer',
+      '3. Entretien de fit culturel'
+    ],
+    insiderAdvice: 'SQLI accorde une grande importance à la curiosité technique et à la veille technologique. Citez vos projets personnels sur GitHub.'
+  },
+  {
+    name: 'Devoteam Maroc',
+    city: 'Casablanca',
+    hub: 'Casablanca Nearshore & Maarif',
+    hiringScope: 'Cabinet de conseil en stratégie digitale, plateformes Cloud et cybersécurité. Partenaire majeur d\'AWS, Microsoft et Google Cloud.',
+    salaryPfe: '4 000 à 5 500 DH net / mois',
+    salaryJuniorCdi: '12 000 à 14 500 DH net / mois',
+    requiredSkills: [
+      'Java / Spring Boot orienté Cloud',
+      'AWS ou Azure (notions de déploiement)',
+      'Conteneurs Docker & Kubernetes',
+      'Terraform / CI/CD'
+    ],
+    selectionSteps: [
+      '1. Entretien RH',
+      '2. Entretien technique System Design & Cloud',
+      '3. Entretien Partner / Directeur d\'agence'
+    ],
+    insiderAdvice: 'Avoir une petite certification Cloud (AWS Certified Cloud Practitioner ou Azure Fundamentals) vous garantit une offre immédiate.'
+  },
+  {
+    name: 'CIH Bank Digital Factory',
+    city: 'Casablanca',
+    hub: 'Boulevard Hassan II & Sidi Maârouf',
+    hiringScope: 'La banque marocaine pionnière du digital banking. Développe en interne ses applications mobiles et plateformes de paiement instantané.',
+    salaryPfe: '4 500 à 6 000 DH net / mois',
+    salaryJuniorCdi: '13 000 à 16 000 DH net / mois',
+    requiredSkills: [
+      'Spring Boot & Microservices bancaires',
+      'Angular / Flutter pour le mobile',
+      'Sécurité applicative (OAuth2, OIDC, JWT, PKCE)',
+      'Haute disponibilité & résilience'
+    ],
+    selectionSteps: [
+      '1. Dépôt sur portail CIH Carrières',
+      '2. Épreuve technique de code ou QCM',
+      '3. Entretien avec l\'équipe Digital Factory',
+      '4. Validation par la DRH Groupe'
+    ],
+    insiderAdvice: 'Insistez sur la sécurité des transactions et la gestion des exceptions sans fuite d\'informations sensibles dans les logs.'
+  },
+  {
+    name: 'Attijariwafa Bank Tech Factory',
+    city: 'Casablanca',
+    hub: 'Boulevard Moulay Youssef & Marina Casablanca',
+    hiringScope: 'Premier groupe bancaire et financier du Maghreb. Modernisation massive du SI vers le Cloud hybride et les microservices d\'envergure panafricaine.',
+    salaryPfe: '4 500 à 6 500 DH net / mois',
+    salaryJuniorCdi: '13 500 à 16 500 DH net / mois',
+    requiredSkills: [
+      'Java 17 / Spring Cloud',
+      'Architecture Event-Driven (Apache Kafka)',
+      'Conteneurs Kubernetes / Rancher',
+      'Bases de données SQL critiques'
+    ],
+    selectionSteps: [
+      '1. Présélection CV',
+      '2. Test technique en ligne',
+      '3. Panel technique avec des architectes du groupe',
+      '4. Entretien RH exécutif'
+    ],
+    insiderAdvice: 'La culture Attijariwafa valorise la vision d\'ensemble, la rigueur méthodologique et la capacité à travailler sur des SI volumineux.'
+  },
+  {
+    name: 'Bank of Africa (BOA) / Eurafric Information',
+    city: 'Casablanca',
+    hub: 'Casablanca Finance City (CFC) & Bouskoura',
+    hiringScope: 'Filiale informatique commune de Bank of Africa et RMA. Gère les cœurs bancaires et les canaux digitaux dans plus de 20 pays en Afrique et Europe.',
+    salaryPfe: '4 000 à 5 500 DH net / mois',
+    salaryJuniorCdi: '12 500 à 15 000 DH net / mois',
+    requiredSkills: [
+      'Java / Spring Boot',
+      'APIs RESTful & Web Services SOAP legacy',
+      'Oracle Database / PL-SQL poussé',
+      'Mécanismes de batch bancaire'
+    ],
+    selectionSteps: [
+      '1. Entretien RH',
+      '2. Test technique en présentiel ou en ligne',
+      '3. Entretien avec un Directeur Technique de pôle'
+    ],
+    insiderAdvice: 'Une solide compréhension des transactions financières ACID et de l\'intégration avec des bases Oracle est un grand atout.'
+  },
+  {
+    name: 'DXC Technology Maroc',
+    city: 'Rabat / Salé',
+    hub: 'Technopolis Rabat',
+    hiringScope: 'Géant américain des services informatiques (issu de la fusion CSC et HP Enterprise). Projets mondiaux en infogérance et transformation applicative.',
+    salaryPfe: '3 500 à 4 500 DH net / mois',
+    salaryJuniorCdi: '10 500 à 13 000 DH net / mois',
+    requiredSkills: [
+      'Java / Spring, Microservices',
+      'Angular ou React',
+      'Pratiques Agile et DevOps (GitLab CI)',
+      'Bon niveau d\'anglais technique'
+    ],
+    selectionSteps: [
+      '1. Test en ligne (Langues & Technique)',
+      '2. Entretien technique avec un Team Lead',
+      '3. Validation managériale'
+    ],
+    insiderAdvice: 'Le niveau d\'anglais est évalué chez DXC : entraînez-vous à présenter votre projet PFE en anglais pendant 2 minutes.'
   }
 ];
+
 
 // -------------------------------------------------------------
 // MODULE 6 : 1-MONTH INTENSIVE ROADMAP (ROADMAP 4 SEMAINES)
@@ -1392,5 +1665,441 @@ export const cheatSheetDocs: CheatSheetDoc[] = [
 2. **Tests d'Intégration BDD** : \`@SpringBootTest\` + **Testcontainers** (Docker réel PostgreSQL, abandon définitif d'H2).
 3. **Tests d'API Web** : \`@WebMvcTest\` + \`MockMvc\` (teste la couche Controller et la sérialisation JSON).
 4. **Tests E2E** : Playwright (automatisation navigateur sans instabilité).`
+  }
+];
+
+// -------------------------------------------------------------
+// MODULE 9 : LEARNING PATHWAY WORKFLOWS (PARCOURS GUIDÉ)
+// -------------------------------------------------------------
+export const learningPathwayStages: LearningPathwayStage[] = [
+  {
+    stageNumber: 1,
+    id: 'stage-mindset',
+    title: 'Phase 1 : Mindset & Psychologie de l\'Ingénieur',
+    subtitle: 'Passer de l\'attitude étudiante à la posture d\'Architecte Software',
+    estimatedDuration: 'Jours 1 à 3',
+    mindsetQuote: 'Un recruteur n\'attend pas que tu saches tout. Il cherche à savoir comment tu réfléchis quand tu ne sais pas.',
+    visualArchitectureDiagram: `[Étudiant Débutant]                [Ingénieur Senior Recherché]
+- Apprend du code par cœur        - Comprend les flux physiques (RAM / CPU / Réseau)
+- Stress devant les questions     - Pose des questions de cadrage métier
+- Dit "C'est magique avec Spring" - Sait exactement ce que fait le Proxy AOP`,
+    keyConcepts: [
+      {
+        title: 'La Décomposition en Entonnoir',
+        description: 'Avant d\'écrire la moindre ligne de code en live coding, posez toujours les 3 questions de cadrage : 1) Volumétrie attendue ? 2) Contrainte de latence ? 3) Gestion des erreurs ?',
+        warningTrap: 'Se jeter sur son clavier dans les 10 premières secondes. C\'est le signal d\'alerte numéro 1 pour un Lead Tech.',
+        engineeringRule: 'Penser d\'abord en termes de contrat d\'interface et de cas limites (null, vide, concurrence).'
+      },
+      {
+        title: 'Le Silence Stratégique de 5 Secondes',
+        description: 'Lorsqu\'une question difficile vous est posée, ne répondez jamais par impulsion. Respirez, prenez 5 secondes, notez le mot-clé et commencez par reformuler la problématique.',
+        warningTrap: 'Bafouiller des hésitations "euh, je crois que..." qui trahissent l\'anxiété.',
+        engineeringRule: 'Un silence calme de 5 secondes projette un contrôle et une maturité exceptionnels.'
+      }
+    ],
+    actionChecklist: [
+      'Lire le Manifeste du Coach ci-dessous',
+      'Identifier vos 3 points forts et les formuler en méthode STAR',
+      'Accepter qu\'un entretien est une conversation entre deux professionnels, pas un interrogatoire'
+    ]
+  },
+  {
+    stageNumber: 2,
+    id: 'stage-jvm-ram',
+    title: 'Phase 2 : Fondations Invisibles (RAM & Internals JVM)',
+    subtitle: 'Comprendre où vivent physiquement les octets pour justifier chaque choix',
+    estimatedDuration: 'Jours 4 à 8',
+    mindsetQuote: 'Ceux qui dominent les entretiens chez Oracle et les grandes banques sont ceux qui visualisent la mémoire vive.',
+    visualArchitectureDiagram: `+-------------------------------------+-----------------------------------------+
+|         THREAD STACK (LIFO)         |              HEAP PARTAGÉ               |
+| - Variables primitives (int, bool)  | - Objets (new Entity(), DTO)            |
+| - Adresses pointeurs 64-bit         | - Young Gen (Eden, S0, S1)              |
+| - Libéré instantanément en O(1)     | - Old Gen (Tenured) nettoyé par GC      |
++-------------------------------------+-----------------------------------------+`,
+    keyConcepts: [
+      {
+        title: 'Stack vs Heap & Escape Analysis',
+        description: 'Visualiser comment un primitif vit sur la Stack alors qu\'un objet vit sur le Heap, sauf si le compilateur JIT applique le Scalar Replacement.',
+        warningTrap: 'Croire qu\'en Java les objets sont passés par référence (Java est 100% passage par valeur !).',
+        engineeringRule: 'Minimiser les créations d\'objets temporaires inutiles dans les boucles critiques.'
+      },
+      {
+        title: 'Le Cycle de Compilation Hybride',
+        description: 'javac ne compile pas en code machine, mais en Bytecode universel. La JVM utilise Tiered Compilation (Interpréteur + JIT C1 + JIT C2).',
+        warningTrap: 'Penser que Java est plus lent que le C++ en ignorant le JIT inlining à chaud.',
+        engineeringRule: 'Connaître le rôle du Metaspace (mémoire native OS) versus le Heap.'
+      }
+    ],
+    actionChecklist: [
+      'Maîtriser les 3 générations du Garbage Collector (Eden, Survivor, Tenured)',
+      'Savoir expliquer pourquoi System.gc() est banni en production',
+      'Comprendre les 4 causes majeures de fuites de mémoire réelles en Java'
+    ]
+  },
+  {
+    stageNumber: 3,
+    id: 'stage-spring-jpa',
+    title: 'Phase 3 : Cœur Entreprise (Spring Boot & JPA / Hibernate)',
+    subtitle: 'Démystifier les annotations pour expliquer les Proxies et les requêtes SQL réelles',
+    estimatedDuration: 'Jours 9 à 15',
+    mindsetQuote: 'Une annotation n\'est pas magique : c\'est un marqueur exploité par un BeanPostProcessor ou un Proxy AOP.',
+    visualArchitectureDiagram: `[Client HTTP] ---> [Spring Proxy CGLIB] ---> [Instance Service Réelle]
+                           |
+                     (Ouvre TX SQL)
+                     (Try / Catch)
+                     (Commit / Rollback)`,
+    keyConcepts: [
+      {
+        title: 'Le Cycle de Vie des Beans & Injection par Constructeur',
+        description: 'Comprendre les 8 étapes du Bean et pourquoi l\'injection par champ avec @Autowired est un anti-pattern banni en Clean Architecture.',
+        warningTrap: 'Utiliser @Autowired sur des variables d\'instance privées rendant les tests impossibles.',
+        engineeringRule: 'Toujours déclarer : private final MyService myService; et injecter via le constructeur.'
+      },
+      {
+        title: 'Le Piège Mortel de la Self-Invocation sur @Transactional',
+        description: 'Appeler this.autreMethode() au sein de la même classe contourne le Proxy Spring et désactive la transaction.',
+        warningTrap: 'Croire qu\'une exception checked provoque un rollback par défaut.',
+        engineeringRule: 'Spécifier @Transactional(rollbackFor = Exception.class) et séparer les services métier.'
+      }
+    ],
+    actionChecklist: [
+      'Résoudre le problème N+1 avec JOIN FETCH ou @EntityGraph',
+      'Distinguer Verrou Optimiste (@Version) et Verrou Pessimiste (PESSIMISTIC_WRITE)',
+      'Comprendre le Dirty Checking d\'Hibernate et le cache de premier niveau (Session)'
+    ]
+  },
+  {
+    stageNumber: 4,
+    id: 'stage-tests-devops',
+    title: 'Phase 4 : Rigueur & DevOps (JUnit 5, Testcontainers, SonarQube)',
+    subtitle: 'Prouver que votre code est prêt pour la production dès le premier jour',
+    estimatedDuration: 'Jours 16 à 21',
+    mindsetQuote: 'Les débutants écrivent du code qui marche. Les ingénieurs écrivent des tests qui prouvent qu\'il ne peut pas casser.',
+    visualArchitectureDiagram: `[Pyramide de Tests Moderne]
+     /\\     E2E : Playwright (Navigateur headless)
+    /  \\    Intégration : Testcontainers (Docker PostgreSQL réel)
+   /____\\   Unitaires : JUnit 5 + Mockito (< 10 ms par test)
++ Quality Gates SonarQube automatisées en CI/CD GitLab/GitHub`,
+    keyConcepts: [
+      {
+        title: 'Abandon de la Base H2 au profit de Testcontainers',
+        description: 'H2 tolère des requêtes incompatibles avec PostgreSQL/Oracle. Testcontainers lance un conteneur Docker réel éphémère.',
+        warningTrap: 'Découvrir en production un crash SQL qui passait avec succès sur la base mémoire H2.',
+        engineeringRule: 'Toujours tester avec le moteur SQL exact de production via @Testcontainers.'
+      },
+      {
+        title: 'Quality Gates SonarQube & Complexité Cognitive',
+        description: 'Comprendre la différence entre complexité cyclomatique et complexité cognitive, et savoir lire un rapport de dette technique.',
+        warningTrap: 'Viser 100% de couverture de code sans assertions pertinentes.',
+        engineeringRule: 'Vérifier les cas limites (edge cases) et les exceptions avec assertThrows.'
+      }
+    ],
+    actionChecklist: [
+      'Écrire un test unitaire Mockito avec verify() et ArgumentCaptor',
+      'Configurer un conteneur Testcontainers PostgreSQL',
+      'Savoir définir ce qu\'est un Code Smell vs un Bug vs une Vulnérabilité'
+    ]
+  },
+  {
+    stageNumber: 5,
+    id: 'stage-microservices',
+    title: 'Phase 5 : Architecture Distribuée & Frontend Angular',
+    subtitle: 'Comprendre le découpage DDD, la résilience et l\'intégration REST / Kafka',
+    estimatedDuration: 'Jours 22 à 26',
+    mindsetQuote: 'Dans un système distribué, la question n\'est pas de savoir si un serveur va tomber, mais quand.',
+    visualArchitectureDiagram: `[Client Angular Signals] ---> [Spring Cloud Gateway] ---> [Eureka Registry]
+                                    |
+                           [Microservices BDD-Per-Service]
+                                    |
+                [Transactional Outbox] ===(CDC Debezium)===> [Kafka Broker]`,
+    keyConcepts: [
+      {
+        title: 'Resilience4j Circuit Breaker & Fallback',
+        description: 'Isoler les pannes en cascade avec les états CLOSED, OPEN et HALF-OPEN pour éviter la saturation des pools de threads.',
+        warningTrap: 'Faire des appels REST synchrones bloquants sans timeout ni fallback.',
+        engineeringRule: 'Appliquer le pattern Circuit Breaker sur tout appel réseau externe.'
+      },
+      {
+        title: 'Pattern Saga & Transactional Outbox',
+        description: 'Le 2PC est mort. Les microservices utilisent la cohérence éventuelle (Eventual Consistency) avec des transactions de compensation.',
+        warningTrap: 'Faire une écriture SQL suivie immédiatement d\'un envoi Kafka dans la même méthode sans outbox.',
+        engineeringRule: 'Enregistrer l\'événement dans une table outbox dans la transaction SQL locale.'
+      }
+    ],
+    actionChecklist: [
+      'Comprendre pourquoi le partage d\'une base SQL entre microservices est interdit',
+      'Configurer les autorisations CORS dans Spring Security',
+      'Créer un HttpInterceptor Angular moderne pour injecter le token Bearer JWT'
+    ]
+  },
+  {
+    stageNumber: 6,
+    id: 'stage-interviews-negotiation',
+    title: 'Phase 6 : Arène des Entretiens & Négociation Marocaine',
+    subtitle: 'Valider ses offres de stage PFE et décrocher son premier CDI au meilleur salaire',
+    estimatedDuration: 'Jours 27 à 30',
+    mindsetQuote: 'Le salaire ne se négocie pas sur ce que vous valez, mais sur ce que vous prouvez pouvoir apporter à l\'équipe.',
+    visualArchitectureDiagram: `[Test CodinGame en ligne] ---> [Entretien RH] ---> [Live Coding & Lead Tech] ---> [Offre de Stage / CDI]
+  (30 questions chrono)         (Culture fit)      (Questions pièges & Schémas)     (Négociation salaire)`,
+    keyConcepts: [
+      {
+        title: 'La Méthode STAR pour Décrire vos Projets',
+        description: 'Situation (contexte de l\'école ou du stage) -> Tâche (défi technique à relever) -> Action (ce que VOUS avez conçu techniquement) -> Résultat (chiffres mesurés).',
+        warningTrap: 'Dire "on a fait un projet de gestion de stock" sans citer de métriques ni de défis techniques.',
+        engineeringRule: 'Citer des chiffres : "Réduction du temps de requête de 40% grâce à un index composite et JOIN FETCH".'
+      },
+      {
+        title: 'Les Grilles Salariales au Maroc en 2025/2026',
+        description: 'Connaître les salaires réels (PFE de 3 500 à 8 500 DH, CDI Junior de 10 500 à 18 500 DH) pour ne jamais se sous-vendre.',
+        warningTrap: 'Accepter la première offre sans demander les avantages (mutuelle, RSU, prime de performance, transport).',
+        engineeringRule: 'Avoir plusieurs processus d\'entretien en parallèle pour créer un levier de négociation.'
+      }
+    ],
+    actionChecklist: [
+      'Répéter les 20 Questions Pièges d\'entretien à voix haute',
+      'Préparer son pitch de présentation personnelle en 2 minutes (Français et Anglais)',
+      'Regarder les 6 vidéos clés de GeeksBlaBla recommandées dans la vidéothèque'
+    ]
+  }
+];
+
+// -------------------------------------------------------------
+// MODULE 10 : COACH MANIFESTO & MOTIVATION
+// -------------------------------------------------------------
+export const coachManifestoData: CoachManifesto = {
+  title: 'Manifeste du Coach Senior : Pourquoi vous êtes destiné à Réussir',
+  salutation: 'Chers futurs Ingénieurs d\'État marocains,',
+  introManifesto: `Si vous lisez ceci, vous êtes à un tournant décisif de votre vie. Dans quelques semaines ou quelques mois, vous allez passer vos entretiens de stage PFE ou de premier emploi. 
+
+Vous ressentez peut-être le syndrome de l'imposteur. Vous vous dites : "Il y a trop de technologies, trop de frameworks, je ne maîtrise pas tout".
+Écoutez bien ce que tout Lead Tech et Architecte sait en entreprise : 
+PERSONNE ne maîtrise tout. 
+
+Ce que recherchent désespérément les recruteurs chez Capgemini, Oracle MDC, Société Générale ATS, CGI et dans les grandes banques marocaines, ce ne sont PAS des génies qui ont mémorisé chaque ligne de documentation. 
+Ils cherchent des ingénieurs rigoureux, humbles, curieux, qui comprennent COMMENT ÇA FONCTIONNE SOUS LE CAPOT et qui savent poser des questions pertinentes.`,
+  theTruthAboutMoroccanRecruiters: `Le marché marocain de l'IT est en pleine explosion. Entre CasaNearshore, Technopolis Rabat et Fès Shore, des milliers de postes sont ouverts. Mais il y a une séparation nette entre deux catégories de candidats :
+1. Les "Développeurs Copieurs de Code" : Ils savent écrire une annotation @GetMapping ou @Autowired, mais quand ça plante en production, ils sont démunis. Ils démarrent avec des salaires de 8 000 à 9 000 DH.
+2. Les "Ingénieurs Concepteurs" : Ils comprennent la Stack et le Heap, ils savent pourquoi @Transactional a un piège de self-invocation, ils écrivent des tests Testcontainers, et ils dessinent un schéma avant de coder. Ces profils sont chassés et démarrent entre 12 000 et 18 500 DH.`,
+  theThreePillarsOfVictory: [
+    {
+      pillar: 'Pilier 1 : Le Schéma Visuel Avant Tout',
+      explanation: 'En entretien, lorsque le Lead Tech vous expose un problème, ne commencez jamais par taper du code. Dessinez ou décrivez le flux : "Voici l\'utilisateur, voici le Controller, voici le Proxy, voici la BDD".',
+      actionableHabit: 'Prenez une feuille ou un tableau blanc et posez les boîtes et les flèches avant d\'écrire la première classe.'
+    },
+    {
+      pillar: 'Pilier 2 : La Rigueur du Vocabulaire Technique',
+      explanation: 'Bannissez les mots vagues comme "le truc", "la fonction magique", "ça envoie des données". Utilisez les termes précis : "Instance allouée sur le Heap", "Transaction avec isolation Read Committed", "Appel intercepté par un Proxy dynamique", "Inlining JIT".',
+      actionableHabit: 'Le vocabulaire précis signale immédiatement au recruteur qu\'il a affaire à un futur senior.'
+    },
+    {
+      pillar: 'Pilier 3 : La Posture de Résolution de Problèmes',
+      explanation: 'Si vous ne connaissez pas une réponse, ne paniquez pas et n\'inventez rien. Démontrez votre méthode d\'investigation : "Je n\'ai pas encore rencontré ce cas précis en production, mais voici comment j\'analyserais le problème...".',
+      actionableHabit: 'Les examinateurs adorent voir le cheminement intellectuel d\'un candidat confronté à l\'inconnu.'
+    }
+  ],
+  roiCalculation: {
+    title: 'Le Retour sur Investissement (ROI) de 1 Mois de Préparation Disciplinée',
+    withoutPreparation: 'Candidature improvisée : Stage PFE non rémunéré ou à 1 500 DH. Premier CDI à 8 500 DH net/mois.',
+    withDisciplinedPreparation: 'Préparation avec JPA Academy : Stage PFE pré-embauche de 4 500 à 8 500 DH/mois. Premier CDI chez Capgemini, SG ATS ou Oracle MDC à 12 500 - 18 500 DH net/mois.',
+    differenceDh: '+60 000 à +100 000 DH net dès la première année de carrière !'
+  }
+};
+
+// -------------------------------------------------------------
+// MODULE 11 : PSYCHOLOGICAL TECHNIQUES & INTERVIEW MASTERY
+// -------------------------------------------------------------
+export const interviewPsychologyTechniques: PsychologicalTechnique[] = [
+  {
+    id: 'technique-1',
+    title: 'La Technique de l\'Entonnoir (The Funnel Thinking)',
+    context: 'Face à un problème algorithmique ou de conception système posé sur un tableau blanc ou en direct.',
+    seniorMindset: 'Ne jamais supposer les contraintes sans demander. Le silence du recruteur est souvent un test pour voir si vous validez le périmètre.',
+    methodologySteps: [
+      '1. Écouter attentivement sans interrompre et reformuler : "Si je comprends bien, l\'objectif est de..."',
+      '2. Clarifier les contraintes clés : Volumétrie (Combien d\'utilisateurs ?), Fréquence (Combien de requêtes par seconde ?), Gestion des pannes (Que faire si le service tiers est indisponible ?)',
+      '3. Proposer d\'abord une solution simple naïve en $O(N^2)$ pour poser les bases, puis expliquer comment l\'optimiser en $O(N)$ avec une table de hachage.',
+      '4. Mentionner immédiatement les cas limites : "Attention, si la liste est vide ou si un identifiant est null, il faut lever une exception explicite".'
+    ],
+    exactScriptOrPhrase: '"Avant de plonger dans l\'implémentation, permettez-moi de clarifier quelques hypothèses sur la volumétrie et la tolérance aux pannes..."',
+    rookieMistake: 'Commencer à coder immédiatement sans poser aucune question et s\'apercevoir 15 minutes plus tard qu\'on a résolu le mauvais problème.'
+  },
+  {
+    id: 'technique-2',
+    title: 'La Formule d\'Or face à une Question Inconnue',
+    context: 'L\'examinateur vous pose une question pointue sur une notion que vous n\'avez jamais étudiée (ex: "Connaissez-vous le pattern Bulkhead ?").',
+    seniorMindset: 'L\'honnêteté intellectuelle est une valeur cardinale en ingénierie. Dire "je ne sais pas" avec assurance et méthode vaut 100 fois mieux que d\'inventer des bêtises.',
+    methodologySteps: [
+      '1. Reconnaître calmement que vous n\'avez pas encore manipulé ce concept précis en pratique.',
+      '2. Utiliser l\'analogie et l\'intuition : décomposer le nom (ex: "Bulkhead fait référence aux cloisons étanches des bateaux pour éviter qu\'une voie d\'eau ne coule tout le navire...").',
+      '3. Rapprocher du connu : "J\'ai en revanche beaucoup utilisé le Circuit Breaker de Resilience4j pour isoler les pannes réseau...".',
+      '4. Demander poliment confirmation au recruteur : "Est-ce que le Bulkhead isole également des pools de threads distincts ?" (Crée un échange technique passionnant).'
+    ],
+    exactScriptOrPhrase: '"Je n\'ai pas encore eu l\'occasion d\'implémenter ce concept précis en environnement de production. Cependant, par analogie avec les patterns de résilience que je connais comme le Circuit Breaker, j\'imagine que le rôle est d\'isoler... Est-ce exact ?"',
+    rookieMistake: 'Inventer une définition fausse avec hésitation, se faire piéger par le recruteur et perdre toute crédibilité.'
+  },
+  {
+    id: 'technique-3',
+    title: 'La Méthode STAR pour Décrire vos Projets et PFE',
+    context: 'Question classique : "Parlez-moi d\'un projet difficile que vous avez réalisé" ou "Présentez votre projet de fin d\'études".',
+    seniorMindset: 'Un recruteur n\'écoute pas une longue histoire chronologique. Il écoute des défis, des décisions et des résultats chiffrés.',
+    methodologySteps: [
+      'S - Situation : Le contexte métier (ex: "Dans le cadre d\'un système de réservation de salles pour 1 500 utilisateurs...").',
+      'T - Tâche : La problématique technique difficile (ex: "Le défi majeur était d\'empêcher les réservations concurrentes simultanées sans dégrader la latence SQL").',
+      'A - Action : Ce que VOUS avez fait personnellement (ex: "J\'ai analysé les requêtes, rejeté le verrou pessimiste trop bloquant, et mis en place un verrou optimiste @Version couplé à un cache Caffeine").',
+      'R - Résultat : L\'impact concret (ex: "Résultat : zéro conflit en charge et un temps de réponse moyen passé sous la barre des 35 millisecondes").'
+    ],
+    exactScriptOrPhrase: '"Le défi technique principal résidait dans X. J\'ai pris le parti de concevoir Y, ce qui a permis d\'obtenir Z comme résultat mesurable."',
+    rookieMistake: 'Raconter une histoire confuse : "Alors on s\'est mis en groupe, puis on a choisi Java, puis on a fait les pages HTML...".'
+  },
+  {
+    id: 'technique-4',
+    title: 'Inverser l\'Entretien à la Fin (Les 5 Questions d\'Impact)',
+    context: 'À la fin de l\'entretien, le recruteur demande invariablement : "Avez-vous des questions pour nous ?"',
+    seniorMindset: 'Dire "Non, tout est clair" est une erreur fatale. C\'est le moment de prouver que vous choisissez votre entreprise avec exigence.',
+    methodologySteps: [
+      'Poser une question sur la culture de qualité : "Quelle est la politique de l\'équipe concernant la dette technique et la couverture de tests ?"',
+      'Poser une question sur le cycle de vie : "À quelle fréquence livrez-vous du code en production (CI/CD continu ou releases mensuelles) ?"',
+      'Poser une question sur le mentorat : "Comment est structuré l\'onboarding technique pour qu\'un stagiaire PFE monte rapidement en compétences ?"',
+      'Poser une question sur la stack : "Prévoyez-vous une migration vers Java 21 et les Virtual Threads prochainement ?"',
+      'Poser une question sur l\'équipe : "Quels sont les plus gros défis architecturaux auxquels votre équipe fait face actuellement ?"'
+    ],
+    exactScriptOrPhrase: '"J\'ai en effet 2 questions : comment mesurez-vous la qualité de code au sein de l\'équipe au quotidien (SonarQube, revues de code systématiques) ?"',
+    rookieMistake: 'Demander uniquement : "C\'est quoi les horaires ?" ou "Combien de jours de congé j\'aurai pendant mon PFE ?".'
+  }
+];
+
+// -------------------------------------------------------------
+// MODULE 12 : MOROCCAN TECH VIDEOS & PODCASTS HUB
+// -------------------------------------------------------------
+export const moroccanTechVideos: MoroccanTechVideo[] = [
+  {
+    id: 'video-geeksblabla-pfe-200',
+    title: 'Making the most out of your PFE internship / سطاج ناجح',
+    showOrPodcast: 'GeeksBlaBla #200',
+    speakers: ['Mohammed Aboullaite', 'Youssouf El Azizi', 'Invités Experts Marocains'],
+    duration: '1h 45m',
+    language: 'Mixte Darija / FR',
+    youtubeId: 'AUZIYQFubEVp0TRuRSrIHwOqGY9s9oOunRq_qhSX22dhTKYat4OkNW5rBXQlk78UPEkpQUwpAVML-XjJr2eHXsk1dcA3ueULc2B_u4WULrLDFb3_SmwnIltBSttFxDCgQfKlmJSI',
+    badge: 'Guide PFE N°1',
+    summary: 'L\'épisode de référence de la communauté tech marocaine pour tout étudiant préparant son Projet de Fin d\'Études. Comment choisir entre grand compte, startup ou multinationale, comment négocier sa gratification, et comment transformer son PFE en pré-embauche CDI.',
+    keyPointsCovered: [
+      'Les critères pour choisir une bonne entreprise de stage au Maroc',
+      'Comment préparer les entretiens techniques et RH de sélection',
+      'Les erreurs courantes des stagiaires qui bloquent leur embauche finale',
+      'Comment documenter son rapport de PFE et réussir sa soutenance devant le jury universitaire'
+    ],
+    whyEveryMoroccanEngineerMustWatch: 'Cet épisode démystifie entièrement le monde de l\'entreprise au Maroc avec des retours d\'expérience sans filtre d\'ingénieurs qui ont fait le même parcours que vous.'
+  },
+  {
+    id: 'video-geeksblabla-interviews-65',
+    title: 'Tech Interviews in Morocco / التحضير لمقابلات العمل التقنية',
+    showOrPodcast: 'GeeksBlaBla #65',
+    speakers: ['Mohammed Aboullaite', 'Youssouf El Azizi', 'Hanae El Bouyousfi', 'Diaa Alhak'],
+    duration: '2h 10m',
+    language: 'Mixte Darija / FR',
+    youtubeId: 'AUZIYQGFB0mV6Ijyv92de1KgnRGRiWcQlRgAovQar847ZR4k1-t8duDFDWURb9SYYOuEDOaAUPnYmHIRKeSIiPRVAv3DjzVNsJ-s7FjSb1HFGUIf5a7r__EF8h5ctEN5k_F9fHg=',
+    badge: 'Prépa Entretien',
+    summary: 'Décryptage approfondi des processus d\'entretiens techniques au Maroc et à l\'international : tests en ligne CodinGame, questions pièges des Lead Techs, questions de comportement ("Tell me about yourself"), et gestion du stress.',
+    keyPointsCovered: [
+      'Les différentes étapes d\'un entretien d\'embauche technique au Maroc',
+      'Comment briller lors des tests de code en direct (Live Coding)',
+      'Comment répondre aux questions de soft-skills et de comportement',
+      'La posture psychologique pour négocier son package salarial'
+    ],
+    whyEveryMoroccanEngineerMustWatch: 'Donne la perspective exacte des interviewers : ce qu\'un Lead Tech note secrètement sur sa grille d\'évaluation pendant que vous parlez.'
+  },
+  {
+    id: 'video-geeksblabla-java-160',
+    title: 'Java in 2023/2024 - اش واقع فالجاڤا وهل لا زالت مطلوبة بالمغرب؟',
+    showOrPodcast: 'GeeksBlaBla #160',
+    speakers: ['Experts Java Marocains', 'Mohammed Aboullaite'],
+    duration: '1h 50m',
+    language: 'Mixte Darija / FR',
+    youtubeId: 'AUZIYQHBFm08nSK-VsPqvFq2mnlF3rK7NOVTnixFnQe9Y290KQZDkEPHQiEiIaeD0mfHABRkAgtAAykVvLBEuvtbtX5yVzkhp47EfBDoHvugbpJEZKFmMfsdqCQNadbQ8XjNa0rx',
+    badge: 'Écosystème Java',
+    summary: 'Un tour d\'horizon complet sur l\'état de Java et Spring Boot sur le marché de l\'emploi au Maroc. Pourquoi Java reste le roi incontesté des salaires et des volumes de recrutement dans les banques et les multinationales.',
+    keyPointsCovered: [
+      'Pourquoi Java 17 et 21 dominent le paysage bancaire marocain',
+      'La transition Spring Boot 3 et Jakarta EE',
+      'Les Virtual Threads de Java 21 face aux frameworks asynchrones réactifs',
+      'Les compétences les plus recherchées par les entreprises marocaines'
+    ],
+    whyEveryMoroccanEngineerMustWatch: 'Vous rassure à 100% sur la pertinence de votre investissement technique : Java est la compétence la plus valorisée au Maroc.'
+  },
+  {
+    id: 'video-geeksblabla-java-25',
+    title: 'Deep Dive in Java & JVM Tuning (نقاش معمق حول الجاڤا)',
+    showOrPodcast: 'GeeksBlaBla #25',
+    speakers: ['Architectes Java Marocains', 'Communauté GeeksBlaBla'],
+    duration: '2h 15m',
+    language: 'Darija 🇲🇦',
+    youtubeId: 'AUZIYQFMPnChbDPgAuUiEvY9xZE-Orm4fhY9qM641EFydTfv5aLJNwm1n52gxi_X8ksfXVWmvWxabXg4tpSJW9d4Cj3HpM8OY9wUhGvzu_q4KFRQSgs0W4JpxC3Zv1p-IlBhbmjM',
+    badge: 'Architecture JVM',
+    summary: 'Une discussion technique de haut vol sur le fonctionnement interne de la JVM HotSpot, le Garbage Collection, les optimisations de performance et les pièges de multithreading en Darija marocaine.',
+    keyPointsCovered: [
+      'Organisation de la mémoire vive (Heap, Stack, Metaspace)',
+      'Comment fonctionne le JIT Compiler C1 et C2',
+      'Le Garbage Collection en pratique (G1 GC, CMS, ZGC)',
+      'Bonnes pratiques d\'architecture logicielle d\'entreprise'
+    ],
+    whyEveryMoroccanEngineerMustWatch: 'Parfait pour comprendre les concepts bas niveau expliqués simplement avec les métaphores de notre culture en Darija.'
+  }
+];
+
+// -------------------------------------------------------------
+// MODULE 13 : MEMORY FLASHCARDS (MÉMORISATION ANIMÉE)
+// -------------------------------------------------------------
+export const memoryFlashcards: MemoryFlashcard[] = [
+  {
+    id: 'fc-1',
+    category: 'Mémoire RAM',
+    frontQuestion: 'Où est stockée la variable locale `int x = 10;` définie dans une méthode ?',
+    frontHint: 'Pensez à la pile d\'exécution locale au thread.',
+    backCoreConcept: 'Elle est stockée DIRECTEMENT sur la STACK (Thread Stack) sous forme de 4 octets binaires bruts dans la frame de la méthode courante. Aucun objet n\'est créé sur le Heap.',
+    backDiagramAscii: `[Stack Frame: maMethode()]
+- x = 10 (Directement dans la pile)
+-> Dépilé instantanément en O(1) à la fin de l'appel`,
+    backSeniorRule: 'Les types primitifs locaux ne coûtent zéro charge au Garbage Collector.'
+  },
+  {
+    id: 'fc-2',
+    category: 'Mémoire RAM',
+    frontQuestion: 'Où est stockée l\'expression `User u = new User("Moad");` ?',
+    frontHint: 'Il y a deux entités distinctes : la variable et l\'instance.',
+    backCoreConcept: 'La variable de référence `u` (un pointeur mémoire de 8 octets) est stockée sur la STACK. L\'objet réel `new User(...)` est alloué sur le HEAP dans l\'espace Eden.',
+    backDiagramAscii: `STACK: [ u = 0x7FFF1234 ] ===(Pointeur)===> HEAP: [ User { nom: "Moad" } ]`,
+    backSeniorRule: 'Java est 100% passage par valeur : ce qui est passé en paramètre, c\'est la copie de la valeur du pointeur d\'adresse.'
+  },
+  {
+    id: 'fc-3',
+    category: 'Spring Boot',
+    frontQuestion: 'Que se passe-t-il si une méthode appelle une autre méthode @Transactional de la MÊME classe ?',
+    frontHint: 'Rappelez-vous comment Spring intercepte les appels.',
+    backCoreConcept: 'La transaction N\'EST PAS ouverte ! C\'est le piège de la Self-Invocation : l\'appel direct `this.autreMethode()` court-circuite le Proxy Spring AOP.',
+    backSeniorRule: 'Pour qu\'un proxy intercepte, l\'appel doit venir de l\'extérieur du Bean ou passer par un service injecté distinct.'
+  },
+  {
+    id: 'fc-4',
+    category: 'JPA / Hibernate',
+    frontQuestion: 'Pourquoi FetchType.EAGER est-il considéré comme un danger majeur en production ?',
+    frontHint: 'Pensez à la requête SQL qui sera générée lors d\'un findAll().',
+    backCoreConcept: 'EAGER charge systématiquement les relations associées, même quand vous n\'en avez pas besoin, provoquant des requêtes SQL massives et inutiles. Il ne résout PAS le problème N+1 lors des requêtes JPQL.',
+    backSeniorRule: 'Toujours laisser FetchType.LAZY par défaut et utiliser JOIN FETCH ou @EntityGraph explicitement.'
+  },
+  {
+    id: 'fc-5',
+    category: 'DevOps & Tests',
+    frontQuestion: 'Pourquoi Testcontainers a-t-il totalement remplacé la base en mémoire H2 pour les tests ?',
+    frontHint: 'Pensez aux différences de dialectes SQL entre H2 et PostgreSQL.',
+    backCoreConcept: 'H2 n\'a pas les mêmes types natifs (JSONB, UUID, ENUMs) ni les mêmes comportements de verrous de concurrence que PostgreSQL ou Oracle de production. Testcontainers lance un vrai conteneur Docker éphémère identique à la prod.',
+    backSeniorRule: 'Testcontainers garantit zéro surprise de dialecte lors du déploiement en production.'
+  },
+  {
+    id: 'fc-6',
+    category: 'Microservices',
+    frontQuestion: 'Qu\'est-ce que le Transactional Outbox Pattern ?',
+    frontHint: 'Pensez au problème de la double écriture BDD SQL + Message Kafka.',
+    backCoreConcept: 'Il résout le problème de la double écriture (Dual-Write) en enregistrant l\'événement dans une table SQL `outbox` au sein de la MÊME transaction ACID que la donnée métier. Un outil CDC (Debezium) lit le log et pousse dans Kafka de façon garantie.',
+    backSeniorRule: 'Ne jamais faire un appel réseau externe au milieu d\'une transaction SQL locale.'
   }
 ];
