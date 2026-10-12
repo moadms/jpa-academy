@@ -11,15 +11,16 @@ import {
   Briefcase, 
   Layers,
   ChevronRight,
-  Flame,
   GitBranch,
   Zap,
   GraduationCap
 } from 'lucide-react';
 
+export type ActiveViewType = 'academy' | 'chapters' | 'lectures' | 'architect' | 'interviews' | 'quiz' | 'games';
+
 interface SidebarProps {
-  activeView: 'chapters' | 'lectures' | 'architect' | 'interviews' | 'quiz' | 'games';
-  setActiveView: (view: 'chapters' | 'lectures' | 'architect' | 'interviews' | 'quiz' | 'games') => void;
+  activeView: ActiveViewType;
+  setActiveView: (view: ActiveViewType) => void;
   isOpenMobile?: boolean;
   setIsOpenMobile?: (open: boolean) => void;
 }
@@ -32,22 +33,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const navItems = [
     {
+      id: 'academy' as const,
+      label: 'Masterclass Java & Spring 🎓',
+      subtitle: 'JVM, RAM, Tests, PFE Maroc',
+      icon: Zap,
+      badge: 'Essentiel',
+      activeColor: 'bg-indigo-600/20 text-indigo-200 border-indigo-500/50 shadow-indigo-950/40'
+    },
+    {
       id: 'chapters' as const,
-      label: '10 Labs & TPs',
+      label: '10 Labs & TPs Décortiqués',
       subtitle: 'Code, Schémas & Enfant',
       icon: BookOpen,
       badge: '10 TPs',
-      gradient: 'from-purple-600 to-indigo-600',
-      activeColor: 'bg-purple-600/20 text-purple-300 border-purple-500/50 shadow-purple-900/30'
+      activeColor: 'bg-indigo-600/20 text-indigo-200 border-indigo-500/50 shadow-indigo-950/40'
     },
     {
       id: 'lectures' as const,
-      label: 'Cours Prof (7 Chapitres)',
-      subtitle: 'Contenu plateforme officiel',
+      label: 'Cours Magistral (7 Chapitres)',
+      subtitle: 'Plateforme officielle prof',
       icon: GraduationCap,
       badge: 'Officiel',
-      gradient: 'from-blue-600 to-cyan-600',
-      activeColor: 'bg-blue-600/20 text-cyan-300 border-cyan-500/50 shadow-cyan-900/30'
+      activeColor: 'bg-sky-600/20 text-sky-200 border-sky-500/50 shadow-sky-950/40'
     },
     {
       id: 'architect' as const,
@@ -55,8 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       subtitle: '7 Clés & Convertisseur UML',
       icon: Compass,
       badge: 'Senior',
-      gradient: 'from-pink-600 to-rose-600',
-      activeColor: 'bg-pink-600/20 text-pink-300 border-pink-500/50 shadow-pink-900/30'
+      activeColor: 'bg-violet-600/20 text-violet-200 border-violet-500/50 shadow-violet-950/40'
     },
     {
       id: 'interviews' as const,
@@ -64,26 +70,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
       subtitle: 'Oracle, Capgemini, SG ATS',
       icon: Briefcase,
       badge: 'Salaires DH',
-      gradient: 'from-emerald-600 to-teal-600',
-      activeColor: 'bg-emerald-600/20 text-emerald-300 border-emerald-500/50 shadow-emerald-900/30'
+      activeColor: 'bg-emerald-600/20 text-emerald-200 border-emerald-500/50 shadow-emerald-950/40'
     },
     {
       id: 'quiz' as const,
       label: 'Arène des QCMs',
-      subtitle: 'Tous les tests décodés',
+      subtitle: 'Tous les tests validés',
       icon: Trophy,
-      badge: '100% Validé',
-      gradient: 'from-amber-500 to-yellow-600',
-      activeColor: 'bg-amber-600/20 text-yellow-300 border-yellow-500/50 shadow-yellow-900/30'
+      badge: '100% Score',
+      activeColor: 'bg-amber-600/20 text-amber-200 border-amber-500/50 shadow-amber-950/40'
     },
     {
       id: 'games' as const,
       label: 'Dojo Mini-Jeux',
       subtitle: 'Bug Hunter & Code Fill',
       icon: Gamepad2,
-      badge: 'Ninja',
-      gradient: 'from-fuchsia-600 to-purple-600',
-      activeColor: 'bg-fuchsia-600/20 text-fuchsia-300 border-fuchsia-500/50 shadow-fuchsia-900/30'
+      badge: 'Coding Games',
+      activeColor: 'bg-indigo-600/20 text-indigo-200 border-indigo-500/50 shadow-indigo-950/40'
     }
   ];
 
@@ -91,28 +94,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside className="w-72 shrink-0 bg-slate-950/95 border-r border-slate-800/80 flex flex-col justify-between h-screen sticky top-0 backdrop-blur-2xl z-40 select-none">
       {/* Top Header / Brand */}
       <div>
-        <div className="p-6 border-b border-slate-800/70 flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-purple-600/30 shrink-0">
-            <span className="text-2xl">⚡</span>
+        <div className="p-5 border-b border-slate-800/80 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-indigo-300 font-bold text-lg shadow-md shadow-indigo-950/50 shrink-0">
+            ⚡
           </div>
           <div className="overflow-hidden">
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-black tracking-tight text-white">
-                JPA <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">ACADEMY</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-base font-black tracking-tight text-white">
+                JPA <span className="text-indigo-400">ACADEMY</span>
               </span>
             </div>
-            <div className="text-[10px] font-mono text-cyan-400 font-semibold tracking-wider flex items-center gap-1 mt-0.5">
+            <div className="text-[10px] font-mono text-emerald-400 font-medium tracking-wider flex items-center gap-1 mt-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
-              <span>PRO ARCHITECT 3D</span>
+              <span>INGÉNIERIE & TECH MAROC</span>
             </div>
           </div>
         </div>
 
         {/* Navigation Section */}
-        <div className="px-4 py-5 space-y-1.5">
+        <div className="px-3.5 py-4 space-y-1">
           <div className="text-[10px] font-mono uppercase tracking-widest text-slate-400 px-3 pb-2 font-bold flex items-center justify-between">
             <span>Navigation Principale</span>
-            <span className="text-purple-400 font-semibold">6 Modules</span>
+            <span className="text-indigo-400 font-semibold">{navItems.length} Modules</span>
           </div>
 
           {navItems.map((item) => {
@@ -126,17 +129,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   setActiveView(item.id);
                   if (setIsOpenMobile) setIsOpenMobile(false);
                 }}
-                className={`w-full text-left p-3 rounded-2xl border transition-all duration-200 flex items-center justify-between group cursor-pointer ${
+                className={`w-full text-left p-2.5 rounded-2xl border transition-all duration-200 flex items-center justify-between group cursor-pointer ${
                   isActive
-                    ? `${item.activeColor} shadow-lg scale-[1.01]`
-                    : 'bg-slate-900/30 border-transparent text-slate-300 hover:bg-slate-900/80 hover:text-white hover:border-slate-800'
+                    ? `${item.activeColor} shadow-md`
+                    : 'bg-transparent border-transparent text-slate-300 hover:bg-slate-900 hover:text-white hover:border-slate-800/60'
                 }`}
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border ${
                     isActive
-                      ? `bg-gradient-to-tr ${item.gradient} text-white shadow-md`
-                      : 'bg-slate-900 border border-slate-800 text-slate-400 group-hover:text-purple-300'
+                      ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm'
+                      : 'bg-slate-900 border-slate-800 text-slate-400 group-hover:text-indigo-300'
                   }`}>
                     <Icon className="w-4 h-4" />
                   </div>
@@ -150,10 +153,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                 </div>
 
-                <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full shrink-0 ml-2 font-bold ${
+                <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full shrink-0 ml-1.5 font-bold ${
                   isActive
-                    ? 'bg-purple-500/20 text-purple-200 border border-purple-500/40'
-                    : 'bg-slate-900 text-slate-400 border border-slate-800/80 group-hover:border-slate-700'
+                    ? 'bg-indigo-500/20 text-indigo-200 border border-indigo-500/40'
+                    : 'bg-slate-900 text-slate-400 border border-slate-800 group-hover:border-slate-700'
                 }`}>
                   {item.badge}
                 </span>
@@ -164,11 +167,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Bottom Profile / Student Widget */}
-      <div className="p-4 border-t border-slate-800/70 space-y-3">
+      <div className="p-4 border-t border-slate-800/80 space-y-3">
         {/* Candidate / Student card */}
-        <div className="p-3.5 bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900 border border-purple-500/30 rounded-2xl">
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[10px] font-mono text-purple-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
+        <div className="p-3 bg-slate-900/90 border border-slate-800 rounded-2xl">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-mono text-indigo-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
               <Award className="w-3.5 h-3.5 text-amber-400" />
               <span>Moad Moussaoui</span>
             </span>
@@ -189,9 +192,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
             className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white text-[11px] font-mono font-medium transition-colors"
           >
             <GitBranch className="w-3.5 h-3.5" />
-            <span>GitHub moadms</span>
+            <span>moadms</span>
           </a>
-          <div className="py-2 px-2.5 rounded-xl bg-slate-900 border border-slate-800 text-[10px] font-mono text-cyan-400 text-center font-bold">
+          <div className="py-2 px-2.5 rounded-xl bg-slate-900 border border-slate-800 text-[10px] font-mono text-emerald-400 text-center font-bold">
             ▲ Vercel Ready
           </div>
         </div>

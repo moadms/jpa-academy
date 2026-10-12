@@ -1,0 +1,674 @@
+'use client';
+
+import React, { useState } from 'react';
+import { 
+  jvmAndRamTopics, 
+  springBootTopics, 
+  testingAndDevopsTopics, 
+  microservicesAndAngularTopics, 
+  moroccanPfeCompanies, 
+  oneMonthRoadmap, 
+  topTrapQuestions, 
+  cheatSheetDocs,
+  KnowledgeTopic,
+  TrapQuestionItem,
+  RoadmapWeekPlan,
+  PfeCompanyInfo,
+  CheatSheetDoc
+} from '@/data/devKnowledge';
+import { 
+  Cpu, 
+  Zap, 
+  Shield, 
+  Layers, 
+  Briefcase, 
+  Calendar, 
+  AlertTriangle, 
+  BookOpen, 
+  CheckCircle2, 
+  ChevronDown, 
+  ChevronUp, 
+  Code2, 
+  Copy, 
+  Check, 
+  Building2, 
+  Coins, 
+  Compass, 
+  Terminal, 
+  Sparkles,
+  ArrowRight,
+  ExternalLink
+} from 'lucide-react';
+
+export const TechAcademy: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'jvm' | 'spring' | 'testing' | 'microservices' | 'pfe' | 'roadmap' | 'traps' | 'cheatsheets'>('jvm');
+  const [expandedTopicId, setExpandedTopicId] = useState<string | null>('ram-variables-storage');
+  const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
+  const [selectedRoadmapWeek, setSelectedRoadmapWeek] = useState<number>(1);
+  const [revealedSolutionId, setRevealedSolutionId] = useState<string | null>(null);
+  const [selectedCheatSheet, setSelectedCheatSheet] = useState<CheatSheetDoc>(cheatSheetDocs[0]);
+
+  const copyToClipboard = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCodeId(id);
+    setTimeout(() => setCopiedCodeId(null), 2000);
+  };
+
+  const tabs = [
+    { id: 'jvm' as const, label: 'JVM & Mémoire RAM', icon: Cpu, badge: 'Bas Niveau' },
+    { id: 'spring' as const, label: 'Spring Boot Sous le Capot', icon: Zap, badge: 'Architecture' },
+    { id: 'testing' as const, label: 'Tests & DevOps', icon: Shield, badge: 'De l\'Ancien au Moderne' },
+    { id: 'microservices' as const, label: 'Microservices & Angular', icon: Layers, badge: 'Distribué' },
+    { id: 'pfe' as const, label: 'Stage PFE Maroc', icon: Briefcase, badge: 'Recrutement & Salaires' },
+    { id: 'roadmap' as const, label: 'Plan 1 Mois & Coding Games', icon: Calendar, badge: 'Roadmap' },
+    { id: 'traps' as const, label: '20 Questions Pièges', icon: AlertTriangle, badge: 'Anti-Échec' },
+    { id: 'cheatsheets' as const, label: 'Fiches de Révision', icon: BookOpen, badge: 'Mémo Express' },
+  ];
+
+  return (
+    <div className="space-y-8 animate-fadeIn">
+      {/* Intro Header */}
+      <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-mono font-bold">
+              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+              <span>MASTERCLASS INGÉNIEUR DIGITALE & SYSTÈMES D'INFORMATION</span>
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+              L'Académie du Développeur Java, Spring & DevOps
+            </h1>
+            <p className="text-sm sm:text-base text-slate-300 max-w-3xl leading-relaxed">
+              De la gestion physique des octets en RAM jusqu'aux architectures microservices et aux grilles de salaires marocaines. Tout ce qu'un futur Ingénieur d'État doit savoir pour réussir ses entretiens techniques (Capgemini, Oracle MDC, SG ATS, CGI).
+            </p>
+          </div>
+
+          <div className="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl flex items-center gap-3 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center font-bold text-lg">
+              🎯
+            </div>
+            <div>
+              <div className="text-xs text-slate-400">Objectif Clé</div>
+              <div className="text-sm font-bold text-white">Prêt pour les Entretiens</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tab Selection Navigation (Wrapped, Clean, No Scrollbar) */}
+        <div className="mt-8 flex flex-wrap gap-2 pt-4 border-t border-slate-800">
+          {tabs.map(tab => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                  isActive
+                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20 border border-indigo-500'
+                    : 'bg-slate-950/60 text-slate-300 hover:text-white hover:bg-slate-800/80 border border-slate-800'
+                }`}
+              >
+                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                <span>{tab.label}</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
+                  isActive ? 'bg-indigo-700/60 text-indigo-100' : 'bg-slate-800 text-slate-400'
+                }`}>
+                  {tab.badge}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* VIEW 1 : JVM & RAM */}
+      {activeTab === 'jvm' && (
+        <TopicListRenderer 
+          topics={jvmAndRamTopics} 
+          expandedId={expandedTopicId} 
+          onToggle={(id) => setExpandedTopicId(expandedTopicId === id ? null : id)}
+          onCopy={copyToClipboard}
+          copiedId={copiedCodeId}
+        />
+      )}
+
+      {/* VIEW 2 : SPRING BOOT */}
+      {activeTab === 'spring' && (
+        <TopicListRenderer 
+          topics={springBootTopics} 
+          expandedId={expandedTopicId} 
+          onToggle={(id) => setExpandedTopicId(expandedTopicId === id ? null : id)}
+          onCopy={copyToClipboard}
+          copiedId={copiedCodeId}
+        />
+      )}
+
+      {/* VIEW 3 : TESTING & DEVOPS */}
+      {activeTab === 'testing' && (
+        <TopicListRenderer 
+          topics={testingAndDevopsTopics} 
+          expandedId={expandedTopicId} 
+          onToggle={(id) => setExpandedTopicId(expandedTopicId === id ? null : id)}
+          onCopy={copyToClipboard}
+          copiedId={copiedCodeId}
+        />
+      )}
+
+      {/* VIEW 4 : MICROSERVICES & ANGULAR */}
+      {activeTab === 'microservices' && (
+        <TopicListRenderer 
+          topics={microservicesAndAngularTopics} 
+          expandedId={expandedTopicId} 
+          onToggle={(id) => setExpandedTopicId(expandedTopicId === id ? null : id)}
+          onCopy={copyToClipboard}
+          copiedId={copiedCodeId}
+        />
+      )}
+
+      {/* VIEW 5 : MOROCCAN PFE RECRUITMENT */}
+      {activeTab === 'pfe' && (
+        <div className="space-y-6">
+          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+            <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-indigo-400" />
+              <span>Panorama des Entreprises Cibles au Maroc (PFE & Premier CDI)</span>
+            </h3>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Pour les étudiants ingénieurs en 5ème année (EMI, ENSIAS, INPT, ENSA, FST, Universités), voici les attentes réelles, les hubs technologiques (Casanearshore, Technopolis Rabat), et les rémunérations constatées.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {moroccanPfeCompanies.map((comp, idx) => (
+              <div 
+                key={idx}
+                className="bg-slate-900/90 border border-slate-800 hover:border-slate-700 rounded-3xl p-6 space-y-5 transition-all shadow-xl"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h4 className="text-lg font-bold text-white">{comp.name}</h4>
+                    <div className="text-xs text-indigo-400 font-medium flex items-center gap-1.5 mt-1">
+                      <Compass className="w-3.5 h-3.5" />
+                      <span>{comp.city} • {comp.hub}</span>
+                    </div>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 shrink-0">
+                    Recrutement Ouvert
+                  </span>
+                </div>
+
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  {comp.hiringScope}
+                </p>
+
+                {/* Salary Grids */}
+                <div className="grid grid-cols-2 gap-3 p-3.5 bg-slate-950/80 border border-slate-800 rounded-2xl">
+                  <div>
+                    <div className="text-[11px] text-slate-400 font-mono">Stage PFE (Gratification)</div>
+                    <div className="text-sm font-bold text-emerald-400">{comp.salaryPfe}</div>
+                  </div>
+                  <div>
+                    <div className="text-[11px] text-slate-400 font-mono">Premier CDI Junior</div>
+                    <div className="text-sm font-bold text-indigo-300">{comp.salaryJuniorCdi}</div>
+                  </div>
+                </div>
+
+                {/* Required Skills */}
+                <div className="space-y-2">
+                  <div className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">
+                    Compétences Clés Demandées :
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {comp.requiredSkills.map((sk, sIdx) => (
+                      <span 
+                        key={sIdx}
+                        className="text-xs px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700/60 text-slate-200"
+                      >
+                        {sk}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Selection Steps */}
+                <div className="space-y-2">
+                  <div className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">
+                    Étapes de Sélection :
+                  </div>
+                  <ul className="space-y-1.5 text-xs text-slate-300">
+                    {comp.selectionSteps.map((step, stIdx) => (
+                      <li key={stIdx} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" />
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Insider Advice */}
+                <div className="p-4 bg-indigo-950/20 border border-indigo-500/30 rounded-2xl text-xs text-slate-200">
+                  <div className="text-indigo-300 font-bold mb-1 flex items-center gap-1.5">
+                    <span>💡</span> Conseil de l'Équipe Recrutement :
+                  </div>
+                  {comp.insiderAdvice}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* VIEW 6 : 1-MONTH ROADMAP & CODING GAMES */}
+      {activeTab === 'roadmap' && (
+        <div className="space-y-8">
+          {/* Week Selector */}
+          <div className="flex flex-wrap gap-3">
+            {oneMonthRoadmap.map(plan => (
+              <button
+                key={plan.weekNumber}
+                onClick={() => setSelectedRoadmapWeek(plan.weekNumber)}
+                className={`flex-1 min-w-[200px] p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+                  selectedRoadmapWeek === plan.weekNumber
+                    ? 'bg-indigo-950/60 border-indigo-500 shadow-lg shadow-indigo-900/20'
+                    : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div className="text-xs font-mono text-indigo-400 mb-1">SEMAINE {plan.weekNumber}</div>
+                <div className="text-sm font-bold text-white truncate">{plan.title.split(':')[1]}</div>
+                <div className="text-xs text-slate-400 mt-1 line-clamp-1">{plan.focus}</div>
+              </button>
+            ))}
+          </div>
+
+          {/* Active Week Content */}
+          {(() => {
+            const plan = oneMonthRoadmap.find(w => w.weekNumber === selectedRoadmapWeek) || oneMonthRoadmap[0];
+            return (
+              <div className="space-y-6">
+                <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+                  <div>
+                    <span className="px-3 py-1 rounded-full text-xs font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                      Semaine {plan.weekNumber} sur 4
+                    </span>
+                    <h3 className="text-xl sm:text-2xl font-black text-white mt-2">{plan.title}</h3>
+                    <p className="text-sm text-slate-300 mt-1">{plan.focus}</p>
+                  </div>
+
+                  {/* Daily Schedule Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {plan.dailySchedule.map((ds, idx) => (
+                      <div key={idx} className="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-mono font-bold text-indigo-400">{ds.day}</span>
+                          <span className="text-xs font-bold text-white">{ds.goal}</span>
+                        </div>
+                        <ul className="space-y-1.5 text-xs text-slate-300">
+                          {ds.tasks.map((t, tIdx) => (
+                            <li key={tIdx} className="flex items-start gap-2">
+                              <span className="text-slate-500">•</span>
+                              <span>{t}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Coding Game Challenge Card */}
+                  <div className="p-6 bg-slate-950 border border-indigo-500/40 rounded-2xl space-y-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <div className="text-xs font-mono text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                          <Terminal className="w-4 h-4" />
+                          <span>Défi Coding Game de la Semaine</span>
+                        </div>
+                        <h4 className="text-base font-bold text-white mt-1">{plan.codingGameChallenge.title}</h4>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="px-2.5 py-1 rounded-lg text-xs font-mono bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                          {plan.codingGameChallenge.difficulty}
+                        </span>
+                        <span className="px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-800 text-slate-300">
+                          ⏱️ {plan.codingGameChallenge.timeLimitMinutes} min
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                      {plan.codingGameChallenge.description}
+                    </p>
+
+                    {/* Starter Code */}
+                    <div className="space-y-1.5">
+                      <div className="text-xs text-slate-400 font-mono">Code de départ (À compléter) :</div>
+                      <pre className="p-3.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 overflow-x-auto">
+                        <code>{plan.codingGameChallenge.starterCode}</code>
+                      </pre>
+                    </div>
+
+                    {/* Reveal Solution Button */}
+                    <div>
+                      <button
+                        onClick={() => setRevealedSolutionId(revealedSolutionId === plan.title ? null : plan.title)}
+                        className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-2 cursor-pointer transition-colors"
+                      >
+                        <Code2 className="w-4 h-4" />
+                        <span>{revealedSolutionId === plan.title ? 'Masquer la Solution' : 'Dévoiler la Solution Optimale'}</span>
+                      </button>
+                    </div>
+
+                    {/* Solution Code */}
+                    {revealedSolutionId === plan.title && (
+                      <div className="space-y-1.5 pt-2 animate-fadeIn">
+                        <div className="text-xs text-emerald-400 font-mono flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <span>Solution en O(N) attendue par le recruteur :</span>
+                        </div>
+                        <pre className="p-3.5 bg-slate-900 border border-emerald-500/40 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto">
+                          <code>{plan.codingGameChallenge.solutionCode}</code>
+                        </pre>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+      )}
+
+      {/* VIEW 7 : 20 TRAP QUESTIONS */}
+      {activeTab === 'traps' && (
+        <div className="space-y-6">
+          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+            <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-amber-400" />
+              <span>Les Questions Pièges Clés des Entretiens Techniques</span>
+            </h3>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Ces questions sont conçues par les Lead Techs pour faire trébucher les candidats qui ont appris par cœur sans comprendre les mécanismes sous-jacents. Voici exactement comment y répondre.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {topTrapQuestions.map((trap, idx) => (
+              <div 
+                key={trap.id}
+                className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 space-y-4"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-7 h-7 rounded-lg bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 flex items-center justify-center font-mono font-bold text-xs">
+                      #{idx + 1}
+                    </span>
+                    <span className="text-xs font-mono text-indigo-400 uppercase tracking-wider">{trap.topic}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
+                      {trap.companyTarget}
+                    </span>
+                  </div>
+                  <span className={`text-xs px-2.5 py-0.5 rounded-full font-mono ${
+                    trap.difficulty === 'Senior'
+                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                      : trap.difficulty === 'Confirmé'
+                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                      : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                  }`}>
+                    Niveau {trap.difficulty}
+                  </span>
+                </div>
+
+                <h4 className="text-base sm:text-lg font-bold text-white">
+                  {trap.question}
+                </h4>
+
+                <div className="p-3.5 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-300">
+                  <strong className="text-amber-400">⚠️ Le Piège Caché : </strong>
+                  {trap.theTrap}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  <div className="p-4 bg-rose-950/20 border border-rose-900/40 rounded-xl text-slate-300">
+                    <strong className="text-rose-400 block mb-1.5 font-bold">❌ Ce que répond un débutant (Échec) :</strong>
+                    {trap.rookieMistake}
+                  </div>
+                  <div className="p-4 bg-emerald-950/20 border border-emerald-900/40 rounded-xl text-slate-200">
+                    <strong className="text-emerald-400 block mb-1.5 font-bold">✅ La Réponse Modèle Senior (Succès) :</strong>
+                    {trap.seniorModelAnswer}
+                  </div>
+                </div>
+
+                {trap.codeIllustration && (
+                  <pre className="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 overflow-x-auto">
+                    <code>{trap.codeIllustration}</code>
+                  </pre>
+                )}
+
+                <div className="text-xs font-mono text-indigo-300 flex items-center gap-1.5 pt-1">
+                  <span className="text-amber-400">💎</span> Règle d'or : <strong>{trap.goldenRule}</strong>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* VIEW 8 : CHEAT SHEETS & PDF READER */}
+      {activeTab === 'cheatsheets' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Left List of Cheat Sheets */}
+            <div className="space-y-3">
+              <div className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider px-1">
+                Fiches de Synthèse Disponibles :
+              </div>
+              {cheatSheetDocs.map(cs => {
+                const isSelected = selectedCheatSheet.id === cs.id;
+                return (
+                  <button
+                    key={cs.id}
+                    onClick={() => setSelectedCheatSheet(cs)}
+                    className={`w-full p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-indigo-950/60 border-indigo-500 shadow-lg shadow-indigo-900/20'
+                        : 'bg-slate-900/70 border-slate-800 hover:border-slate-700'
+                    }`}
+                  >
+                    <div className="text-xs font-mono text-indigo-400 mb-1">{cs.category}</div>
+                    <div className="text-sm font-bold text-white">{cs.title}</div>
+                    <div className="text-xs text-slate-400 mt-1">Lecture : {cs.readTime}</div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Right Document Preview Reader */}
+            <div className="md:col-span-2 bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                <div>
+                  <span className="text-xs font-mono text-indigo-400">{selectedCheatSheet.category}</span>
+                  <h3 className="text-xl font-bold text-white mt-0.5">{selectedCheatSheet.title}</h3>
+                  <p className="text-xs text-slate-400 mt-1">{selectedCheatSheet.summary}</p>
+                </div>
+                <button
+                  onClick={() => window.print()}
+                  className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer border border-slate-700"
+                >
+                  <span>🖨️ Imprimer / PDF</span>
+                </button>
+              </div>
+
+              {/* Document Markdown Content */}
+              <div className="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed space-y-4">
+                <div className="whitespace-pre-wrap font-sans">
+                  {selectedCheatSheet.contentMarkdown}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Sub-component for rendering deep dive topics with Problem Before vs Solution After
+const TopicListRenderer: React.FC<{
+  topics: KnowledgeTopic[];
+  expandedId: string | null;
+  onToggle: (id: string) => void;
+  onCopy: (code: string, id: string) => void;
+  copiedId: string | null;
+}> = ({ topics, expandedId, onToggle, onCopy, copiedId }) => {
+  return (
+    <div className="space-y-6">
+      {topics.map(topic => {
+        const isExpanded = expandedId === topic.id;
+        return (
+          <div 
+            key={topic.id}
+            className="bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden transition-all shadow-xl"
+          >
+            {/* Header Accordion Bar */}
+            <div 
+              onClick={() => onToggle(topic.id)}
+              className="p-6 cursor-pointer hover:bg-slate-800/40 transition-colors flex items-start justify-between gap-4 select-none"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                    {topic.badge}
+                  </span>
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-white">
+                  {topic.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300">
+                  {topic.subtitle}
+                </p>
+              </div>
+
+              <div className="p-2 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 shrink-0">
+                {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+              </div>
+            </div>
+
+            {/* Expanded Content Body */}
+            {isExpanded && (
+              <div className="p-6 sm:p-8 border-t border-slate-800/80 bg-slate-950/40 space-y-6 animate-fadeIn">
+                {/* Summary */}
+                <p className="text-sm text-slate-200 leading-relaxed bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                  {topic.summary}
+                </p>
+
+                {/* Problem Before vs Solution After */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-5 bg-rose-950/20 border border-rose-900/40 rounded-2xl space-y-2">
+                    <div className="text-rose-400 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5">
+                      <AlertTriangle className="w-4 h-4" />
+                      <span>Le Problème Historique / Sans Cette Notion :</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                      {topic.problemBefore}
+                    </p>
+                  </div>
+
+                  <div className="p-5 bg-emerald-950/20 border border-emerald-900/40 rounded-2xl space-y-2">
+                    <div className="text-emerald-400 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>La Solution & L'Approche Industrielle :</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                      {topic.solutionAfter}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Deep Dive Sections */}
+                <div className="space-y-6 pt-2">
+                  <h4 className="text-xs font-mono font-bold text-indigo-400 uppercase tracking-wider">
+                    Analyse Détaillée & Mécanismes Internes :
+                  </h4>
+
+                  {topic.deepDive.map((section, sIdx) => (
+                    <div key={sIdx} className="p-5 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3">
+                      <div className="text-base font-bold text-white flex items-center gap-2">
+                        <span className="text-indigo-400 font-mono">#{sIdx + 1}</span>
+                        <span>{section.sectionTitle}</span>
+                      </div>
+
+                      <div className="text-xs sm:text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                        {section.content}
+                      </div>
+
+                      {/* Optional ASCII Diagram */}
+                      {section.diagramAscii && (
+                        <div className="overflow-x-auto no-scrollbar">
+                          <pre className="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-cyan-300 leading-tight">
+                            <code>{section.diagramAscii}</code>
+                          </pre>
+                        </div>
+                      )}
+
+                      {/* Optional Code Snippet with Copy */}
+                      {section.codeSnippet && (
+                        <div className="relative group">
+                          <pre className="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-slate-200 overflow-x-auto no-scrollbar">
+                            <code>{section.codeSnippet}</code>
+                          </pre>
+                          <button
+                            onClick={() => onCopy(section.codeSnippet!, `${topic.id}-${sIdx}`)}
+                            className="absolute top-3 right-3 p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-slate-700 opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
+                            title="Copier le code"
+                          >
+                            {copiedId === `${topic.id}-${sIdx}` ? (
+                              <Check className="w-4 h-4 text-emerald-400" />
+                            ) : (
+                              <Copy className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                      )}
+
+                      <div className="text-xs text-indigo-300 font-mono bg-indigo-950/20 p-2.5 rounded-xl border border-indigo-900/30">
+                        ⚡ <strong>Ce qu'il faut retenir :</strong> {section.keyTakeaway}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Trap Question Accordion */}
+                <div className="p-5 bg-slate-950 border border-amber-500/30 rounded-2xl space-y-3">
+                  <div className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <AlertTriangle className="w-4 h-4 text-amber-400" />
+                    <span>La Question Piège Classique Posée en Entretien :</span>
+                  </div>
+
+                  <div className="text-sm font-bold text-white">
+                    {topic.trapQuestion.question}
+                  </div>
+
+                  <div className="text-xs text-slate-400">
+                    <em>Pourquoi le recruteur pose cette question :</em> {topic.trapQuestion.whyRecruiterAsks}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1">
+                    <div className="p-3 bg-rose-950/20 border border-rose-900/30 rounded-xl text-slate-300">
+                      <strong className="text-rose-400 block mb-1">❌ Réponse de Débutant :</strong>
+                      {topic.trapQuestion.rookieAnswer}
+                    </div>
+                    <div className="p-3 bg-emerald-950/20 border border-emerald-900/30 rounded-xl text-slate-200">
+                      <strong className="text-emerald-400 block mb-1">✅ Réponse Modèle Senior :</strong>
+                      {topic.trapQuestion.seniorAnswer}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
