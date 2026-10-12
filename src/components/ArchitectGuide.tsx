@@ -50,7 +50,7 @@ export const ArchitectGuide: React.FC = () => {
           </div>
 
           {/* Sub Navigation */}
-          <div className="flex bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800 self-start md:self-auto">
+          <div className="flex flex-wrap gap-1.5 bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800 self-start md:self-auto">
             <button
               onClick={() => setActiveTab('critical-thinking')}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${

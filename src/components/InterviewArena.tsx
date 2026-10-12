@@ -56,7 +56,7 @@ export const InterviewArena: React.FC = () => {
           </div>
 
           {/* Sub Navigation */}
-          <div className="flex bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800 self-start md:self-auto shrink-0">
+          <div className="flex flex-wrap gap-1.5 bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800 self-start md:self-auto">
             <button
               onClick={() => setActiveTab('questions')}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
