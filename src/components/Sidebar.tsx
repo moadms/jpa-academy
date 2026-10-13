@@ -13,7 +13,8 @@ import {
   ChevronRight,
   GitBranch,
   Zap,
-  GraduationCap
+  GraduationCap,
+  FileText
 } from 'lucide-react';
 
 export type ActiveViewType = 'academy' | 'chapters' | 'lectures' | 'architect' | 'interviews' | 'quiz' | 'games';
@@ -182,6 +183,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="text-xs font-bold text-white">Score Moyen : 79% (Cours 28)</div>
           <div className="text-[10px] text-slate-400 mt-0.5">Prêt pour Recrutement ESN & Big Tech</div>
         </div>
+
+        {/* Direct Link to Standalone HTML Report */}
+        <a
+          href="/rapport-soutenance.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-gradient-to-r from-indigo-600/25 to-purple-600/25 hover:from-indigo-600/40 hover:to-purple-600/40 border border-indigo-500/40 hover:border-indigo-400 text-indigo-200 hover:text-white text-xs font-bold transition-all shadow-md shadow-indigo-950/40 group"
+        >
+          <FileText className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
+          <span>Rapport Soutenance HTML 📄</span>
+        </a>
 
         {/* GitHub & Vercel Links */}
         <div className="flex items-center gap-2">

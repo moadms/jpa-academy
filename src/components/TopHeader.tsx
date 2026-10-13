@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Menu, Sparkles, GitBranch, Award } from 'lucide-react';
+import { Menu, Sparkles, GitBranch, Award, FileText } from 'lucide-react';
 
 interface TopHeaderProps {
   activeTitle: string;
@@ -31,12 +31,23 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ activeTitle, onOpenMobileS
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5">
+        <a
+          href="/rapport-soutenance.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-xs text-indigo-200 hover:text-white font-mono font-bold transition-all shadow-sm"
+        >
+          <FileText className="w-3.5 h-3.5 text-indigo-400" />
+          <span className="hidden sm:inline">Rapport Soutenance HTML 📄</span>
+          <span className="sm:hidden">Rapport 📄</span>
+        </a>
+
         <a
           href="https://github.com/moadms/jpa-academy"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-slate-700 font-mono transition-all"
+          className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300 hover:text-white hover:border-slate-700 font-mono transition-all"
         >
           <GitBranch className="w-4 h-4" />
           <span>moadms/jpa-academy</span>

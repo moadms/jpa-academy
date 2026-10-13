@@ -1,0 +1,2414 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapport de Soutenance & Maîtrise TP JPA/Hibernate — Moad Moussaoui</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background-color: #ffffff !important; color: #0f172a !important; }
+      .print-page-break { page-break-after: always; }
+      pre, code { font-size: 10px !important; }
+      .border-slate-800 { border-color: #cbd5e1 !important; }
+      .bg-slate-900, .bg-slate-950 { background-color: #f8fafc !important; color: #0f172a !important; }
+      .text-white { color: #0f172a !important; }
+      .text-slate-300, .text-slate-400 { color: #334155 !important; }
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #0b0f19; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
+</head>
+<body class="bg-[#07090e] text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white min-h-screen">
+
+  <!-- TOP HEADER / BANNER -->
+  <header class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/80 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 font-bold text-lg shadow-lg shadow-indigo-950">
+          ⚡
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-white text-base tracking-tight">RAPPORT DE SOUTENANCE JPA</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">10/10 TPs MAÎTRISÉS</span>
+          </div>
+          <p class="text-xs text-slate-400 font-mono">Candidat : <strong class="text-slate-200">Moad Moussaoui</strong> • Préparation Interrogation & Soutenance Prof</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5">
+        <button onclick="window.print()" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 font-semibold flex items-center gap-2 transition-all cursor-pointer">
+          <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          <span class="hidden sm:inline">Imprimer / PDF</span>
+        </button>
+        <button onclick="toggleAllAccordions()" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs text-white font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-md shadow-indigo-600/30">
+          <span id="toggleAllBtnText">Tout Déplier</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO PRESENTATION -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6">
+    <div class="bg-gradient-to-r from-indigo-950/60 via-slate-900 to-emerald-950/40 border border-slate-800 rounded-3xl p-6 sm:p-10 backdrop-blur-xl relative overflow-hidden shadow-2xl">
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10 max-w-4xl space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-mono font-bold">
+          <span>🎓 GUIDE TECHNIQUE DE DÉFENSE ORALE & ANALYSE DE CODE</span>
+        </div>
+        
+        <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+          Ce que le Professeur va <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-sky-300 to-emerald-400">Questionner & Tester</span> sur vos 10 TPs
+        </h1>
+        
+        <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
+          Ce rapport complet compile pour chacun des <strong>10 Travaux Pratiques</strong> : la problématique technique initiale, les nouvelles fonctionnalités JPA mises en jeu, <strong>les questions orales pièges du professeur avec les réponses exactes attendues au format 20/20</strong>, les démonstrations en direct à ne pas rater et les tests unitaires JUnit 5 prouvant le bon fonctionnement.
+        </p>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl">
+            <div class="text-2xl font-black text-white font-mono">10 / 10</div>
+            <div class="text-xs text-slate-400">TPs Analysés en Profondeur</div>
+          </div>
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl">
+            <div class="text-2xl font-black text-emerald-400 font-mono">30+</div>
+            <div class="text-xs text-slate-400">Questions Types de Prof</div>
+          </div>
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl">
+            <div class="text-2xl font-black text-sky-400 font-mono">100%</div>
+            <div class="text-xs text-slate-400">Réponses Parfaites d'Ingénieur</div>
+          </div>
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl">
+            <div class="text-2xl font-black text-amber-400 font-mono">JUnit 5</div>
+            <div class="text-xs text-slate-400">Harnais de Tests Validé</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE SEARCH & FILTER BAR -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sticky top-16 z-40 bg-[#07090e]/90 backdrop-blur-md no-print">
+    <div class="flex flex-col sm:flex-row items-center gap-3 bg-slate-900/90 border border-slate-800 p-2.5 rounded-2xl shadow-xl">
+      <div class="relative w-full sm:w-80 flex items-center">
+        <svg class="w-4 h-4 text-slate-400 absolute left-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input 
+          id="searchBox" 
+          type="text" 
+          placeholder="Rechercher (ex: N+1, @Version, orphanRemoval, Cache L2)..." 
+          onkeyup="filterReportContent()"
+          class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+        />
+      </div>
+
+      <!-- Quick Jump Buttons -->
+      <div class="flex items-center gap-1.5 overflow-x-auto w-full custom-scrollbar pb-1 sm:pb-0 text-xs">
+        <span class="text-[11px] text-slate-500 uppercase font-mono px-2 shrink-0">Accès direct :</span>
+        
+          <a href="#tp1" class="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white shrink-0 font-mono text-[11px] transition-all">
+            TP 1
+          </a>
+        
+          <a href="#tp2" class="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white shrink-0 font-mono text-[11px] transition-all">
+            TP 2
+          </a>
+        
+          <a href="#tp3" class="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white shrink-0 font-mono text-[11px] transition-all">
+            TP 3
+          </a>
+        
+          <a href="#tp4" class="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white shrink-0 font-mono text-[11px] transition-all">
+            TP 4
+          </a>
+        
+          <a href="#tp5" class="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white shrink-0 font-mono text-[11px] transition-all">
+            TP 5
+          </a>
+        
+          <a href="#tp-revision" class="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white shrink-0 font-mono text-[11px] transition-all">
+            Lab Révision
+          </a>
+        
+          <a href="#tp6" class="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white shrink-0 font-mono text-[11px] transition-all">
+            TP 6
+          </a>
+        
+          <a href="#tp7" class="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white shrink-0 font-mono text-[11px] transition-all">
+            TP 7
+          </a>
+        
+          <a href="#tp-eval" class="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white shrink-0 font-mono text-[11px] transition-all">
+            Évaluation Finale
+          </a>
+        
+          <a href="#tp-capstone" class="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white shrink-0 font-mono text-[11px] transition-all">
+            TP Capstone
+          </a>
+        
+        <a href="#questions-pieges" class="px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-800 text-indigo-300 shrink-0 font-mono text-[11px]">
+          🎯 Top Pièges
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN REPORT BODY -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-12">
+
+    
+      <!-- ================= SECTION : TP 1 ================= -->
+      <section id="tp1" class="tp-card bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6 transition-all hover:border-slate-700">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                TP 1 • Fondations & Bootstrap
+              </span>
+              <a href="https://github.com/moadms/TP1-JPA-Hibernate" target="_blank" class="px-3 py-1 text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-full flex items-center gap-1.5 transition-all">
+                <span>📁 Repositoire : TP1-JPA-Hibernate</span>
+                <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Introduction à Maven, Hibernate & H2 In-Memory
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Architecture fondamentale, bootstrap JPA et gestion des transactions
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Problem Before vs Solution JPA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-rose-950/20 border border-rose-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-rose-400 font-bold font-mono">
+              <span>🛑</span> Le Problème Initial (Pourquoi ce TP existe) :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              En JDBC pur, le développeur devait écrire des requêtes SQL manuelles en concaténant des chaînes (risque d'injection SQL), mapper chaque colonne manuellement via ResultSet.getXXX(), gérer manuellement l'ouverture et la fermeture des connexions, et gérer les transactions au niveau de la connexion physique.
+            </p>
+          </div>
+
+          <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold font-mono">
+              <span>✅</span> La Solution & Innovation Apportée :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              JPA abstrait la base de données. On manipule des objets Java (POJOs). Hibernate génère le DDL (CREATE TABLE) et le DML (INSERT, SELECT) de manière transparente. H2 en mode mémoire (jdbc:h2:mem:...) permet d'exécuter des tests ultrarapides sans installer de serveur MySQL/PostgreSQL.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Ce qu'il faut absolument connaître (Concepts Clés) -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono flex items-center gap-2">
+            <span>🔬</span> Ce qu'il faut absolument connaître dans ce TP :
+          </h3>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">pom.xml & Dépendances Clés</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">hibernate-core (moteur d'exécution ORM), h2 (base embarquée en RAM), junit-jupiter (tests unitaires) et slf4j/logback (journalisation SQL).</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+  &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+  &lt;version&gt;5.6.5.Final&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+  &lt;artifactId&gt;h2&lt;/artifactId&gt;
+  &lt;version&gt;2.1.214&lt;/version&gt;
+  &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">META-INF/persistence.xml</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Définit la 'persistence-unit' (unité de persistance). En mode Java SE standalone, le transaction-type est impérativement RESOURCE_LOCAL. Les propriétés configurent le pilote H2, le mode hbm2ddl (update/create-drop) et l'affichage des requêtes SQL (show_sql, format_sql).</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>&lt;persistence-unit name="gestion-reservations" transaction-type="RESOURCE_LOCAL"&gt;
+  &lt;provider&gt;org.hibernate.jpa.HibernatePersistenceProvider&lt;/provider&gt;
+  &lt;properties&gt;
+    &lt;property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:reservations_db;DB_CLOSE_DELAY=-1"/&gt;
+    &lt;property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/&gt;
+    &lt;property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/&gt;
+    &lt;property name="hibernate.hbm2ddl.auto" value="update"/&gt;
+    &lt;property name="hibernate.show_sql" value="true"/&gt;
+    &lt;property name="hibernate.format_sql" value="true"/&gt;
+  &lt;/properties&gt;
+&lt;/persistence-unit&gt;</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">EntityManagerFactory vs EntityManager</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">EntityManagerFactory est un composant lourd (Singleton applicatif, thread-safe, coûteux à initialiser car analyse tout le métamodèle). L'EntityManager est un composant léger (non thread-safe, représente une session d'accès aux données, créé par requête ou par thread, et doit être fermé après usage).</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>// Singleton Pattern recommandé en Java SE
+public class HibernateUtil {
+  private static final EntityManagerFactory emf = 
+      Persistence.createEntityManagerFactory("gestion-reservations");
+  public static EntityManager getEntityManager() {
+    return emf.createEntityManager();
+  }
+  public static void close() {
+    emf.close();
+  }
+}</code></pre>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 3. CE QUE LE PROF VA VOUS QUESTIONNER (Les Questions Orales & Réponses 20/20) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-2">
+              <span>🎓</span> Ce que le Prof va vous demander (Questions orales pièges) :
+            </h3>
+            <span class="text-[11px] text-slate-500 font-mono">Cliquez pour révéler la réponse type</span>
+          </div>
+
+          <div class="space-y-3">
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 1 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Pourquoi l'EntityManagerFactory doit-il impérativement être un Singleton et jamais réinstancié dans un DAO ou une boucle ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Le prof veut vérifier si vous comprenez les coûts mémoire et CPU du bootstrap d'Hibernate par rapport au coût d'une connexion.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Monsieur, l'EntityManagerFactory est un objet lourd dont la création nécessite l'analyse du classpath, la lecture du persistence.xml, la compilation du métamodèle des entités, la validation des schémas et l'initialisation du pool de connexions. Ce processus prend entre 1 et 3 secondes et consomme plusieurs dizaines de mégaoctets de RAM. S'il est instancié à chaque appel de DAO, l'application subit une dégradation dramatique de performance et finit en OutOfMemoryError. En revanche, l'EntityManager est un objet léger, non thread-safe, conçu pour être créé et fermé fréquemment.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 2 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Que se passe-t-il si j'exécute 'em.persist(user)' sans ouvrir ni commiter de transaction en mode RESOURCE_LOCAL ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Le prof veut savoir si vous croyez que l'appel de persist() envoie immédiatement le INSERT en base.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      En mode RESOURCE_LOCAL, si em.persist() est appelé hors transaction, soit Hibernate lève une TransactionRequiredException (dans les versions strictes), soit l'entité est placée temporairement dans le contexte de persistance L1 mais aucun 'flush' SQL n'est jamais déclenché vers la base de données. À la fermeture de l'EntityManager, les données en mémoire sont perdues et rien n'est persisté en table. Toute opération d'écriture (persist, merge, remove) requiert impérativement un em.getTransaction().begin() et commit().
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 3 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Quelle est la différence fondamentale entre JPA et Hibernate ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Vérifier si vous confondez la spécification/norme et son implémentation concrète.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      JPA (Jakarta Persistence API) est une spécification officielle, c'est-à-dire un ensemble d'interfaces Java (EntityManager, EntityManagerFactory, EntityTransaction) et d'annotations (@Entity, @Table, @Id) définies par un standard. Hibernate est l'implémentation concrète (le framework ORM) qui implémente ces interfaces avec son moteur interne (Hibernate Core, Session, SessionFactory). On programme contre les interfaces JPA pour garantir la portabilité du code.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 4. Piège / Démonstration en Direct devant le Professeur -->
+        <div class="p-4 bg-amber-950/20 border border-amber-500/30 rounded-2xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+            <span>⚠️</span> Le Piège en Direct devant le Professeur (Démonstration Live) :
+          </div>
+          <div class="text-xs text-slate-200">
+            <strong>Action du prof :</strong> Le professeur peut vous demander de supprimer em.getTransaction().commit() et de lancer la classe Main ou le test.
+          </div>
+          <div class="text-xs text-amber-300">
+            <strong>Symptôme dans le code :</strong> Le programme s'exécute sans erreur apparente dans la console, mais le test de recherche assertNotNull(em.find(Utilisateur.class, id)) échoue !
+          </div>
+          <div class="text-xs text-slate-300">
+            <strong>Explication à donner instantanément :</strong> Expliquez immédiatement au prof : 'Monsieur, le persist() met l'entité à l'état MANAGED dans le cache de premier niveau L1, mais le flush SQL vers la base ne se produit qu'au moment du commit transactionnel. Sans commit(), la transaction n'est jamais finalisée.'
+          </div>
+        </div>
+
+        <!-- 5. Test JUnit 5 Clé de Validation -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+              <span>🧪</span> Assertion JUnit 5 indispensable pour prouver le fonctionnement :
+            </span>
+          </div>
+          <pre class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testPersistAndRollback() {
+    EntityManager em = emf.createEntityManager();
+    EntityTransaction tx = em.getTransaction();
+    tx.begin();
+    Utilisateur u = new Utilisateur("kaito", "kaito@academy.ma");
+    em.persist(u);
+    tx.commit();
+    assertNotNull(u.getId(), "L'identifiant généré doit être renseigné après commit");
+    em.close();
+}</code></pre>
+        </div>
+
+      </section>
+    
+      <!-- ================= SECTION : TP 2 ================= -->
+      <section id="tp2" class="tp-card bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6 transition-all hover:border-slate-700">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                TP 2 • Cycle de Vie & Mapping
+              </span>
+              <a href="https://github.com/moadms/TP2-JPA-Hibernate" target="_blank" class="px-3 py-1 text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-full flex items-center gap-1.5 transition-all">
+                <span>📁 Repositoire : TP2-JPA-Hibernate</span>
+                <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Entités JPA, Clés Primaires, Annotations & Cycle de Vie
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              États du Contexte de Persistance, Dirty Checking et génération d'identifiants
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Problem Before vs Solution JPA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-rose-950/20 border border-rose-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-rose-400 font-bold font-mono">
+              <span>🛑</span> Le Problème Initial (Pourquoi ce TP existe) :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Dans les anciens modèles, les clés primaires étaient gérées manuellement ou via des triggers complexes. De plus, modifier un objet obligeait à appeler explicitement une méthode update() ou une requête UPDATE SQL avec le risque d'oublier des colonnes ou de créer des désynchronisations d'états.
+            </p>
+          </div>
+
+          <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold font-mono">
+              <span>✅</span> La Solution & Innovation Apportée :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              JPA introduit le 'Contexte de Persistance' et le mécanisme de 'Dirty Checking' (vérification de salissure). Dès qu'un objet est MANAGED, Hibernate conserve un instantané (snapshot) de ses valeurs d'origine. Au commit de la transaction, Hibernate compare l'état courant avec le snapshot et génère automatiquement l'UPDATE SQL pour les champs modifiés, sans aucun appel explicite à une méthode d'update !
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Ce qu'il faut absolument connaître (Concepts Clés) -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono flex items-center gap-2">
+            <span>🔬</span> Ce qu'il faut absolument connaître dans ce TP :
+          </h3>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Les 4 Stratégies @GeneratedValue</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">IDENTITY (utilise auto-increment SQL, empêche le batch insert d'Hibernate car l'ID est connu seulement après l'INSERT), SEQUENCE (utilise une séquence DB, optimal pour le batching et les bases comme Oracle/PostgreSQL), TABLE (table dédiée de compteurs, portable mais lente), AUTO (choix automatique par le dialecte).</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Les 4 États du Cycle de Vie JPA</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">1. TRANSIENT / NEW : new Entite(), pas d'ID, inconnu d'Hibernate.
+2. MANAGED : em.persist() ou em.find(), rattaché au contexte de persistance L1, surveillé par le Dirty Checking.
+3. DETACHED : em.detach() ou après em.close(), possède un ID mais n'est plus surveillé.
+4. REMOVED : em.remove(), marqué pour suppression SQL au flush.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>Utilisateur u = new Utilisateur("Moad"); // TRANSIENT
+em.persist(u);                           // MANAGED
+em.detach(u);                            // DETACHED
+Utilisateur managed = em.merge(u);       // 'managed' est MANAGED, 'u' reste DETACHED !
+em.remove(managed);                      // REMOVED</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Le Piège de equals() et hashCode()</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Surcharger equals/hashCode uniquement sur l'ID généré est un piège majeur : avant le persist, id vaut null. Si l'objet est inséré dans un HashSet puis persisté, son hashCode change et l'objet devient introuvable dans le Set ! La bonne pratique est d'utiliser une 'Clé Métier' (Business Key stable, ex: email, codeSalle).</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@Override
+public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Utilisateur)) return false;
+    Utilisateur that = (Utilisateur) o;
+    return Objects.equals(email, that.email); // Clé métier stable
+}</code></pre>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 3. CE QUE LE PROF VA VOUS QUESTIONNER (Les Questions Orales & Réponses 20/20) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-2">
+              <span>🎓</span> Ce que le Prof va vous demander (Questions orales pièges) :
+            </h3>
+            <span class="text-[11px] text-slate-500 font-mono">Cliquez pour révéler la réponse type</span>
+          </div>
+
+          <div class="space-y-3">
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 1 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Qu'est-ce que le 'Dirty Checking' d'Hibernate et comment fonctionne-t-il sous le capot ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Le prof cherche à savoir si vous connaissez le mécanisme de snapshot mémoire d'Hibernate.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Monsieur, le Dirty Checking est le mécanisme automatique de détection des modifications d'Hibernate. Lorsqu'une entité entre dans le Contexte de Persistance (via find() ou persist()), Hibernate stocke en mémoire une copie miroir appelée 'snapshot'. Lors du flush (à la fin de la transaction), Hibernate compare chaque champ de l'entité active avec ce snapshot. Si une différence est détectée, Hibernate génère automatiquement la requête SQL UPDATE correspondante. C'est pourquoi il n'existe pas de méthode 'em.update()' en JPA.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 2 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Après l'appel 'em.merge(objetDetache)', quel objet est MANAGED : l'objet passé en paramètre ou la valeur de retour ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : C'est l'un des pièges les plus fréquents en soutenance et entretien technique !</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      C'est impérativement la valeur de retour de la méthode merge() qui devient MANAGED ! L'objet passé en paramètre reste à l'état DETACHED. Si on continue à modifier l'instance passée en paramètre sans réassigner 'u = em.merge(u)', ces nouvelles modifications ne seront jamais enregistrées en base.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 3 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Pourquoi GenerationType.IDENTITY empêche-t-il Hibernate de faire des insertions par lots (JDBC Batching) ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Question d'architecture de performance pour profil avancé.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Parce qu'avec la stratégie IDENTITY, l'identifiant n'est attribué par le moteur de base de données qu'au moment précis où la ligne est insérée physiquement. Hibernate doit donc exécuter l'INSERT immédiatement lors de l'appel em.persist() pour récupérer l'ID généré, brisant ainsi la mise en file d'attente nécessaire au batching. Avec GenerationType.SEQUENCE, Hibernate peut pré-allouer une plage d'IDs à l'avance et regrouper tous les INSERTs en un seul envoi JDBC.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 4. Piège / Démonstration en Direct devant le Professeur -->
+        <div class="p-4 bg-amber-950/20 border border-amber-500/30 rounded-2xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+            <span>⚠️</span> Le Piège en Direct devant le Professeur (Démonstration Live) :
+          </div>
+          <div class="text-xs text-slate-200">
+            <strong>Action du prof :</strong> Le professeur vous demande de faire un em.find(), puis setter une propriété (u.setNom('NouveauNom')), et de commiter SANS appeler em.merge() ni em.persist().
+          </div>
+          <div class="text-xs text-amber-300">
+            <strong>Symptôme dans le code :</strong> Dans la console SQL, vous voyez passer un UPDATE SQL !
+          </div>
+          <div class="text-xs text-slate-300">
+            <strong>Explication à donner instantanément :</strong> Montrez immédiatement au prof que c'est la preuve vivante du Dirty Checking : comme l'objet est MANAGED, toute modification de getter/setter est persistée au commit.
+          </div>
+        </div>
+
+        <!-- 5. Test JUnit 5 Clé de Validation -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+              <span>🧪</span> Assertion JUnit 5 indispensable pour prouver le fonctionnement :
+            </span>
+          </div>
+          <pre class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testDirtyCheckingAutomatique() {
+    EntityManager em = emf.createEntityManager();
+    em.getTransaction().begin();
+    Salle s = em.find(Salle.class, 1L);
+    s.setCapacite(50); // Aucune méthode JPA appelée
+    em.getTransaction().commit(); // Déclenche automatiquement l'UPDATE SQL
+    em.close();
+}</code></pre>
+        </div>
+
+      </section>
+    
+      <!-- ================= SECTION : TP 3 ================= -->
+      <section id="tp3" class="tp-card bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6 transition-all hover:border-slate-700">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                TP 3 • Associations & Cascades
+              </span>
+              <a href="https://github.com/moadms/TP3-JPA-Hibernate" target="_blank" class="px-3 py-1 text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-full flex items-center gap-1.5 transition-all">
+                <span>📁 Repositoire : TP3-JPA-Hibernate</span>
+                <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Associations Fondamentales & Relations Complexes
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              OneToMany, ManyToOne, ManyToMany, mappedBy et Suppression Orpheline
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Problem Before vs Solution JPA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-rose-950/20 border border-rose-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-rose-400 font-bold font-mono">
+              <span>🛑</span> Le Problème Initial (Pourquoi ce TP existe) :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              En base relationnelle, une relation OneToMany se traduit par une clé étrangère stockée dans la table fille (plusieurs). En Java, l'objet parent possède une List<Enfant>. Si on ne met à jour que la liste Java sans mettre à jour la clé étrangère sur l'objet enfant, Hibernate n'écrit rien en base de données !
+            </p>
+          </div>
+
+          <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold font-mono">
+              <span>✅</span> La Solution & Innovation Apportée :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Définition rigoureuse du propriétaire avec @JoinColumn et du côté inverse avec mappedBy. Création systématique de méthodes helpers synchronisées (addReservation/removeReservation) qui garantissent que les deux côtés de la relation en RAM sont toujours cohérents.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Ce qu'il faut absolument connaître (Concepts Clés) -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono flex items-center gap-2">
+            <span>🔬</span> Ce qu'il faut absolument connaître dans ce TP :
+          </h3>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Le Propriétaire de l'Association & mappedBy</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Le côté propriétaire est TOUJOURS celui qui porte la clé étrangère en base (généralement le @ManyToOne avec @JoinColumn). Le côté inverse porte mappedBy='nomDuChampChezLeProprietaire'. Pour Hibernate, mappedBy est une vue miroir en lecture seule. Seul le côté propriétaire déclenche les écritures SQL !</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>// Côté Inverse (Vue lecture seule pour Hibernate)
+@OneToMany(mappedBy = "salle", cascade = CascadeType.ALL, orphanRemoval = true)
+private List&lt;Reservation&gt; reservations = new ArrayList&lt;&gt;();
+
+// Côté Propriétaire (Porte la clé étrangère physique salle_id)
+@ManyToOne
+@JoinColumn(name = "salle_id", nullable = false)
+private Salle salle;</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Méthodes Helpers de Synchronisation</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Obligatoires pour maintenir la cohérence en mémoire Java des deux côtés de l'association bidirectionnelle.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>public void addReservation(Reservation r) {
+    reservations.add(r);
+    r.setSalle(this); // MAJ du côté propriétaire !
+}
+public void removeReservation(Reservation r) {
+    reservations.remove(r);
+    r.setSalle(null); // Détachement
+}</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">CascadeType.REMOVE vs orphanRemoval = true</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">CascadeType.REMOVE : Si le parent est supprimé (em.remove(parent)), tous ses enfants sont supprimés en cascade. orphanRemoval = true : Si un enfant est retiré de la collection Java du parent (parent.getEnfants().remove(e)), Hibernate génère un DELETE SQL pour supprimer physiquement cet enfant orphelin de la base !</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@OneToMany(mappedBy = "salle", cascade = CascadeType.ALL, orphanRemoval = true)
+private List&lt;Reservation&gt; reservations = new ArrayList&lt;&gt;();</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Piège Fatal : CascadeType.REMOVE sur @ManyToMany</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Ne JAMAIS mettre CascadeType.REMOVE sur une relation @ManyToMany (ex: Salle <-> Equipement). Sinon, en supprimant une Salle, vous supprimez physiquement les Projecteurs et Écrans partagés par d'autres salles !</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>// BONNE PRATIQUE @ManyToMany : AUCUN CascadeType.REMOVE !
+@ManyToMany
+@JoinTable(name = "salle_equipements",
+    joinColumns = @JoinColumn(name = "salle_id"),
+    inverseJoinColumns = @JoinColumn(name = "equipement_id"))
+private Set&lt;Equipement&gt; equipements = new HashSet&lt;&gt;();</code></pre>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 3. CE QUE LE PROF VA VOUS QUESTIONNER (Les Questions Orales & Réponses 20/20) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-2">
+              <span>🎓</span> Ce que le Prof va vous demander (Questions orales pièges) :
+            </h3>
+            <span class="text-[11px] text-slate-500 font-mono">Cliquez pour révéler la réponse type</span>
+          </div>
+
+          <div class="space-y-3">
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 1 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Si j'écris 'salle.getReservations().add(res)' sans appeler 'res.setSalle(salle)', qu'est-ce qui est écrit dans la table des réservations au commit ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Le prof teste si vous comprenez le rôle exact de mappedBy.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Monsieur, la colonne salle_id de la réservation restera NULL (ou lèvera une contrainte d'intégrité NOT NULL) et le lien ne sera pas créé en base ! La collection portée par la Salle a l'attribut mappedBy, ce qui signifie qu'elle est ignorée par Hibernate lors de la génération des requêtes INSERT/UPDATE SQL. Seul le côté propriétaire (Reservation.salle annoté @ManyToOne) est pris en compte pour renseigner la clé étrangère.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 2 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Expliquez la différence exacte entre 'CascadeType.REMOVE' et 'orphanRemoval = true'.</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Question classique d'évaluation pour différencier suppression de parent et déréférencement.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      CascadeType.REMOVE ne s'active QUE lorsque l'entité parente elle-même fait l'objet d'un em.remove(parent). Les enfants sont alors supprimés en chaîne. En revanche, orphanRemoval=true s'active lorsque l'enfant est simplement détaché de sa collection parente en mémoire (ex: salle.getReservations().remove(r)). Hibernate détecte cet orphelin déréférencé et exécute un DELETE SQL sur l'enfant, même si la salle parente continue d'exister.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 3 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Pourquoi doit-on privilégier l'usage de java.util.Set plutôt que java.util.List pour les relations @ManyToMany ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Question d'optimisation de requêtes SQL générées.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Avec une List, si on ajoute ou supprime un élément, Hibernate ne peut pas garantir l'unicité des paires sans vider entièrement la table de jointure pour la salle concernée (DELETE FROM salle_equipements WHERE salle_id = ?) puis réinsérer toutes les lignes une par une ! Avec un Set, Hibernate sait identifier précisément la ligne à supprimer ou à insérer, ce qui évite de réécrire toute la table de jointure.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 4. Piège / Démonstration en Direct devant le Professeur -->
+        <div class="p-4 bg-amber-950/20 border border-amber-500/30 rounded-2xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+            <span>⚠️</span> Le Piège en Direct devant le Professeur (Démonstration Live) :
+          </div>
+          <div class="text-xs text-slate-200">
+            <strong>Action du prof :</strong> Le prof vous demande de retirer une réservation de la liste avec salle.getReservations().remove(0) puis de vérifier si la réservation existe toujours via em.find().
+          </div>
+          <div class="text-xs text-amber-300">
+            <strong>Symptôme dans le code :</strong> Si orphanRemoval est à false, la ligne reste en table ! Si orphanRemoval est à true, un DELETE SQL est déclenché.
+          </div>
+          <div class="text-xs text-slate-300">
+            <strong>Explication à donner instantanément :</strong> Expliquez que c'est la démonstration de la suppression orpheline automatique.
+          </div>
+        </div>
+
+        <!-- 5. Test JUnit 5 Clé de Validation -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+              <span>🧪</span> Assertion JUnit 5 indispensable pour prouver le fonctionnement :
+            </span>
+          </div>
+          <pre class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testOrphanRemoval() {
+    EntityManager em = emf.createEntityManager();
+    em.getTransaction().begin();
+    Salle salle = em.find(Salle.class, 1L);
+    Reservation r = salle.getReservations().get(0);
+    Long resId = r.getId();
+    salle.removeReservation(r); // Retrait de la collection via helper
+    em.getTransaction().commit();
+    
+    // Vérification que l'orphelin est supprimé de la base
+    assertNull(em.find(Reservation.class, resId), "La réservation orpheline doit être détruite en base");
+    em.close();
+}</code></pre>
+        </div>
+
+      </section>
+    
+      <!-- ================= SECTION : TP 4 ================= -->
+      <section id="tp4" class="tp-card bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6 transition-all hover:border-slate-700">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                TP 4 • Héritage & Polymorphisme
+              </span>
+              <a href="https://github.com/moadms/TP4-Hibernate-Inheritance" target="_blank" class="px-3 py-1 text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-full flex items-center gap-1.5 transition-all">
+                <span>📁 Repositoire : TP4-Hibernate-Inheritance</span>
+                <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Héritage Objet-Relationnel avec Hibernate
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              SINGLE_TABLE, JOINED, TABLE_PER_CLASS et @MappedSuperclass
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Problem Before vs Solution JPA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-rose-950/20 border border-rose-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-rose-400 font-bold font-mono">
+              <span>🛑</span> Le Problème Initial (Pourquoi ce TP existe) :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Comment stocker des sous-classes ayant à la fois des attributs communs (nom, salaire) et des attributs spécifiques (langagePrincipal pour Developpeur, prime pour Manager) sans briser les contraintes de clés primaires ni ruiner les performances de lecture ?
+            </p>
+          </div>
+
+          <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold font-mono">
+              <span>✅</span> La Solution & Innovation Apportée :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              JPA propose l'annotation @Inheritance(strategy = InheritanceType....). Chaque stratégie offre un compromis différent entre normalisation relationnelle et vitesse d'exécution SQL.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Ce qu'il faut absolument connaître (Concepts Clés) -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono flex items-center gap-2">
+            <span>🔬</span> Ce qu'il faut absolument connaître dans ce TP :
+          </h3>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">1. SINGLE_TABLE (Stratégie par défaut)</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Une seule table physique regroupe toute la hiérarchie. Une colonne de discrimination (@DiscriminatorColumn) stocke le type ('DEV', 'MGR'). Avantage : 0 jointure, lecture ultra-rapide. Inconvénient : Les colonnes spécifiques des sous-classes doivent obligatoirement être NULLABLE (impossible de mettre NOT NULL).</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type_employe", discriminatorType = DiscriminatorType.STRING)
+public abstract class Employe { ... }
+
+@Entity
+@DiscriminatorValue("DEV")
+public class Developpeur extends Employe { ... }</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">2. JOINED (Héritage Normalisé)</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Une table pour la classe mère + une table pour chaque sous-classe. La table fille utilise sa clé primaire comme clé étrangère vers la table mère. Avantage : Schéma relationnel 3NF propre, contraintes NOT NULL possibles sur les champs spécifiques. Inconvénient : Requêtes polymorphiques nécessitent des JOIN coûteux.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Employe { ... }
+
+@Entity
+@Table(name = "developpeurs")
+public class Developpeur extends Employe { ... }</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">3. TABLE_PER_CLASS (Tables Indépendantes)</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Chaque classe concrète a sa propre table contenant tous les champs (hérités + spécifiques). Inconvénient majeur : Les requêtes polymorphiques ('FROM Employe') génèrent des requêtes UNION SQL très lentes.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Employe { ... }</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">4. @MappedSuperclass (Factorisation d'Attributs)</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">N'est PAS une entité. Aucune table n'est créée pour elle. Elle sert uniquement à factoriser des champs techniques communs (id, dateCreation, creePar) dans les classes filles. On ne peut pas faire de requête polymorphique dessus.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@MappedSuperclass
+public abstract class BaseEntity {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private LocalDateTime dateCreation = LocalDateTime.now();
+}</code></pre>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 3. CE QUE LE PROF VA VOUS QUESTIONNER (Les Questions Orales & Réponses 20/20) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-2">
+              <span>🎓</span> Ce que le Prof va vous demander (Questions orales pièges) :
+            </h3>
+            <span class="text-[11px] text-slate-500 font-mono">Cliquez pour révéler la réponse type</span>
+          </div>
+
+          <div class="space-y-3">
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 1 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Quelle stratégie d'héritage choisiriez-vous pour une application bancaire exigeant une intégrité stricte des données et des contraintes NOT NULL sur les champs spécifiques ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Le prof évalue votre capacité à faire un choix architectural justifié.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Monsieur, je choisirais la stratégie JOINED. Dans un contexte bancaire, la règle d'intégrité relationnelle et les contraintes NOT NULL sur les colonnes métier sont non négociables. SINGLE_TABLE nous obligerait à accepter des colonnes NULL sur les attributs spécifiques, ce qui compromet la rigueur du schéma. JOINED offre une normalisation parfaite en troisième forme normale (3NF).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 2 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Quelle requête SQL Hibernate génère-t-il lorsque j'exécute 'em.createQuery("FROM Employe", Employe.class).getResultList()' en stratégie JOINED ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Le prof veut voir si vous savez comment Hibernate reconstruit les objets polymorphiques.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Hibernate génère une requête avec des jointures externes : SELECT e.*, d.*, m.* FROM employes e LEFT OUTER JOIN developpeurs d ON e.id = d.id LEFT OUTER JOIN managers m ON e.id = m.id. Hibernate lit les résultats et instancie la classe concrète Developpeur ou Manager selon quelle jointure renvoie des données.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 3 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Pourquoi ne peut-on pas exécuter de requête JPQL 'SELECT b FROM BaseEntity b' si elle est annotée avec @MappedSuperclass ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Différencier une entité polymorphique d'une simple superclasse de factorisation.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Parce que @MappedSuperclass n'est pas une entité JPA reconnue dans le métamodèle relationnel. Il n'existe aucune table physique correspondante et aucun discriminateur en base. @MappedSuperclass est uniquement un mécanisme orienté objet Java au moment de la compilation pour hériter des champs, contrairement à @Entity avec @Inheritance qui enregistre la hiérarchie dans le moteur JPA.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 4. Piège / Démonstration en Direct devant le Professeur -->
+        <div class="p-4 bg-amber-950/20 border border-amber-500/30 rounded-2xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+            <span>⚠️</span> Le Piège en Direct devant le Professeur (Démonstration Live) :
+          </div>
+          <div class="text-xs text-slate-200">
+            <strong>Action du prof :</strong> Le professeur vous demande de lancer un test qui insère un Developpeur en stratégie JOINED et de regarder le nombre d'INSERTs dans la console SQL.
+          </div>
+          <div class="text-xs text-amber-300">
+            <strong>Symptôme dans le code :</strong> On observe 2 INSERTs SQL distincts : un dans la table 'employes' et un dans la table 'developpeurs'.
+          </div>
+          <div class="text-xs text-slate-300">
+            <strong>Explication à donner instantanément :</strong> Expliquez au prof : 'C'est la caractéristique de JOINED : l'ID généré dans la table mère est réutilisé comme clé primaire et étrangère dans la table fille.'
+          </div>
+        </div>
+
+        <!-- 5. Test JUnit 5 Clé de Validation -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+              <span>🧪</span> Assertion JUnit 5 indispensable pour prouver le fonctionnement :
+            </span>
+          </div>
+          <pre class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testPolymorphicQuery() {
+    EntityManager em = emf.createEntityManager();
+    List&lt;Employe&gt; tous = em.createQuery("SELECT e FROM Employe e", Employe.class).getResultList();
+    // Vérifie le polymorphisme
+    assertTrue(tous.stream().anyMatch(e -&gt; e instanceof Developpeur));
+    assertTrue(tous.stream().anyMatch(e -&gt; e instanceof Manager));
+    em.close();
+}</code></pre>
+        </div>
+
+      </section>
+    
+      <!-- ================= SECTION : TP 5 ================= -->
+      <section id="tp5" class="tp-card bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6 transition-all hover:border-slate-700">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                TP 5 • Requêtes & Performance
+              </span>
+              <a href="https://github.com/moadms/TP5-JPA-Advanced-Queries" target="_blank" class="px-3 py-1 text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-full flex items-center gap-1.5 transition-all">
+                <span>📁 Repositoire : TP5-JPA-Advanced-Queries</span>
+                <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Requêtes Avancées JPQL, Pagination & Criteria API
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Résolution du piège N+1, filtres dynamiques et optimisation des performances
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Problem Before vs Solution JPA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-rose-950/20 border border-rose-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-rose-400 font-bold font-mono">
+              <span>🛑</span> Le Problème Initial (Pourquoi ce TP existe) :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              En écrivant des requêtes SQL natives codées en dur, on perd la portabilité entre bases (H2, MySQL, Oracle). En paginant les résultats en mémoire Java (ex: list.subList(0, 10)), on charge des millions de lignes en RAM pour n'en afficher que 10, ce qui sature la mémoire du serveur.
+            </p>
+          </div>
+
+          <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold font-mono">
+              <span>✅</span> La Solution & Innovation Apportée :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              JPQL permet de manipuler les classes et propriétés Java en restant indépendant du dialecte SQL sous-jacent. L'API Criteria offre un typage strict (type-safe) évitant les erreurs de syntaxe à l'exécution. Les méthodes de pagination génèrent les clauses LIMIT / OFFSET SQL directement au niveau du serveur de base de données.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Ce qu'il faut absolument connaître (Concepts Clés) -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono flex items-center gap-2">
+            <span>🔬</span> Ce qu'il faut absolument connaître dans ce TP :
+          </h3>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">JPQL vs SQL & Paramètres Nommés</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">En JPQL, on écrit 'SELECT s FROM Salle s WHERE s.capacite >= :minCapacite'. On cible la classe Salle et sa propriété capacite, et non la table t_salle ni la colonne col_cap. On utilise setParameter() pour empêcher toute injection SQL.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>TypedQuery&lt;Salle&gt; query = em.createQuery(
+    "SELECT s FROM Salle s WHERE s.capacite &gt;= :cap ORDER BY s.nom ASC", 
+    Salle.class
+);
+query.setParameter("cap", 20);
+List&lt;Salle&gt; resultats = query.getResultList();</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Pagination Côté Base de Données</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">setFirstResult(offset) indique l'indice de départ (0, 10, 20...). setMaxResults(limit) indique le nombre maximum de lignes par page. Hibernate traduit cela en 'LIMIT ? OFFSET ?' sous PostgreSQL/H2 ou 'FETCH NEXT' sous Oracle.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>query.setFirstResult((pageNumero - 1) * taillePage); // Ex: (2 - 1) * 10 = 10
+query.setMaxResults(taillePage);                      // Ex: 10</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Le Sauveur : JOIN FETCH</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Un simple JOIN en JPQL filtre les données mais ne charge PAS la relation en mémoire (elle reste LAZY). Le JOIN FETCH force Hibernate à charger l'entité parente ET sa collection d'enfants en UNE SEULE requête SQL avec jointure, éliminant totalement le problème N+1.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>// Charge la Salle ET ses équipements en 1 seule requête SQL !
+String jpql = "SELECT DISTINCT s FROM Salle s JOIN FETCH s.equipements WHERE s.capacite &gt;= :cap";
+List&lt;Salle&gt; salles = em.createQuery(jpql, Salle.class)
+    .setParameter("cap", 15)
+    .getResultList();</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Criteria API pour Filtres Dynamiques</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Idéal lorsqu'un utilisateur remplit un formulaire de recherche avec des filtres optionnels (nom, capacité min, ville). On ajoute des Predicates conditionnels sans concaténer de chaînes de caractères.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>CriteriaBuilder cb = em.getCriteriaBuilder();
+CriteriaQuery&lt;Salle&gt; cq = cb.createQuery(Salle.class);
+Root&lt;Salle&gt; salle = cq.from(Salle.class);
+List&lt;Predicate&gt; predicates = new ArrayList&lt;&gt;();
+if (nomFiltre != null) {
+    predicates.add(cb.like(salle.get("nom"), "%" + nomFiltre + "%"));
+}
+cq.where(predicates.toArray(new Predicate[0]));</code></pre>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 3. CE QUE LE PROF VA VOUS QUESTIONNER (Les Questions Orales & Réponses 20/20) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-2">
+              <span>🎓</span> Ce que le Prof va vous demander (Questions orales pièges) :
+            </h3>
+            <span class="text-[11px] text-slate-500 font-mono">Cliquez pour révéler la réponse type</span>
+          </div>
+
+          <div class="space-y-3">
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 1 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Si ma table contient 100 000 lignes et que j'écris 'query.getResultList().subList(0, 10)', quel est le problème majeur de performance ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Le prof veut s'assurer que vous comprenez l'impact d'une pagination en mémoire vs pagination SQL.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      C'est une catastrophe de performance, Monsieur ! getResultList() va exécuter un 'SELECT *' sans clause LIMIT, transférer 100 000 lignes sur le réseau, allouer 100 000 objets Java en mémoire Heap, surcharger le Garbage Collector et risquer un OutOfMemoryError, tout cela pour n'afficher que 10 éléments. Avec query.setFirstResult(0).setMaxResults(10), Hibernate génère un LIMIT 10 au niveau du moteur SQL qui ne transfère et n'instancie que les 10 lignes requises.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 2 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Quelle est la différence fondamentale entre un 'JOIN' classique et un 'JOIN FETCH' en JPQL ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : C'est la question numéro 1 posée dans tous les examens et entretiens d'embauche JPA !</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Un 'JOIN' simple sert uniquement à poser des conditions de filtrage sur la table jointe dans la clause WHERE, mais il ne charge pas les objets associés dans le contexte de persistance (ils restent des proxies LAZY). Un 'JOIN FETCH' demande explicitement à Hibernate d'initialiser et de charger l'entité cible ET sa collection associée dans la même requête SQL. Cela évite qu'un accès ultérieur à la collection ne déclenche N requêtes supplémentaires.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 3 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Pourquoi préférer l'API Criteria à une requête JPQL sous forme de chaîne de caractères ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Comprendre les avantages de la sécurité au refactoring et du dynamisme.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Criteria API offre deux atouts majeurs : 1. La sécurité de typage (type-safe) : les erreurs de noms de propriétés ou de syntaxe sont détectées à la compilation plutôt qu'au runtime. 2. La construction de requêtes dynamiques : il est facile d'ajouter dynamiquement des Predicates (clauses AND/OR) dans une liste selon les champs renseignés par l'utilisateur sans faire de concaténation de chaînes 'WHERE 1=1 AND...' vulnérable.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 4. Piège / Démonstration en Direct devant le Professeur -->
+        <div class="p-4 bg-amber-950/20 border border-amber-500/30 rounded-2xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+            <span>⚠️</span> Le Piège en Direct devant le Professeur (Démonstration Live) :
+          </div>
+          <div class="text-xs text-slate-200">
+            <strong>Action du prof :</strong> Le professeur vous demande d'exécuter une boucle sur les salles pour afficher leurs équipements avec et sans JOIN FETCH.
+          </div>
+          <div class="text-xs text-amber-300">
+            <strong>Symptôme dans le code :</strong> Sans JOIN FETCH : vous voyez 1 requête puis 1 requête par salle (problème N+1). Avec JOIN FETCH : une seule requête SQL propre.
+          </div>
+          <div class="text-xs text-slate-300">
+            <strong>Explication à donner instantanément :</strong> Montrez la console SQL formatée au prof pour prouver que vous maîtrisez l'optimisation des requêtes.
+          </div>
+        </div>
+
+        <!-- 5. Test JUnit 5 Clé de Validation -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+              <span>🧪</span> Assertion JUnit 5 indispensable pour prouver le fonctionnement :
+            </span>
+          </div>
+          <pre class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testPaginationServeur() {
+    EntityManager em = emf.createEntityManager();
+    TypedQuery&lt;Salle&gt; q = em.createQuery("SELECT s FROM Salle s ORDER BY s.id", Salle.class);
+    q.setFirstResult(0);
+    q.setMaxResults(5);
+    List&lt;Salle&gt; page1 = q.getResultList();
+    assertEquals(5, page1.size(), "La page doit contenir au maximum 5 éléments");
+    em.close();
+}</code></pre>
+        </div>
+
+      </section>
+    
+      <!-- ================= SECTION : Lab Révision ================= -->
+      <section id="tp-revision" class="tp-card bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6 transition-all hover:border-slate-700">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                Lab Révision • Cas Réel d'Entreprise
+              </span>
+              <a href="https://github.com/moadms/Revision-Gestion-Commerciale-JPA" target="_blank" class="px-3 py-1 text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-full flex items-center gap-1.5 transition-all">
+                <span>📁 Repositoire : Revision-Gestion-Commerciale-JPA</span>
+                <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Gestion Commerciale Complète (E-Commerce)
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Modélisation financière, relations OneToOne, contraintes et tests stricts
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Problem Before vs Solution JPA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-rose-950/20 border border-rose-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-rose-400 font-bold font-mono">
+              <span>🛑</span> Le Problème Initial (Pourquoi ce TP existe) :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Dans beaucoup de projets étudiants, les développeurs utilisent 'double' ou 'float' pour les prix, ce qui entraîne des erreurs d'arrondi catastrophiques (ex: 0.1 + 0.2 = 0.30000000000000004) et des écarts de centimes dans les factures.
+            </p>
+          </div>
+
+          <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold font-mono">
+              <span>✅</span> La Solution & Innovation Apportée :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Utilisation obligatoire de BigDecimal avec @Column(precision = 10, scale = 2). Modélisation des relations parent-enfant avec cascade de persistance pour les lignes de commande, et vérification des contraintes d'intégrité par tests unitaires automatisés.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Ce qu'il faut absolument connaître (Concepts Clés) -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono flex items-center gap-2">
+            <span>🔬</span> Ce qu'il faut absolument connaître dans ce TP :
+          </h3>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">BigDecimal pour la Cohérence Financière</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Obligatoire en finance et e-commerce. BigDecimal garantit une précision décimale exacte sans les artefacts de la représentation binaire IEEE 754 des nombres à virgule flottante.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@Column(name = "prix_unitaire", precision = 10, scale = 2, nullable = false)
+private BigDecimal prixUnitaire;
+
+// Calculs avec méthodes immuables
+BigDecimal total = prixUnitaire.multiply(BigDecimal.valueOf(quantite));</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">@OneToOne Bidirectionnel (Commande <-> Facture)</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Une commande possède une seule facture. Le côté propriétaire (Facture) possède la clé étrangère commande_id avec contrainte unique (unique = true).</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>// Dans Commande (Côté Inverse)
+@OneToOne(mappedBy = "commande", cascade = CascadeType.ALL, orphanRemoval = true)
+private Facture facture;
+
+// Dans Facture (Côté Propriétaire)
+@OneToOne
+@JoinColumn(name = "commande_id", unique = true, nullable = false)
+private Commande commande;</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Harnais de Test JUnit 5 Réviseur</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Validation systématique : création, association, calcul des totaux, cascade de suppression et contraintes d'unicité.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testCalculTotalCommande() {
+    Commande c = new Commande();
+    c.addLigne(new LigneCommande(produitA, 2, new BigDecimal("15.50")));
+    c.addLigne(new LigneCommande(produitB, 1, new BigDecimal("10.00")));
+    assertEquals(new BigDecimal("41.00"), c.calculerMontantTotal());
+}</code></pre>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 3. CE QUE LE PROF VA VOUS QUESTIONNER (Les Questions Orales & Réponses 20/20) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-2">
+              <span>🎓</span> Ce que le Prof va vous demander (Questions orales pièges) :
+            </h3>
+            <span class="text-[11px] text-slate-500 font-mono">Cliquez pour révéler la réponse type</span>
+          </div>
+
+          <div class="space-y-3">
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 1 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Pourquoi est-il strictement interdit d'utiliser le type 'double' ou 'float' pour stocker un prix ou un montant dans une entité JPA ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Question fondamentale de culture informatique et de rigueur logicielle.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Monsieur, les types primitifs 'double' et 'float' utilisent la norme IEEE 754 de représentation en virgule flottante binaire. Ils ne peuvent pas représenter exactement certaines fractions décimales (par exemple 0.1 ou 0.7), ce qui provoque des pertes de précision et des centimes fantômes lors des additions ou multiplications de montants. Dans un contexte comptable ou bancaire, cela crée des écarts financiers inacceptables. On utilise obligatoirement java.math.BigDecimal avec une précision et une échelle fixées (@Column(precision=10, scale=2)).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 2 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Comment garantissez-vous qu'une Facture ne peut pas être associée à deux Commandes différentes au niveau du schéma de base ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Le prof vérifie votre maîtrise des contraintes SQL générées par JPA.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Dans l'entité Facture, sur l'annotation @JoinColumn(name = 'commande_id'), j'ajoute impérativement 'unique = true'. Ainsi, Hibernate génère une contrainte UNIQUE de clé étrangère sur la colonne commande_id dans la table des factures, garantissant qu'aucune duplication n'est possible, même en cas de bug applicatif.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 4. Piège / Démonstration en Direct devant le Professeur -->
+        <div class="p-4 bg-amber-950/20 border border-amber-500/30 rounded-2xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+            <span>⚠️</span> Le Piège en Direct devant le Professeur (Démonstration Live) :
+          </div>
+          <div class="text-xs text-slate-200">
+            <strong>Action du prof :</strong> Le professeur demande de tenter de persister une Commande avec un total négatif ou de vérifier le comportement de la cascade.
+          </div>
+          <div class="text-xs text-amber-300">
+            <strong>Symptôme dans le code :</strong> Montrez vos assertions JUnit qui interceptent les validations et confirment le calcul exact des totaux.
+          </div>
+          <div class="text-xs text-slate-300">
+            <strong>Explication à donner instantanément :</strong> Prouvez la rigueur de vos validations métier avant même l'appel à em.persist().
+          </div>
+        </div>
+
+        <!-- 5. Test JUnit 5 Clé de Validation -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+              <span>🧪</span> Assertion JUnit 5 indispensable pour prouver le fonctionnement :
+            </span>
+          </div>
+          <pre class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testCascadeCommandeLignes() {
+    EntityManager em = emf.createEntityManager();
+    em.getTransaction().begin();
+    Commande c = new Commande();
+    c.addLigne(new LigneCommande(produit, 3, new BigDecimal("10.00")));
+    em.persist(c); // CascadeType.ALL doit persister aussi la ligne !
+    em.getTransaction().commit();
+    assertNotNull(c.getLignes().get(0).getId());
+    em.close();
+}</code></pre>
+        </div>
+
+      </section>
+    
+      <!-- ================= SECTION : TP 6 ================= -->
+      <section id="tp6" class="tp-card bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6 transition-all hover:border-slate-700">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                TP 6 • Concurrence & @Version
+              </span>
+              <a href="https://github.com/moadms/TP6-Optimistic-Locking-Version" target="_blank" class="px-3 py-1 text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-full flex items-center gap-1.5 transition-all">
+                <span>📁 Repositoire : TP6-Optimistic-Locking-Version</span>
+                <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Concurrence, Conflits d'Accès & Verrouillage Optimiste (@Version)
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Prévention des 'Lost Updates' et intégrité transactionnelle multi-utilisateurs
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Problem Before vs Solution JPA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-rose-950/20 border border-rose-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-rose-400 font-bold font-mono">
+              <span>🛑</span> Le Problème Initial (Pourquoi ce TP existe) :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Deux utilisateurs A et B lisent la même réservation (ex: Statut 'EN_ATTENTE'). A modifie le statut en 'CONFIRMÉE' et commit. Une seconde plus tard, B (qui avait lu l'ancien statut) modifie le statut en 'ANNULÉE' et commit. La modification de A est écrasée sans qu'aucun message d'alerte ne soit émis : c'est le 'Lost Update' (Mise à jour perdue).
+            </p>
+          </div>
+
+          <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold font-mono">
+              <span>✅</span> La Solution & Innovation Apportée :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Ajout d'une colonne de version (@Version private int version;). À chaque mise à jour, Hibernate incrémente automatiquement cette valeur et vérifie dans la clause WHERE que la version n'a pas changé. Si un conflit survient, Hibernate jette une OptimisticLockException.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Ce qu'il faut absolument connaître (Concepts Clés) -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono flex items-center gap-2">
+            <span>🔬</span> Ce qu'il faut absolument connaître dans ce TP :
+          </h3>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">L'Annotation @Version</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">S'applique sur un champ de type int, Integer, long, Long ou Timestamp. Hibernate gère ce champ de manière totalement autonome.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@Entity
+public class Salle {
+    @Id @GeneratedValue
+    private Long id;
+    private String nom;
+    
+    @Version
+    private int version; // Géré automatiquement par Hibernate
+}</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">La Requête SQL Générée par le Verrou Optimiste</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Lors du commit d'une entité modifiée, Hibernate génère l'UPDATE avec un test strict sur la version : UPDATE salle SET nom = ?, version = version + 1 WHERE id = ? AND version = ?. Si 0 ligne est modifiée (car un autre utilisateur a déjà incrémenté la version), Hibernate déclenche OptimisticLockException !</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>// Requête SQL générée en coulisse :
+UPDATE salle 
+SET nom = 'Salle Al-Khwarizmi', version = 2 
+WHERE id = 1 AND version = 1;</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Verrouillage Optimiste vs Pessimiste</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Optimiste (@Version) : Ne pose aucun verrou physique en base de données. Idéal pour les systèmes à fort trafic web où les conflits sont rares. Économise les ressources. Pessimiste (PESSIMISTIC_WRITE) : Exécute un 'SELECT ... FOR UPDATE' qui bloque physiquement la ligne au niveau de la base tant que la transaction est ouverte. À réserver aux opérations critiques (débit bancaire, places de concert limitées).</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>// Verrouillage Pessimiste explicite :
+Salle s = em.find(Salle.class, 1L, LockModeType.PESSIMISTIC_WRITE);</code></pre>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 3. CE QUE LE PROF VA VOUS QUESTIONNER (Les Questions Orales & Réponses 20/20) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-2">
+              <span>🎓</span> Ce que le Prof va vous demander (Questions orales pièges) :
+            </h3>
+            <span class="text-[11px] text-slate-500 font-mono">Cliquez pour révéler la réponse type</span>
+          </div>
+
+          <div class="space-y-3">
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 1 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">À quel moment précis l'exception OptimisticLockException est-elle levée : lors du setter, de em.persist(), ou de em.getTransaction().commit() ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Vérifier si vous comprenez le timing d'exécution des requêtes SQL d'Hibernate.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Monsieur, elle est levée au moment exact du flush SQL, c'est-à-dire lors de l'appel à em.getTransaction().commit() (ou em.flush()). Tant que la transaction n'est pas commitée, Hibernate n'a pas encore exécuté la requête UPDATE en base de données. C'est en constatant que l'UPDATE a retourné 0 ligne affectée (car le numéro de version en base avait déjà changé) qu'Hibernate lance l'OptimisticLockException.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 2 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Que doit faire l'application logicielle lorsqu'elle intercepte une OptimisticLockException ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Question d'architecture de production.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Elle ne doit jamais laisser l'application crasher ! La bonne pratique consiste à : 1. Effectuer un rollback de la transaction courante. 2. Avertir l'utilisateur avec un message clair : 'Cette ressource a été modifiée par un autre utilisateur entre-temps'. 3. Recharger la donnée fraîche depuis la base pour proposer à l'utilisateur de réappliquer ses modifications ou d'annuler son action.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 3 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Pourquoi le verrouillage optimiste est-il généralement supérieur au verrouillage pessimiste sur une application web à forte audience ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Comprendre les limites du verrou physique et des deadlocks en base.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Le verrouillage pessimiste pose des verrous exclusifs (locks) sur les lignes de la base de données. Si un utilisateur met du temps à valider ou si la connexion réseau est lente, les autres utilisateurs restent bloqués en attente, ce qui peut saturer le pool de connexions et provoquer des 'deadlocks' (interblocages). Le verrouillage optimiste ne bloque personne : chacun lit librement, et la validation n'a lieu qu'au moment de l'écriture.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 4. Piège / Démonstration en Direct devant le Professeur -->
+        <div class="p-4 bg-amber-950/20 border border-amber-500/30 rounded-2xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+            <span>⚠️</span> Le Piège en Direct devant le Professeur (Démonstration Live) :
+          </div>
+          <div class="text-xs text-slate-200">
+            <strong>Action du prof :</strong> Le prof peut vous demander de simuler un conflit concurrent en ouvrant 2 EntityManagers dans le même test unitaire et en modifiant la même entité.
+          </div>
+          <div class="text-xs text-amber-300">
+            <strong>Symptôme dans le code :</strong> Le premier commit passe avec succès (version passe de 0 à 1). Le second commit échoue immédiatement avec OptimisticLockException.
+          </div>
+          <div class="text-xs text-slate-300">
+            <strong>Explication à donner instantanément :</strong> C'est la démonstration technique absolue de la gestion de concurrence.
+          </div>
+        </div>
+
+        <!-- 5. Test JUnit 5 Clé de Validation -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+              <span>🧪</span> Assertion JUnit 5 indispensable pour prouver le fonctionnement :
+            </span>
+          </div>
+          <pre class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testSimulationConcurrenceOptimiste() {
+    EntityManager em1 = emf.createEntityManager();
+    EntityManager em2 = emf.createEntityManager();
+    
+    // Les deux sessions lisent la même salle (version = 0)
+    Salle s1 = em1.find(Salle.class, 1L);
+    Salle s2 = em2.find(Salle.class, 1L);
+    
+    // Session 1 modifie et commit -&gt; version passe à 1
+    em1.getTransaction().begin();
+    s1.setNom("Salle Einstein");
+    em1.getTransaction().commit();
+    em1.close();
+    
+    // Session 2 tente de modifier l'ancienne version 0
+    em2.getTransaction().begin();
+    s2.setNom("Salle Newton");
+    assertThrows(OptimisticLockException.class, () -&gt; {
+        em2.getTransaction().commit(); // Doit exploser !
+    });
+    em2.close();
+}</code></pre>
+        </div>
+
+      </section>
+    
+      <!-- ================= SECTION : TP 7 ================= -->
+      <section id="tp7" class="tp-card bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6 transition-all hover:border-slate-700">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                TP 7 • Caches & Haute Performance
+              </span>
+              <a href="https://github.com/moadms/TP7-Second-Level-Cache-N1-Problem" target="_blank" class="px-3 py-1 text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-full flex items-center gap-1.5 transition-all">
+                <span>📁 Repositoire : TP7-Second-Level-Cache-N1-Problem</span>
+                <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Cache de Second Niveau (L2) & Le Piège N+1
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Ehcache, mise en cache des requêtes, L1 vs L2 et EntityGraph
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Problem Before vs Solution JPA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-rose-950/20 border border-rose-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-rose-400 font-bold font-mono">
+              <span>🛑</span> Le Problème Initial (Pourquoi ce TP existe) :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Sans cache L2, si 1000 utilisateurs consultent la liste des salles de réunion, Hibernate exécute 1000 fois les mêmes requêtes SQL vers la base, gaspillant du CPU et de la bande passante réseau. De plus, charger des associations en LAZY hors transaction déclenche l'exception classique LazyInitializationException.
+            </p>
+          </div>
+
+          <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold font-mono">
+              <span>✅</span> La Solution & Innovation Apportée :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Configuration du cache L2 avec Ehcache (hibernate.cache.use_second_level_cache=true), annotation @Cacheable sur les entités de référence peu modifiées, et utilisation de JOIN FETCH ou @EntityGraph pour initialiser les graphes d'objets.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Ce qu'il faut absolument connaître (Concepts Clés) -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono flex items-center gap-2">
+            <span>🔬</span> Ce qu'il faut absolument connaître dans ce TP :
+          </h3>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Architecture L1 Cache vs L2 Cache</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Cache L1 : Lié à UN SEUL EntityManager. Durée de vie = la transaction. Non partagé, non désactivable. Cache L2 : Lié à l'EntityManagerFactory (toute l'application). Partagé entre tous les threads et sessions. Survit à la fermeture des EntityManagers.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>&lt;!-- Configuration dans persistence.xml --&gt;
+&lt;property name="hibernate.cache.use_second_level_cache" value="true"/&gt;
+&lt;property name="hibernate.cache.region.factory_class" 
+          value="org.hibernate.cache.jcache.JCacheRegionFactory"/&gt;
+&lt;property name="javax.persistence.sharedCache.mode" value="ENABLE_SELECTIVE"/&gt;</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Activer le Cache sur une Entité</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">On utilise @Cacheable (standard JPA) et @Cache (spécifique Hibernate pour définir la stratégie de concurrence, ex: READ_WRITE ou READ_ONLY).</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>@Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Salle {
+    @Id @GeneratedValue
+    private Long id;
+    private String nom;
+}</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">L'Exception Mythique : LazyInitializationException</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Survient lorsqu'on tente d'accéder à une collection ou association annotée FetchType.LAZY alors que l'EntityManager qui a chargé l'entité parente a déjà été FERMÉ (em.close()). Le proxy Hibernate ne peut plus contacter la base !</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>// Erreur typique :
+EntityManager em = emf.createEntityManager();
+Salle s = em.find(Salle.class, 1L);
+em.close(); // Fermeture de la session !
+System.out.println(s.getEquipements().size()); // BOOM : LazyInitializationException !</code></pre>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 3. CE QUE LE PROF VA VOUS QUESTIONNER (Les Questions Orales & Réponses 20/20) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-2">
+              <span>🎓</span> Ce que le Prof va vous demander (Questions orales pièges) :
+            </h3>
+            <span class="text-[11px] text-slate-500 font-mono">Cliquez pour révéler la réponse type</span>
+          </div>
+
+          <div class="space-y-3">
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 1 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Qu'est-ce qui cause exactement une 'LazyInitializationException' et comment la résoudre PROPREMENT sans passer FetchType.EAGER ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Le prof veut s'assurer que vous ne répondez pas 'Je mets EAGER partout' (anti-pattern grave).</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Monsieur, cette exception survient lorsqu'on tente d'accéder à une propriété LAZY d'un objet qui est devenu DETACHED (son EntityManager d'origine a été fermé). Comme la collection n'a pas été chargée en amont, le proxy Hibernate tente d'ouvrir une connexion pour charger les données, mais ne trouve aucune session active. La solution PROPRE consiste à utiliser un 'JOIN FETCH' dans la requête JPQL pour charger immédiatement la collection dont on aura besoin avant de fermer la session, ou d'utiliser un @EntityGraph dynamique. Il ne faut JAMAIS mettre FetchType.EAGER sur les collections car cela dégrade les performances globales de l'application.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 2 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Comment pouvez-vous prouver au niveau du code qu'une entité a été lue depuis le Cache L2 plutôt que depuis la base de données ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Prouver la maîtrise des outils de diagnostic et de monitoring d'Hibernate.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Deux preuves indiscutables : 1. En activant 'hibernate.show_sql=true', lors du second em.find() dans un nouvel EntityManager, aucune requête SQL SELECT n'apparaît dans la console. 2. En consultant les statistiques Hibernate via emf.unwrap(SessionFactory.class).getStatistics(), on vérifie que le compteur 'getSecondLevelCacheHitCount()' a augmenté de 1 et que 'getPrepareStatementCount()' n'a pas bougé.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 3 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Pourquoi le cache de requêtes (Query Cache) ne doit-il être utilisé qu'avec précaution ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Question d'ingénierie avancée.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Le Query Cache ne stocke pas les entités complètes, mais uniquement les IDs des résultats correspondant à une requête donnée. Dès qu'une seule entité de la table ciblée est modifiée, insérée ou supprimée, Hibernate doit invalider TOUT l'espace de cache de requêtes associé pour éviter de servir des résultats périmés. Il n'est performant que pour des requêtes fréquentes exécutées sur des tables très rarement modifiées (ex: tables de référence, pays, devises).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 4. Piège / Démonstration en Direct devant le Professeur -->
+        <div class="p-4 bg-amber-950/20 border border-amber-500/30 rounded-2xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+            <span>⚠️</span> Le Piège en Direct devant le Professeur (Démonstration Live) :
+          </div>
+          <div class="text-xs text-slate-200">
+            <strong>Action du prof :</strong> Le professeur vous demande d'exécuter 2 fois em.find() sur la même entité dans DEUX EntityManagers différents.
+          </div>
+          <div class="text-xs text-amber-300">
+            <strong>Symptôme dans le code :</strong> Si le cache L2 est désactivé : 2 requêtes SELECT dans la console. Si le cache L2 est activé : UNE SEULE requête SELECT !
+          </div>
+          <div class="text-xs text-slate-300">
+            <strong>Explication à donner instantanément :</strong> Montrez au prof que le deuxième em.find() a tapé directement dans le cache partagé sans accès base.
+          </div>
+        </div>
+
+        <!-- 5. Test JUnit 5 Clé de Validation -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+              <span>🧪</span> Assertion JUnit 5 indispensable pour prouver le fonctionnement :
+            </span>
+          </div>
+          <pre class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testCacheSecondNiveauHit() {
+    // Premier EntityManager : lit depuis la base (Cache Miss -&gt; DB)
+    EntityManager em1 = emf.createEntityManager();
+    Salle s1 = em1.find(Salle.class, 1L);
+    em1.close();
+    
+    // Deuxième EntityManager : lit depuis le Cache L2 (0 requête SQL !)
+    EntityManager em2 = emf.createEntityManager();
+    Salle s2 = em2.find(Salle.class, 1L);
+    assertNotNull(s2);
+    em2.close();
+}</code></pre>
+        </div>
+
+      </section>
+    
+      <!-- ================= SECTION : Évaluation Finale ================= -->
+      <section id="tp-eval" class="tp-card bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6 transition-all hover:border-slate-700">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                Évaluation Finale • Évaluation Transverse
+              </span>
+              <a href="https://github.com/moadms/Evaluation-JPA-Hibernate" target="_blank" class="px-3 py-1 text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-full flex items-center gap-1.5 transition-all">
+                <span>📁 Repositoire : Evaluation-JPA-Hibernate</span>
+                <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Architecture Multi-Domaines & Modélisation Complexe
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Stock, Projets & État Civil : Modélisation transverse de 3 univers métiers
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Problem Before vs Solution JPA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-rose-950/20 border border-rose-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-rose-400 font-bold font-mono">
+              <span>🛑</span> Le Problème Initial (Pourquoi ce TP existe) :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Dans les projets volumineux, mélanger les domaines sans frontières claires produit un code spaghetti, des cascades incontrôlées qui effacent des tables entières par accident, et des blocages de transactions entre modules.
+            </p>
+          </div>
+
+          <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold font-mono">
+              <span>✅</span> La Solution & Innovation Apportée :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Découpage rigoureux en packages modulaires, utilisation d'identifiants techniques stables, gestion propre des cycles de vie et séparation étanche des contextes métier (Bounded Contexts proches du Domain-Driven Design).
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Ce qu'il faut absolument connaître (Concepts Clés) -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono flex items-center gap-2">
+            <span>🔬</span> Ce qu'il faut absolument connaître dans ce TP :
+          </h3>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Modélisation Multi-Domaines Découplée</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Séparation des entités de stock (Article, Entrepot, MouvementStock), de gestion de projet (Projet, Tache, Collaborateur) et d'état civil (Citoyen, Registre, Acte).</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>// Package com.academy.stock
+@Entity
+public class Article { ... }
+
+// Package com.academy.projet
+@Entity
+public class Projet { ... }</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Contraintes d'Intégrité Inter-Domaines</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Ne jamais mettre de CascadeType.REMOVE entre deux domaines métier indépendants pour éviter la suppression accidentelle de données d'un autre module.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>// Référencement sans cascade destructrice
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "responsable_citoyen_id")
+private Citoyen responsable;</code></pre>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 3. CE QUE LE PROF VA VOUS QUESTIONNER (Les Questions Orales & Réponses 20/20) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-2">
+              <span>🎓</span> Ce que le Prof va vous demander (Questions orales pièges) :
+            </h3>
+            <span class="text-[11px] text-slate-500 font-mono">Cliquez pour révéler la réponse type</span>
+          </div>
+
+          <div class="space-y-3">
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 1 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Comment structurez-vous vos packages pour éviter les dépendances circulaires entre plusieurs domaines métiers ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Le prof évalue vos compétences en architecture logicielle.</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Monsieur, chaque domaine métier dispose de son propre package étanche (ex: stock, projet, civil). Les entités d'un domaine ne doivent référencer des entités d'un autre domaine qu'en lecture seule (ManyToOne sans cascade de suppression). Si une interaction complexe est nécessaire, elle est gérée au niveau de la couche Service d'orchestration et non par des cascades automatiques au niveau des entités JPA.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 4. Piège / Démonstration en Direct devant le Professeur -->
+        <div class="p-4 bg-amber-950/20 border border-amber-500/30 rounded-2xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+            <span>⚠️</span> Le Piège en Direct devant le Professeur (Démonstration Live) :
+          </div>
+          <div class="text-xs text-slate-200">
+            <strong>Action du prof :</strong> Le professeur vous demande de lancer la suite complète de tests de l'évaluation.
+          </div>
+          <div class="text-xs text-amber-300">
+            <strong>Symptôme dans le code :</strong> Tous les tests JUnit 5 doivent être verts (Green Bar).
+          </div>
+          <div class="text-xs text-slate-300">
+            <strong>Explication à donner instantanément :</strong> Mettez en avant le temps d'exécution rapide grâce à la base H2 en mémoire et l'isolation transactionnelle de chaque méthode de test.
+          </div>
+        </div>
+
+        <!-- 5. Test JUnit 5 Clé de Validation -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+              <span>🧪</span> Assertion JUnit 5 indispensable pour prouver le fonctionnement :
+            </span>
+          </div>
+          <pre class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testMultiDomainIntegration() {
+    EntityManager em = emf.createEntityManager();
+    em.getTransaction().begin();
+    Article art = new Article("Serveur Dell", 10);
+    em.persist(art);
+    em.getTransaction().commit();
+    assertNotNull(art.getId());
+    em.close();
+}</code></pre>
+        </div>
+
+      </section>
+    
+      <!-- ================= SECTION : TP Capstone ================= -->
+      <section id="tp-capstone" class="tp-card bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-6 transition-all hover:border-slate-700">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                TP Capstone • Projet Capstone Final
+              </span>
+              <a href="https://github.com/moadms/TP-Capstone-Reservation-Salles" target="_blank" class="px-3 py-1 text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-full flex items-center gap-1.5 transition-all">
+                <span>📁 Repositoire : TP-Capstone-Reservation-Salles</span>
+                <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              Application Réservation Complète (Architecture Enterprise)
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Architecture Hexagonale/Clean, Services, Détection de Conflits & Tests End-to-End
+            </p>
+          </div>
+        </div>
+
+        <!-- 1. Problem Before vs Solution JPA -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-rose-950/20 border border-rose-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-rose-400 font-bold font-mono">
+              <span>🛑</span> Le Problème Initial (Pourquoi ce TP existe) :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Dans un projet non structuré, la logique métier de vérification (ex: 'la salle est-elle déjà occupée à cette heure ?') est mélangée avec le code SQL ou dans l'interface graphique, rendant le système impossible à tester et bourré de bugs de concurrence.
+            </p>
+          </div>
+
+          <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-2xl space-y-1.5">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold font-mono">
+              <span>✅</span> La Solution & Innovation Apportée :
+            </div>
+            <p class="text-slate-300 leading-relaxed">
+              Architecture en couches (Clean Architecture) : 1. Couche Domaine (Entités JPA pures). 2. Couche DAO/Repository (opérations CRUD et requêtes JPQL). 3. Couche Service (règles métier, validation des créneaux, démarcation transactionnelle). 4. Tests d'intégration automatisés.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Ce qu'il faut absolument connaître (Concepts Clés) -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-300 font-mono flex items-center gap-2">
+            <span>🔬</span> Ce qu'il faut absolument connaître dans ce TP :
+          </h3>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Algorithme Mathématique Anti-Chevauchement de Créneaux</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">Deux créneaux [debutA, finA] et [debutB, finB] se chevauchent si et seulement si : debutA < finB ET finA > debutB. Cette condition est traduite directement en requête JPQL ultra-performante.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>String jpql = "SELECT COUNT(r) FROM Reservation r " +
+              "WHERE r.salle.id = :salleId " +
+              "AND r.dateDebut &lt; :fin " +
+              "AND r.dateFin &gt; :debut";
+Long conflits = em.createQuery(jpql, Long.class)
+    .setParameter("salleId", salleId)
+    .setParameter("debut", nouveauDebut)
+    .setParameter("fin", nouveauFin)
+    .getSingleResult();
+if (conflits &gt; 0) {
+    throw new ReservationConflictException("La salle est déjà réservée sur ce créneau !");
+}</code></pre>
+              </div>
+            
+              <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2.5 flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Service Pattern & Démarcation Transactionnelle</h4>
+                  <p class="text-[11px] text-slate-400 leading-relaxed mt-1">La couche Service isole le code métier de la persistance. C'est elle qui gère les transactions et garantit la cohérence ACID.</p>
+                </div>
+                <pre class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-[10px] font-mono text-cyan-300 overflow-x-auto custom-scrollbar"><code>public class ReservationService {
+    public Reservation reserverSalle(Long salleId, Long userId, LocalDateTime debut, LocalDateTime fin) {
+        EntityManager em = HibernateUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            // 1. Vérification conflit horaire
+            verifierDisponibilite(em, salleId, debut, fin);
+            // 2. Création et association
+            Salle salle = em.find(Salle.class, salleId);
+            Utilisateur user = em.find(Utilisateur.class, userId);
+            Reservation res = new Reservation(salle, user, debut, fin);
+            em.persist(res);
+            tx.commit();
+            return res;
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+}</code></pre>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 3. CE QUE LE PROF VA VOUS QUESTIONNER (Les Questions Orales & Réponses 20/20) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-2">
+              <span>🎓</span> Ce que le Prof va vous demander (Questions orales pièges) :
+            </h3>
+            <span class="text-[11px] text-slate-500 font-mono">Cliquez pour révéler la réponse type</span>
+          </div>
+
+          <div class="space-y-3">
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 1 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Comment prouvez-vous mathématiquement et en JPQL que deux réservations ne peuvent jamais se chevaucher sur la même salle ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : C'est la question centrale de la soutenance Capstone !</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Monsieur, la condition mathématique nécessaire et suffisante de chevauchement entre deux intervalles [debut1, fin1] et [debut2, fin2] est : (debut1 < fin2) ET (fin1 > debut2). En JPQL, avant de valider une réservation, nous exécutons : SELECT COUNT(r) FROM Reservation r WHERE r.salle = :salle AND r.dateDebut < :nouvelleFin AND r.dateFin > :nouveauDebut. Si ce compte est supérieur à 0, nous refusons immédiatement la réservation en jetant une ReservationConflictException métier personnalisée. Cela couvre tous les cas : inclusion, débordement à gauche, débordement à droite et égalité exacte.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="accordion-item border border-slate-800 bg-slate-950/60 rounded-2xl overflow-hidden">
+                <button onclick="toggleAccordion(this)" class="w-full text-left p-4 flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-900/60 transition-colors">
+                  <div class="space-y-1">
+                    <div class="text-xs font-mono font-bold text-amber-400">Question 2 du Professeur :</div>
+                    <div class="text-sm font-bold text-slate-100">Pourquoi avoir séparé la couche DAO de la couche Service au lieu de tout mettre dans la même classe ?</div>
+                    <div class="text-[11px] text-slate-400 italic">🎯 Ce que le prof cherche à tester : Vérifier la maîtrise du principe de responsabilité unique (SRP des principes SOLID).</div>
+                  </div>
+                  <span class="accordion-chevron text-slate-400 font-mono text-sm shrink-0 mt-1">▼</span>
+                </button>
+                <div class="accordion-content hidden px-4 pb-4 pt-1 border-t border-slate-800/60 bg-slate-900/40">
+                  <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-1.5 mt-2">
+                    <div class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <span>👑</span> Réponse Parfaite de l'Ingénieur (Format Oral 20/20) :
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-sans">
+                      Le DAO n'a qu'une seule et unique responsabilité : exécuter les requêtes techniques vers la base de données (CRUD, requêtes JPQL). La couche Service orchestre les règles métier (vérifier que l'utilisateur est actif, que la salle est disponible, envoyer un email de notification) et délimite la frontière transactionnelle. Si demain nous changeons de système de persistance ou de framework (ex: passage à Spring Data JPA), la logique métier du Service reste intacte et les tests unitaires métier continuent de fonctionner.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        <!-- 4. Piège / Démonstration en Direct devant le Professeur -->
+        <div class="p-4 bg-amber-950/20 border border-amber-500/30 rounded-2xl space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs font-mono">
+            <span>⚠️</span> Le Piège en Direct devant le Professeur (Démonstration Live) :
+          </div>
+          <div class="text-xs text-slate-200">
+            <strong>Action du prof :</strong> Le professeur vous demande de tenter d'enregistrer deux réservations sur la même salle avec 1 minute de chevauchement.
+          </div>
+          <div class="text-xs text-amber-300">
+            <strong>Symptôme dans le code :</strong> Votre test doit intercepter l'exception ReservationConflictException et confirmer le rollback.
+          </div>
+          <div class="text-xs text-slate-300">
+            <strong>Explication à donner instantanément :</strong> Démontrez la robustesse de l'algorithme sur les cas limites (frontières exactes).
+          </div>
+        </div>
+
+        <!-- 5. Test JUnit 5 Clé de Validation -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+              <span>🧪</span> Assertion JUnit 5 indispensable pour prouver le fonctionnement :
+            </span>
+          </div>
+          <pre class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>@Test
+void testConflitReservationDetecte() {
+    ReservationService service = new ReservationService();
+    LocalDateTime debut = LocalDateTime.of(2026, 10, 15, 10, 0);
+    LocalDateTime fin = LocalDateTime.of(2026, 10, 15, 12, 0);
+    
+    // 1ère réservation réussie
+    service.reserverSalle(1L, 1L, debut, fin);
+    
+    // 2ème réservation chevauchante (11h00 - 13h00) -&gt; DOIT ÉCHOUER !
+    assertThrows(ReservationConflictException.class, () -&gt; {
+        service.reserverSalle(1L, 2L, debut.plusHours(1), fin.plusHours(1));
+    });
+}</code></pre>
+        </div>
+
+      </section>
+    
+
+    <!-- ================= SECTION BONUS : 25 QUESTIONS PIÈGES D'EXAMENS ================= -->
+    <section id="questions-pieges" class="bg-gradient-to-r from-purple-950/40 via-slate-900 to-indigo-950/40 border border-purple-500/30 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-mono font-bold mb-2">
+            <span>⚡ RÉVISION DERNIÈRE MINUTE (15 MIN AVANT L'EXAMEN)</span>
+          </div>
+          <h2 class="text-2xl font-black text-white">Questions Pièges Générales d'Interrogation Orale</h2>
+          <p class="text-xs sm:text-sm text-slate-400">Les questions transversales que les examinateurs adorent poser pour départager les étudiants.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+          <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-purple-400 font-bold">Piège Oral #1</span>
+              <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full">Proxies & L1</span>
+            </div>
+            <h4 class="text-xs font-bold text-white">Quelle est la différence entre EntityManager.find() et EntityManager.getReference() ?</h4>
+            <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80">find() exécute immédiatement un SELECT SQL et retourne l'entité peuplée ou null. getReference() ne fait aucune requête SQL immédiate : il renvoie un Proxy CGLIB/ByteBuddy avec juste l'ID. La requête SELECT n'est déclenchée que lorsque l'on appelle un getter sur un autre champ. Si l'ID n'existe pas en base, une EntityNotFoundException survient lors de l'accès.</p>
+          </div>
+        
+          <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-purple-400 font-bold">Piège Oral #2</span>
+              <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full">Interne Hibernate</span>
+            </div>
+            <h4 class="text-xs font-bold text-white">Qu'est-ce qu'un Proxy Hibernate ?</h4>
+            <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80">C'est une classe générée dynamiquement au runtime par Hibernate qui hérite de votre entité. Elle intercepte les appels de méthodes. Tant que les données ne sont pas nécessaires, elle retarde l'appel SQL (Lazy Loading). Dès qu'un champ est sollicité, le proxy charge les données depuis la base.</p>
+          </div>
+        
+          <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-purple-400 font-bold">Piège Oral #3</span>
+              <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full">Spécification JPA</span>
+            </div>
+            <h4 class="text-xs font-bold text-white">Pourquoi le constructeur par défaut (sans arguments) est-il OBLIGATOIRE sur toute entité JPA ?</h4>
+            <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80">Parce qu'Hibernate utilise la réflexion Java (Class.getDeclaredConstructor().newInstance()) pour instancier les objets lorsqu'il lit les lignes d'un ResultSet JDBC. Sans constructeur sans argument (qui peut être public ou protected), Hibernate ne peut pas instancier l'entité et lance une InstantiationException.</p>
+          </div>
+        
+          <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-purple-400 font-bold">Piège Oral #4</span>
+              <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full">Transactions</span>
+            </div>
+            <h4 class="text-xs font-bold text-white">Quelle est la différence entre em.flush() et em.getTransaction().commit() ?</h4>
+            <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80">em.flush() synchronise le contexte de persistance avec la base en envoyant immédiatement toutes les requêtes SQL (INSERT, UPDATE, DELETE) en attente, mais ne valide pas la transaction. em.getTransaction().commit() effectue d'abord un flush() implicite, puis envoie l'instruction COMMIT SQL physique pour rendre les changements définitifs.</p>
+          </div>
+        
+          <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-purple-400 font-bold">Piège Oral #5</span>
+              <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full">Règles Java</span>
+            </div>
+            <h4 class="text-xs font-bold text-white">Peut-on mettre des champs statiques (static) ou finaux (final) sur une entité JPA ?</h4>
+            <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80">Les champs static ne sont jamais persistés (ils appartiennent à la classe et non à l'instance). Les champs et méthodes ne doivent pas être final, car cela empêcherait Hibernate de générer des proxies par sous-classement dynamique.</p>
+          </div>
+        
+      </div>
+    </section>
+
+    <!-- METHODOLOGIE ORALE 20/20 -->
+    <section class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
+      <h3 class="text-lg font-black text-white flex items-center gap-2">
+        <span>🏆</span> Les 3 Règles d'Or pour l'Interrogation Orale devant le Professeur
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-1.5">
+          <div class="text-amber-400 font-bold font-mono">1. La Règle des 3 Temps</div>
+          <p class="text-slate-300 leading-relaxed">
+            Ne donnez jamais une réponse en un mot. Structurez toujours ainsi : <strong>1. Définition technique</strong> (ex: Contexte de persistance), <strong>2. Ce qui se passe en base SQL</strong> (requêtes, transactions), <strong>3. L'impact dans le TP</strong>.
+          </p>
+        </div>
+        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-1.5">
+          <div class="text-emerald-400 font-bold font-mono">2. Les Mots-Clés Magiques</div>
+          <p class="text-slate-300 leading-relaxed">
+            Employez les termes exacts qui prouvent votre niveau : <em>"Dirty Checking"</em>, <em>"First-Level Cache"</em>, <em>"Proxy CGLIB"</em>, <em>"Cascade de suppression"</em>, <em>"Isolation ACID"</em>, <em>"Pagination côté serveur"</em>.
+          </p>
+        </div>
+        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-1.5">
+          <div class="text-cyan-400 font-bold font-mono">3. Si vous avez un bug en direct</div>
+          <p class="text-slate-300 leading-relaxed">
+            Ne paniquez jamais. Regardez la console et lisez la cause racine (Caused by). 90% des bugs de TP sont : oubli de transaction (RESOURCE_LOCAL), LazyInitializationException (session fermée) ou contrainte de clé étrangère.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 py-8 text-center text-xs text-slate-500 no-print">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p class="font-bold text-slate-400">Rapport de Maîtrise Technique & Soutenance • JPA & Hibernate</p>
+      <p class="font-mono text-[11px]">Étudiant : Moad Moussaoui • Code disponible sur GitHub : <a href="https://github.com/moadms" target="_blank" class="text-indigo-400 hover:underline">github.com/moadms</a></p>
+      <p class="text-[10px] text-slate-600">Généré avec succès pour l'évaluation académique • Conforme aux standards Jakarta EE & Hibernate Core</p>
+    </div>
+  </footer>
+
+  <!-- INTERACTIVE CLIENT SCRIPT -->
+  <script>
+    function toggleAccordion(btn) {
+      const content = btn.nextElementSibling;
+      const chevron = btn.querySelector('.accordion-chevron');
+      const isHidden = content.classList.contains('hidden');
+      
+      if (isHidden) {
+        content.classList.remove('hidden');
+        chevron.textContent = '▲';
+        chevron.classList.add('text-amber-400');
+      } else {
+        content.classList.add('hidden');
+        chevron.textContent = '▼';
+        chevron.classList.remove('text-amber-400');
+      }
+    }
+
+    let allExpanded = false;
+    function toggleAllAccordions() {
+      allExpanded = !allExpanded;
+      const contents = document.querySelectorAll('.accordion-content');
+      const chevrons = document.querySelectorAll('.accordion-chevron');
+      const btnText = document.getElementById('toggleAllBtnText');
+
+      contents.forEach(c => {
+        if (allExpanded) {
+          c.classList.remove('hidden');
+        } else {
+          c.classList.add('hidden');
+        }
+      });
+
+      chevrons.forEach(ch => {
+        ch.textContent = allExpanded ? '▲' : '▼';
+        if (allExpanded) ch.classList.add('text-amber-400');
+        else ch.classList.remove('text-amber-400');
+      });
+
+      btnText.textContent = allExpanded ? 'Tout Replier' : 'Tout Déplier';
+    }
+
+    function filterReportContent() {
+      const query = document.getElementById('searchBox').value.toLowerCase();
+      const cards = document.querySelectorAll('.tp-card');
+      
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        if (text.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
