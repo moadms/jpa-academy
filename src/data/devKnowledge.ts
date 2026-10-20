@@ -590,6 +590,176 @@ public class DataSourceAutoConfiguration {
       seniorAnswer: 'Si la dépendance est requise pour une autre fonctionnalité mais qu\'on veut empêcher son auto-configuration, on utilise l\'attribut `exclude` de `@SpringBootApplication` : `@SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })`, ou dans `application.properties` via `spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration`.',
       whyRecruiterAsks: 'Vérifie si le candidat sait résoudre des conflits de configuration complexes en projet réel.'
     }
+  },
+  {
+    id: 'tp5-spring-hibernate-microservices',
+    title: 'TP 5 Architecture Microservices : Intégration Totale Spring & Hibernate Décortiquée',
+    subtitle: 'Chaque annotation (@Configuration, @Bean, @EnableTransactionManagement, @Transactional, @Repository, @Service, @Entity, @Id, @GeneratedValue, @Column, @Autowired) expliquée pas à pas pour débutant avec analogies et code',
+    category: 'spring-boot',
+    icon: 'Layers',
+    badge: 'TP 5 Masterclass (Score 95% Validé)',
+    summary: 'Le TP 5 fusionne la gestion d\'inversion de contrôle (IoC) de Spring et la persistance objet-relationnelle (ORM) d\'Hibernate. Vous apprendrez comment Spring automatise la création des sessions Hibernate et pilote les transactions déclaratives via des proxies AOP sans une seule ligne de code JDBC répétitif.',
+    problemBefore: 'Dans Hibernate seul (TP 4), le développeur doit manuellement créer les sessions, faire session.beginTransaction(), tx.commit(), gérer les rollbacks en cas d\'exception et fermer les sessions dans un bloc finally. En cas d\'oubli, l\'application subit des fuites de mémoire et des blocages de connexions SQL.',
+    solutionAfter: 'Spring prend le contrôle total : LocalSessionFactoryBean fabrique la SessionFactory, @EnableTransactionManagement active la gestion des transactions, et @Transactional intercepte les méthodes métier pour faire commit/rollback automatiquement.',
+    deepDive: [
+      {
+        sectionTitle: '1. La Métaphore du Restaurant 5 Étoiles pour Tout Comprendre',
+        content: `Pour comprendre l'architecture du TP 5, visualisez un restaurant gastronomique :
+• Le Client (PresentationSpringHibernate) : Il commande un menu ("Ajouter un MacBook Pro"). Il ne met jamais les pieds dans la cuisine !
+• Le Maître d'Hôtel (@Service ProduitServiceImpl) : Il coordonne la commande et veille à la Transaction (@Transactional). Si un plat brûle, il annule toute la commande (Rollback) pour ne pas faire payer le client.
+• Le Cuisinier (@Repository ProduitDaoImpl) : Il prépare les aliments en utilisant les ustensiles (SessionFactory Hibernate). Il range et sort les ingrédients du réfrigérateur.
+• Le Réfrigérateur (Base de Données H2 / MySQL) : C'est là où sont stockées les tables SQL physiques.`,
+        keyTakeaway: 'Chaque couche a une responsabilité unique : la Présentation dialogue avec l\'utilisateur, le Service applique les règles métier et les transactions, et le DAO interagit avec la base de données.'
+      },
+      {
+        sectionTitle: '2. Les Annotations d\'Infrastructure : @Configuration, @ComponentScan & @Bean',
+        content: `Dans SpringHibernateConfig.java, nous configurons l'usine logicielle :
+• @Configuration : Indique à Spring que cette classe est le plan d'assemblage officiel de l'application. Spring crée un proxy CGLIB pour garantir que chaque méthode @Bean n'est appelée qu'une seule fois (Singleton).
+• @ComponentScan(basePackages = {"dao", "service"}) : Ordonne à Spring de fouiller les packages pour détecter automatiquement toutes les classes munies de @Repository, @Service ou @Component et les instancier.
+• @Bean sur dataSource() : Fabrique un réservoir de connexions (DriverManagerDataSource) pointant vers la base H2 en mémoire.
+• @Bean sur sessionFactory(DataSource ds) : Fabrique le LocalSessionFactoryBean de Spring qui initialise Hibernate, scanne les @Entity du package 'entities', et applique le dialecte SQL.
+• @Bean sur transactionManager(SessionFactory sf) : Instancie le HibernateTransactionManager qui saura ouvrir, commiter et annuler les transactions Hibernate.`,
+        codeSnippet: `@Configuration
+@ComponentScan(basePackages = {"dao", "service"})
+@EnableTransactionManagement
+public class SpringHibernateConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName("org.h2.Driver");
+        ds.setUrl("jdbc:h2:mem:spring_hibernate_db;DB_CLOSE_DELAY=-1");
+        ds.setUsername("sa");
+        ds.setPassword("");
+        return ds;
+    }
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
+        LocalSessionFactoryBean sf = new LocalSessionFactoryBean();
+        sf.setDataSource(dataSource);
+        sf.setPackagesToScan("entities");
+        Properties props = new Properties();
+        props.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        props.put("hibernate.show_sql", "true");
+        props.put("hibernate.hbm2ddl.auto", "update");
+        sf.setHibernateProperties(props);
+        return sf;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(SessionFactory sessionFactory) {
+        HibernateTransactionManager tx = new HibernateTransactionManager();
+        tx.setSessionFactory(sessionFactory);
+        return tx;
+    }
+}`,
+        keyTakeaway: 'LocalSessionFactoryBean est le pont magique entre Spring et Hibernate : il adapte la SessionFactory complexe en un bean Spring standard.'
+      },
+      {
+        sectionTitle: '3. Le Cœur Battant : @EnableTransactionManagement & @Transactional',
+        content: `Comment fonctionne la magie de @Transactional ?
+1. Au démarrage, @EnableTransactionManagement dit à Spring d'envelopper chaque classe @Service d'un Proxy AOP.
+2. Lorsqu'une méthode comme 'ajouterProduit()' est appelée depuis l'extérieur, c'est le Proxy qui s'exécute en premier !
+3. Le Proxy demande au HibernateTransactionManager d'ouvrir une transaction physique et d'attacher une Session Hibernate au thread courant (ThreadLocal).
+4. La méthode métier s'exécute.
+5. Si tout réussit : Le Proxy fait 'commit()'.
+6. Si une RuntimeException survient : Le Proxy fait immédiatement 'rollback()' pour préserver l'intégrité des données !
+7. L'option 'readOnly = true' : Sur les requêtes de consultation (findAll, findById), elle désactive le Dirty Checking d'Hibernate, ce qui libère énormément de mémoire RAM et accélère le temps de réponse.`,
+        codeSnippet: `@Service
+@Transactional // Active les transactions déclaratives sur toutes les méthodes
+public class ProduitServiceImpl implements IProduitService {
+
+    @Autowired
+    private IProduitDao produitDao;
+
+    @Override
+    public Produit ajouterProduit(Produit p) {
+        return produitDao.save(p);
+    }
+
+    @Override
+    @Transactional(readOnly = true) // Optimisation performance : pas de Dirty Checking
+    public List<Produit> consulterTousProduits() {
+        return produitDao.findAll();
+    }
+}`,
+        keyTakeaway: '@Transactional élimine 100% du code répétitif de transaction et évite les erreurs humaines d\'oubli de rollback.'
+      },
+      {
+        sectionTitle: '4. La Couche DAO : @Repository, @Autowired & sessionFactory.getCurrentSession()',
+        content: `Dans ProduitDaoImpl.java :
+• @Repository : Spécialisation de @Component pour l'accès aux données. Elle active la traduction automatique des exceptions (DataAccessException Translation).
+• @Autowired private SessionFactory sessionFactory : Spring injecte automatiquement l'unique instance de SessionFactory configurée.
+• sessionFactory.getCurrentSession() : Contrairement à openSession() (qu'il fallait penser à fermer soi-même), getCurrentSession() récupère automatiquement la Session liée à la transaction active pilotée par Spring ! Elle se fermera toute seule à la fin du commit.
+• persist(p) : Méthode standard JPA qui insère l'objet en base et le passe à l'état Persistent.`,
+        codeSnippet: `@Repository
+public class ProduitDaoImpl implements IProduitDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    private Session getSession() {
+        // Récupère la session courante liée au thread de la transaction Spring
+        return sessionFactory.getCurrentSession();
+    }
+
+    @Override
+    public Produit save(Produit p) {
+        getSession().persist(p);
+        return p;
+    }
+
+    @Override
+    public Produit findById(Long id) {
+        return getSession().get(Produit.class, id);
+    }
+}`,
+        keyTakeaway: 'Toujours utiliser sessionFactory.getCurrentSession() dans un contexte Spring géré par @Transactional.'
+      },
+      {
+        sectionTitle: '5. Le Mapping JPA de l\'Entité : @Entity, @Table, @Id, @GeneratedValue, @Column',
+        content: `L'entité Produit.java fait le lien entre la Programmation Orientée Objet et les Tables Relationnelles :
+• @Entity : Déclare la classe comme une entité persistable JPA.
+• @Table(name = "produits") : Personnalise le nom de la table SQL générée.
+• @Id : Désigne l'attribut comme clé primaire unique (PK).
+• @GeneratedValue(strategy = GenerationType.IDENTITY) : Confie la génération de l'ID à la base de données via l'auto-incrémentation SQL (1, 2, 3...).
+• @Column(name = "designation", nullable = false, length = 150) : Configure la colonne SQL correspondante (NON NULL, VARCHAR(150)).`,
+        codeSnippet: `@Entity
+@Table(name = "produits")
+public class Produit implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "designation", nullable = false, length = 150)
+    private String designation;
+
+    @Column(name = "prix", nullable = false)
+    private double prix;
+
+    @Column(name = "quantite")
+    private int quantite;
+}`,
+        keyTakeaway: 'Les annotations JPA évitent d\'écrire des scripts DDL CREATE TABLE manuels : Hibernate déduit le schéma directement depuis le code Java.'
+      },
+      {
+        sectionTitle: '6. Les 4 États du Cycle de Vie d\'une Entité Hibernate',
+        content: `Chaque objet Java géré par Hibernate traverse 4 états fondamentaux :
+1. Transient (Nouveau) : Produit p = new Produit(...); L'objet existe seulement dans la mémoire vive JVM. Aucun ID en base, inconnu de la Session.
+2. Persistent (Managé) : session.persist(p) ou session.get(id); L'objet possède un ID, il est enregistré dans le cache de niveau 1 (Session). Toute modification de ses champs déclenchera automatiquement un UPDATE SQL au commit (Dirty Checking) !
+3. Detached (Détaché) : La transaction est terminée ou la Session est fermée. L'objet a toujours son ID, mais Hibernate ne le surveille plus. Attention : tenter de charger une relation Lazy sur un objet détaché produit la célèbre 'LazyInitializationException' !
+4. Removed (Supprimé) : session.remove(p); L'objet est marqué pour suppression physique en base lors du prochain commit.`,
+        keyTakeaway: 'Comprendre ces 4 états est le secret absolu pour éviter les erreurs de LazyInitializationException et de requêtes fantômes.'
+      }
+    ],
+    trapQuestion: {
+      question: 'Pourquoi un appel interne (this.methodeB()) vers une méthode annotée @Transactional dans la même classe Service n\'ouvre-t-il aucune transaction ?',
+      rookieAnswer: 'Parce que Spring Boot a un bug ou que @EnableTransactionManagement a été mal écrit.',
+      seniorAnswer: 'Spring implémente la gestion des transactions via le patron de conception Proxy AOP (Dynamic Proxy ou CGLIB). Quand un contrôleur externe appelle service.methodeA(), il passe par le Proxy qui démarre la transaction. En revanche, lorsque methodeA() appelle en interne this.methodeB(), cet appel s\'effectue directement sur l\'instance réelle cible (Target Object) sans repasser par le Proxy Spring ! L\'intercepteur de transaction est donc totalement court-circuité. La solution senior consiste soit à extraire methodeB() dans un autre service dédié, soit à injecter le proxy via un Provider / self-injection.',
+      whyRecruiterAsks: 'C\'est LA question piège reine posée par les architectes techniques pour distinguer un simple développeur junior d\'un ingénieur qui maîtrise réellement les rouages internes de Spring AOP.'
+    }
   }
 ];
 

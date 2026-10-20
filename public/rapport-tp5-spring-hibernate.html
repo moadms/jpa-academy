@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide Ultime & Rapport TP 5 : Intégration Spring & Hibernate (Architecture Microservices)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            spring: {
+              400: '#6db33f',
+              500: '#5ca233',
+              600: '#4b8a27',
+            },
+            hibernate: {
+              400: '#c59b27',
+              500: '#b68916',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #0b0f19;
+      color: #e2e8f0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .code-block {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+    .badge-glow {
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
+    }
+    .glass-card {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1rem;
+    }
+    .glass-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+      transition: all 0.25s ease-in-out;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0f19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+<body class="selection:bg-indigo-500 selection:text-white">
+
+  <!-- Top Announcement Bar -->
+  <header class="border-b border-slate-800 bg-slate-900/60 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-green-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+          <i class="fa-solid fa-leaf text-lg"></i>
+        </div>
+        <div>
+          <span class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-indigo-400">Masterclass TP 5</span>
+          <span class="hidden sm:inline-block text-xs px-2 py-0.5 ml-2 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Architecture Microservices & Persistance</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4 text-sm font-medium">
+        <a href="#analogie" class="text-slate-400 hover:text-white transition">Analogie</a>
+        <a href="#annotations" class="text-slate-400 hover:text-white transition">Annotations</a>
+        <a href="#architecture" class="text-slate-400 hover:text-white transition">Couches</a>
+        <a href="#pieges" class="text-amber-400 hover:text-amber-300 transition"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Pièges Prof</a>
+        <a href="https://github.com/moadms/Tp5-cours2" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition flex items-center gap-2">
+          <i class="fa-brands fa-github"></i> Dépôt GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="relative overflow-hidden py-16 lg:py-24 border-b border-slate-800/80 bg-gradient-to-b from-indigo-950/20 via-slate-950 to-slate-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-semibold mb-6">
+        <i class="fa-solid fa-graduation-cap"></i> POUR DÉBUTANT & PRÉPARATION ORALE PFE / EXAMEN
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white max-w-4xl mx-auto leading-tight">
+        Comprendre à 100% l'Intégration <br>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-400">Spring & Hibernate (TP 5)</span>
+      </h1>
+      <p class="mt-6 text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+        Ce guide est conçu comme une discussion entre amis : chaque annotation est expliquée avec des métaphores simples du quotidien, son rôle exact dans la mémoire RAM, le code source complet et les questions pièges posées par les professeurs et recruteurs techniques.
+      </p>
+
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <div class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-2 text-sm text-slate-300">
+          <i class="fa-solid fa-check text-emerald-400"></i> Score QCM Validé : <strong>19/20 (95%)</strong>
+        </div>
+        <div class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-2 text-sm text-slate-300">
+          <i class="fa-solid fa-code text-indigo-400"></i> Java 21 + Spring 6 + Hibernate 6
+        </div>
+        <div class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-2 text-sm text-slate-300">
+          <i class="fa-solid fa-database text-amber-400"></i> Transactions Déclaratives & Pool H2
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1 : L'Analogie du Restaurant (Pour Débutant) -->
+  <section id="analogie" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-xs font-mono font-bold tracking-widest text-emerald-400 uppercase">La Métaphore Ultime</h2>
+      <p class="text-3xl font-extrabold text-white mt-2">Comment fonctionne TP 5 ? Imaginez un Restaurant 5 Étoiles ! 🍽️</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <!-- Client -->
+      <div class="glass-card p-6 flex flex-col items-center text-center">
+        <div class="w-14 h-14 rounded-2xl bg-sky-500/10 text-sky-400 border border-sky-500/20 flex items-center justify-center text-2xl mb-4">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <h3 class="text-lg font-bold text-white">1. Le Client (Presentation)</h3>
+        <span class="text-xs font-mono text-sky-400 mt-1 mb-3">PresentationSpringHibernate.java</span>
+        <p class="text-sm text-slate-400">
+          Il passe la commande ("Je veux ajouter un MacBook Pro et afficher son prix"). Il ne sait pas comment la cuisine fonctionne, il parle juste au serveur.
+        </p>
+      </div>
+
+      <!-- Serveur -->
+      <div class="glass-card p-6 flex flex-col items-center text-center">
+        <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center text-2xl mb-4">
+          <i class="fa-solid fa-bell-concierge"></i>
+        </div>
+        <h3 class="text-lg font-bold text-white">2. Le Maître d'Hôtel (@Service)</h3>
+        <span class="text-xs font-mono text-indigo-400 mt-1 mb-3">ProduitServiceImpl.java</span>
+        <p class="text-sm text-slate-400">
+          Il applique les règles métier. C'est lui qui gère la <strong>Transaction (@Transactional)</strong> : si le plat brûle ou si un ingrédient manque, il annule tout (Rollback) !
+        </p>
+      </div>
+
+      <!-- Cuisinier -->
+      <div class="glass-card p-6 flex flex-col items-center text-center">
+        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-2xl mb-4">
+          <i class="fa-solid fa-kitchen-set"></i>
+        </div>
+        <h3 class="text-lg font-bold text-white">3. Le Cuisinier (@Repository / DAO)</h3>
+        <span class="text-xs font-mono text-amber-400 mt-1 mb-3">ProduitDaoImpl.java</span>
+        <p class="text-sm text-slate-400">
+          Il sait manipuler les ustensiles (Hibernate <code>SessionFactory</code>). Il va chercher les ingrédients bruts dans le frigo et les transforme.
+        </p>
+      </div>
+
+      <!-- Le Frigo -->
+      <div class="glass-card p-6 flex flex-col items-center text-center">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-2xl mb-4">
+          <i class="fa-solid fa-warehouse"></i>
+        </div>
+        <h3 class="text-lg font-bold text-white">4. Le Frigo (Base de Données)</h3>
+        <span class="text-xs font-mono text-emerald-400 mt-1 mb-3">H2 Database / MySQL</span>
+        <p class="text-sm text-slate-400">
+          Là où sont stockées les données physiques dans des tables de disques ou mémoire RAM (tables <code>produits</code>).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2 : Pourquoi Spring + Hibernate Ensemble ? Le Problème & La Solution -->
+  <section class="py-12 bg-slate-900/40 border-y border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div>
+          <h2 class="text-xs font-mono font-bold tracking-widest text-indigo-400 uppercase">Le Déclic Pédagogique</h2>
+          <h3 class="text-2xl sm:text-3xl font-black text-white mt-2">Pourquoi avoir besoin des DEUX ensemble ?</h3>
+          <p class="text-slate-300 mt-4 leading-relaxed">
+            Dans le <strong>TP 4</strong>, nous utilisions Hibernate seul. C'était fastidieux : nous devions ouvrir manuellement la Session, faire <code>tx = session.beginTransaction()</code>, puis <code>tx.commit()</code>, et attraper chaque exception pour faire <code>tx.rollback()</code>. C'était ce qu'on appelle du <strong>code boilerplate</strong> (répétitif et source d'erreurs).
+          </p>
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 mt-0.5"><i class="fa-solid fa-xmark text-xs"></i></div>
+              <p class="text-sm text-slate-300"><strong>Hibernate seul :</strong> Gestion manuelle des sessions, fermeture risquant les fuites de mémoire (memory leak), couplage fort avec l'API Hibernate.</p>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5"><i class="fa-solid fa-check text-xs"></i></div>
+              <p class="text-sm text-slate-300"><strong>Spring + Hibernate (TP 5) :</strong> Spring gère la fabrique d'usine (<code>LocalSessionFactoryBean</code>), injecte les dépendances automatiquement (<code>@Autowired</code>) et pilote les transactions déclarativement avec un simple <code>@Transactional</code> !</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 shadow-xl">
+          <div class="text-xs font-mono text-slate-400 mb-3 flex items-center justify-between">
+            <span><i class="fa-solid fa-diagram-project text-indigo-400 mr-2"></i>Flux de Données et Découplage TP 5</span>
+            <span class="text-emerald-400 font-semibold">100% Inversion de Contrôle</span>
+          </div>
+          <div class="space-y-3 font-mono text-xs">
+            <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-sky-300">
+              [Presentation] main() ➔ demande IProduitService
+            </div>
+            <div class="text-center text-slate-600"><i class="fa-solid fa-arrow-down"></i></div>
+            <div class="p-3 bg-indigo-950/60 rounded-lg border border-indigo-800/60 text-indigo-200">
+              [Spring Proxy @Transactional] Ouvre la transaction JDBC / Hibernate
+            </div>
+            <div class="text-center text-slate-600"><i class="fa-solid fa-arrow-down"></i></div>
+            <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 text-slate-200">
+              [ProduitServiceImpl] Exécute la logique métier ➔ appelle IProduitDao
+            </div>
+            <div class="text-center text-slate-600"><i class="fa-solid fa-arrow-down"></i></div>
+            <div class="p-3 bg-amber-950/40 rounded-lg border border-amber-800/40 text-amber-200">
+              [ProduitDaoImpl] sessionFactory.getCurrentSession().persist(p)
+            </div>
+            <div class="text-center text-slate-600"><i class="fa-solid fa-arrow-down"></i></div>
+            <div class="p-3 bg-emerald-950/60 rounded-lg border border-emerald-800/60 text-emerald-200">
+              [Spring Proxy @Transactional] Commit automatique si tout est OK ! (ou Rollback si exception)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3 : Le Grand Dictionnaire des Annotations -->
+  <section id="annotations" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="text-xs font-mono font-bold tracking-widest text-indigo-400 uppercase">Au Microscope</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Toutes les Annotations du TP 5 Décortiquées</h2>
+      <p class="text-slate-400 mt-2">Chaque annotation a un super-pouvoir bien précis. Les voici expliquées une par une.</p>
+    </div>
+
+    <div class="space-y-8">
+
+      <!-- 1. @Configuration -->
+      <div class="glass-card p-6 lg:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 font-mono text-lg font-bold">@Configuration</span>
+            <span class="px-2.5 py-0.5 rounded text-xs bg-slate-800 text-slate-300">Couche : Configuration</span>
+          </div>
+          <span class="text-xs font-mono text-slate-400"><i class="fa-regular fa-file-code mr-1"></i>SpringHibernateConfig.java</span>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2">💡 Expliqué à un débutant</h4>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              C'est la <strong>recette de cuisine</strong> ou le <strong>plan d'architecte</strong> de Spring ! En mettant <code>@Configuration</code> au-dessus d'une classe, vous dites à Spring : <em>"Attention, cette classe ne contient pas de données clients, elle contient les instructions pour construire et brancher toutes les pièces du moteur (les Beans) !"</em>
+            </p>
+            <h4 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mt-4 mb-2">⚙️ Sous le capot (JVM)</h4>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Spring génère un proxy CGLIB autour de cette classe pour garantir que chaque méthode annotée <code>@Bean</code> n'est exécutée qu'une seule fois (principe du <strong>Singleton</strong> dans le conteneur).
+            </p>
+          </div>
+          <div>
+            <div class="code-block text-xs">
+<span class="text-slate-500">// Déclare la classe comme source de définitions de beans</span>
+<span class="text-indigo-400">@Configuration</span>
+<span class="text-indigo-400">@ComponentScan</span>(basePackages = {<span class="text-emerald-300">"dao"</span>, <span class="text-emerald-300">"service"</span>})
+<span class="text-indigo-400">@EnableTransactionManagement</span>
+<span class="text-purple-400">public class</span> <span class="text-amber-300">SpringHibernateConfig</span> {
+    <span class="text-slate-500">// Contient les méthodes @Bean</span>
+}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. @Bean -->
+      <div class="glass-card p-6 lg:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 font-mono text-lg font-bold">@Bean</span>
+            <span class="px-2.5 py-0.5 rounded text-xs bg-slate-800 text-slate-300">Couche : Fabrique d'objets</span>
+          </div>
+          <span class="text-xs font-mono text-slate-400"><i class="fa-regular fa-file-code mr-1"></i>SpringHibernateConfig.java</span>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2">💡 Expliqué à un débutant</h4>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Un <code>@Bean</code> est un objet fabriqué et gardé précieusement dans le coffre-fort de Spring (le <strong>Conteneur IoC</strong>). Quand vous appliquez <code>@Bean</code> sur une méthode, vous dites à Spring : <em>"Exécute cette méthode, prends l'objet qu'elle retourne, et garde-le en mémoire. Dès que quelqu'un en a besoin, donne-lui !"</em>
+            </p>
+            <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg mt-3 text-xs text-amber-300">
+              <strong>Question piège Prof :</strong> Pourquoi utiliser <code>@Bean</code> au lieu de <code>@Component</code> ?<br>
+              ➔ Réponse : Pour les classes de bibliothèques externes (comme <code>DataSource</code> ou <code>LocalSessionFactoryBean</code>) dont nous n'avons pas le code source pour y ajouter <code>@Component</code> !
+            </div>
+          </div>
+          <div>
+            <div class="code-block text-xs">
+<span class="text-indigo-400">@Bean</span>
+<span class="text-purple-400">public</span> DataSource <span class="text-amber-300">dataSource</span>() {
+    DriverManagerDataSource ds = <span class="text-purple-400">new</span> DriverManagerDataSource();
+    ds.setDriverClassName(<span class="text-emerald-300">"org.h2.Driver"</span>);
+    ds.setUrl(<span class="text-emerald-300">"jdbc:h2:mem:spring_hibernate_db;DB_CLOSE_DELAY=-1"</span>);
+    ds.setUsername(<span class="text-emerald-300">"sa"</span>);
+    ds.setPassword(<span class="text-emerald-300">""</span>);
+    <span class="text-purple-400">return</span> ds; <span class="text-slate-500">// Spring stocke ce DataSource !</span>
+}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. @EnableTransactionManagement & @Transactional -->
+      <div class="glass-card p-6 lg:p-8 border-indigo-500/30">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-mono text-lg font-bold">@EnableTransactionManagement</span>
+            <span class="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-mono text-lg font-bold">@Transactional</span>
+            <span class="px-2.5 py-0.5 rounded text-xs bg-emerald-800/40 text-emerald-300">Élément Star du TP 5</span>
+          </div>
+          <span class="text-xs font-mono text-slate-400"><i class="fa-regular fa-file-code mr-1"></i>Config & Service</span>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2">💡 Expliqué à un débutant</h4>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Imaginez que vous faites un virement bancaire de 100 DH :<br>
+              1. On retire 100 DH de votre compte.<br>
+              2. Une coupure de courant arrive avant de les donner au destinataire !<br>
+              Grâce à <strong>@Transactional</strong>, l'opération est <strong>ATOMIQUE (Tout ou Rien)</strong> : si un problème survient au milieu, tout est annulé (<strong>Rollback</strong>) et vous ne perdez pas votre argent. Si tout s'est bien passé, la transaction est validée (<strong>Commit</strong>).
+            </p>
+            <h4 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mt-4 mb-2">⚙️ Le rôle de readOnly = true</h4>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Sur les méthodes de consultation (comme <code>consulterTousProduits()</code>), on met <code>@Transactional(readOnly = true)</code>. Cela signale à Hibernate d'optimiser la mémoire en désactivant le <em>Dirty Checking</em> (inutile de vérifier si les objets ont changé puisqu'on ne fait que lire !).
+            </p>
+          </div>
+          <div>
+            <div class="code-block text-xs">
+<span class="text-indigo-400">@Service</span>
+<span class="text-indigo-400">@Transactional</span> <span class="text-slate-500">// Toutes les méthodes sont transactionnelles</span>
+<span class="text-purple-400">public class</span> <span class="text-amber-300">ProduitServiceImpl</span> <span class="text-purple-400">implements</span> IProduitService {
+
+    <span class="text-indigo-400">@Autowired</span>
+    <span class="text-purple-400">private</span> IProduitDao produitDao;
+
+    <span class="text-purple-400">public</span> Produit <span class="text-amber-300">ajouterProduit</span>(Produit p) {
+        <span class="text-slate-500">// Si une RuntimeException survient -> ROLLBACK automatique</span>
+        <span class="text-purple-400">return</span> produitDao.save(p);
+    }
+
+    <span class="text-indigo-400">@Transactional</span>(readOnly = <span class="text-purple-400">true</span>) <span class="text-slate-500">// Optimisation lecture</span>
+    <span class="text-purple-400">public</span> List&lt;Produit&gt; <span class="text-amber-300">consulterTousProduits</span>() {
+        <span class="text-purple-400">return</span> produitDao.findAll();
+    }
+}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. @Entity, @Table, @Id, @GeneratedValue, @Column -->
+      <div class="glass-card p-6 lg:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 font-mono text-lg font-bold">@Entity & JPA Mapping</span>
+            <span class="px-2.5 py-0.5 rounded text-xs bg-slate-800 text-slate-300">Couche : Domaine / Entités</span>
+          </div>
+          <span class="text-xs font-mono text-slate-400"><i class="fa-regular fa-file-code mr-1"></i>Produit.java</span>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2">💡 Expliqué à un débutant</h4>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Une classe Java vit dans la mémoire RAM sous forme d'objet. Une base de données stocke des lignes dans des tables SQL. Ces annotations sont le <strong>passeport de traduction</strong> (ORM) :
+            </p>
+            <ul class="list-disc list-inside mt-2 space-y-1 text-sm text-slate-300">
+              <li><code>@Entity</code> : Dit à Hibernate "Transforme cette classe en table SQL".</li>
+              <li><code>@Table(name="produits")</code> : Nom personnalisé de la table.</li>
+              <li><code>@Id</code> : La clé primaire unique de chaque produit.</li>
+              <li><code>@GeneratedValue(strategy = GenerationType.IDENTITY)</code> : Auto-incrémentation (1, 2, 3...) gérée par la base.</li>
+              <li><code>@Column(name="designation", length=150)</code> : Spécifie la colonne SQL et sa taille maximale.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="code-block text-xs">
+<span class="text-indigo-400">@Entity</span>
+<span class="text-indigo-400">@Table</span>(name = <span class="text-emerald-300">"produits"</span>)
+<span class="text-purple-400">public class</span> <span class="text-amber-300">Produit</span> <span class="text-purple-400">implements</span> Serializable {
+
+    <span class="text-indigo-400">@Id</span>
+    <span class="text-indigo-400">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+    <span class="text-purple-400">private</span> Long id;
+
+    <span class="text-indigo-400">@Column</span>(name = <span class="text-emerald-300">"designation"</span>, nullable = <span class="text-purple-400">false</span>, length = <span class="text-amber-300">150</span>)
+    <span class="text-purple-400">private</span> String designation;
+
+    <span class="text-indigo-400">@Column</span>(name = <span class="text-emerald-300">"prix"</span>, nullable = <span class="text-purple-400">false</span>)
+    <span class="text-purple-400">private double</span> prix;
+
+    <span class="text-purple-400">private int</span> quantite;
+}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. @Repository & @Autowired -->
+      <div class="glass-card p-6 lg:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-sky-500/20 text-sky-300 font-mono text-lg font-bold">@Repository & @Autowired</span>
+            <span class="px-2.5 py-0.5 rounded text-xs bg-slate-800 text-slate-300">Couche : DAO (Accès aux Données)</span>
+          </div>
+          <span class="text-xs font-mono text-slate-400"><i class="fa-regular fa-file-code mr-1"></i>ProduitDaoImpl.java</span>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2">💡 Expliqué à un débutant</h4>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              <code>@Repository</code> est le badge qui indique à Spring : <em>"Cette classe parle directement avec la base de données !"</em><br>
+              Son super-pouvoir caché : elle intercepte les vilaines exceptions SQL spécifiques (comme <code>SQLException</code>) et les traduit automatiquement en exceptions Spring compréhensibles (<code>DataAccessException</code>).
+            </p>
+            <p class="text-sm text-slate-300 mt-2">
+              <code>@Autowired</code> est l'aimant d'injection : il demande à Spring de fournir automatiquement l'instance de <code>SessionFactory</code> déjà configurée !
+            </p>
+          </div>
+          <div>
+            <div class="code-block text-xs">
+<span class="text-indigo-400">@Repository</span>
+<span class="text-purple-400">public class</span> <span class="text-amber-300">ProduitDaoImpl</span> <span class="text-purple-400">implements</span> IProduitDao {
+
+    <span class="text-indigo-400">@Autowired</span>
+    <span class="text-purple-400">private</span> SessionFactory sessionFactory;
+
+    <span class="text-purple-400">private</span> Session <span class="text-amber-300">getSession</span>() {
+        <span class="text-slate-500">// Utilise la session courante liée à la transaction @Transactional</span>
+        <span class="text-purple-400">return</span> sessionFactory.getCurrentSession();
+    }
+
+    <span class="text-purple-400">public</span> Produit <span class="text-amber-300">save</span>(Produit p) {
+        getSession().persist(p);
+        <span class="text-purple-400">return</span> p;
+    }
+}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 4 : Le Cycle de Vie des Objets Hibernate (Notion Cruciale) -->
+  <section class="py-16 bg-slate-900/50 border-y border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="text-xs font-mono font-bold tracking-widest text-amber-400 uppercase">Le Secret d'Hibernate</span>
+        <h2 class="text-3xl font-extrabold text-white mt-2">Les 4 États d'une Entité (Cycle de Vie)</h2>
+        <p class="text-slate-400 mt-2">Tous les professeurs adorent interroger les étudiants sur ce schéma lors des soutenances !</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- Transient -->
+        <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 relative">
+          <div class="text-xs font-mono text-slate-500 font-bold mb-2">ÉTAT 1</div>
+          <h3 class="text-lg font-bold text-sky-400 mb-2">Transient (Nouveau)</h3>
+          <p class="text-xs text-slate-300 mb-3">
+            Créé avec un simple <code>new Produit()</code>.
+          </p>
+          <div class="text-xs text-slate-400 space-y-1">
+            <div><i class="fa-solid fa-xmark text-red-400 mr-1"></i> Pas d'ID en base</div>
+            <div><i class="fa-solid fa-xmark text-red-400 mr-1"></i> Inconnu de la Session</div>
+            <div><i class="fa-solid fa-memory text-sky-400 mr-1"></i> Existe juste dans la RAM</div>
+          </div>
+        </div>
+
+        <!-- Persistent -->
+        <div class="p-6 rounded-2xl bg-emerald-950/30 border border-emerald-500/40 relative shadow-lg shadow-emerald-500/10">
+          <div class="text-xs font-mono text-emerald-400 font-bold mb-2">ÉTAT 2 (STAR)</div>
+          <h3 class="text-lg font-bold text-emerald-300 mb-2">Persistent (Managé)</h3>
+          <p class="text-xs text-slate-300 mb-3">
+            Après <code>session.persist(p)</code> ou <code>session.get(id)</code>.
+          </p>
+          <div class="text-xs text-slate-400 space-y-1">
+            <div><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Possède un ID valide</div>
+            <div><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Rattaché à la Session</div>
+            <div><i class="fa-solid fa-eye text-emerald-400 mr-1"></i> Synchronisé automatiquement (Dirty Checking)</div>
+          </div>
+        </div>
+
+        <!-- Detached -->
+        <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 relative">
+          <div class="text-xs font-mono text-slate-500 font-bold mb-2">ÉTAT 3</div>
+          <h3 class="text-lg font-bold text-amber-400 mb-2">Detached (Détaché)</h3>
+          <p class="text-xs text-slate-300 mb-3">
+            Après la fermeture de la transaction ou <code>session.close()</code>.
+          </p>
+          <div class="text-xs text-slate-400 space-y-1">
+            <div><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Possède toujours son ID</div>
+            <div><i class="fa-solid fa-xmark text-red-400 mr-1"></i> Session fermée</div>
+            <div><i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> Tout getLazy() lance une LazyInitializationException !</div>
+          </div>
+        </div>
+
+        <!-- Removed -->
+        <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 relative">
+          <div class="text-xs font-mono text-slate-500 font-bold mb-2">ÉTAT 4</div>
+          <h3 class="text-lg font-bold text-red-400 mb-2">Removed (Supprimé)</h3>
+          <p class="text-xs text-slate-300 mb-3">
+            Après appel à <code>session.remove(p)</code>.
+          </p>
+          <div class="text-xs text-slate-400 space-y-1">
+            <div><i class="fa-solid fa-trash text-red-400 mr-1"></i> Marqué pour suppression SQL</div>
+            <div><i class="fa-solid fa-arrow-down text-slate-500 mr-1"></i> DELETE exécuté au commit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5 : Les Pièges d'Entretien & Questions du Prof -->
+  <section id="pieges" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="text-xs font-mono font-bold tracking-widest text-red-400 uppercase">Antisèche Examen & Recrutement</span>
+      <h2 class="text-3xl font-extrabold text-white mt-2">Les 5 Questions Pièges du Professeur (et leurs Réponses !) 🎯</h2>
+      <p class="text-slate-400 mt-2">Si votre professeur vous pose ces questions lors du test ou de l'oral, voici les réponses en or.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Q1 -->
+      <div class="glass-card p-6 border-l-4 border-l-indigo-500">
+        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+          <span class="w-6 h-6 rounded bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs">1</span>
+          Quelle est la différence entre SessionFactory et Session ?
+        </h3>
+        <p class="text-sm text-slate-300 mb-2">
+          <strong>Réponse de l'expert :</strong><br>
+          • <code>SessionFactory</code> est un objet très lourd, thread-safe, créé <strong>une seule fois</strong> au démarrage de l'application. Elle contient les métadonnées de toutes les entités et le pool de connexions.<br>
+          • <code>Session</code> est un objet très léger, non thread-safe, à courte durée de vie (dure le temps d'une requête ou d'une transaction). Elle représente une connexion physique ouverte avec la base.
+        </p>
+      </div>
+
+      <!-- Q2 -->
+      <div class="glass-card p-6 border-l-4 border-l-emerald-500">
+        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+          <span class="w-6 h-6 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">2</span>
+          Pourquoi Session.persist() et non Session.save() ?
+        </h3>
+        <p class="text-sm text-slate-300 mb-2">
+          <strong>Réponse de l'expert :</strong><br>
+          <code>save()</code> est une méthode historique propre à Hibernate qui retourne l'ID immédiatement. <code>persist()</code> est la méthode standard officielle de la spécification **JPA**. En utilisant <code>persist()</code>, notre code respecte le standard JPA et peut être porté facilement sans dépendance forte à Hibernate.
+        </p>
+      </div>
+
+      <!-- Q3 -->
+      <div class="glass-card p-6 border-l-4 border-l-amber-500">
+        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+          <span class="w-6 h-6 rounded bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs">3</span>
+          Pourquoi @Transactional doit être sur la couche Service et non DAO ?
+        </h3>
+        <p class="text-sm text-slate-300 mb-2">
+          <strong>Réponse de l'expert :</strong><br>
+          Parce qu'une opération métier (Service) implique souvent <strong>plusieurs appels DAO</strong> (ex: débiter un compte dans CompteDao + créditer un autre compte dans CompteDao + ajouter un log dans LogDao). La transaction doit englober l'ensemble de l'action métier pour que si le log échoue, le débit soit également annulé !
+        </p>
+      </div>
+
+      <!-- Q4 -->
+      <div class="glass-card p-6 border-l-4 border-l-red-500">
+        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+          <span class="w-6 h-6 rounded bg-red-500/20 text-red-400 flex items-center justify-center text-xs">4</span>
+          Le piège du "Self-Invocation" avec @Transactional
+        </h3>
+        <p class="text-sm text-slate-300 mb-2">
+          <strong>Réponse de l'expert :</strong><br>
+          Si dans la classe <code>ProduitServiceImpl</code>, la méthode <code>A()</code> (non transactionnelle) appelle <code>this.B()</code> (annotée <code>@Transactional</code>), la transaction <strong>ne démarrera PAS</strong> ! Pourquoi ? Parce que Spring utilise des Proxies. En faisant un appel interne <code>this.B()</code>, on court-circuite le proxy Spring !
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 6 : Vérification des Tests Unitaires & Code Validé -->
+  <section class="py-16 bg-slate-900/60 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <span class="text-xs font-mono font-bold tracking-widest text-emerald-400 uppercase">Qualité & Tests</span>
+        <h2 class="text-3xl font-extrabold text-white mt-2">Les Tests Unitaires JUnit 5 & Spring Test</h2>
+        <p class="text-slate-400 mt-2">Dans TP 5, les tests vérifient chaque méthode du service avec le conteneur Spring en mémoire.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div>
+          <div class="code-block text-xs">
+<span class="text-slate-500">// Test unitaire Spring & JUnit 5 sans serveur externe</span>
+<span class="text-indigo-400">@ExtendWith</span>(SpringExtension.class)
+<span class="text-indigo-400">@ContextConfiguration</span>(classes = {SpringHibernateConfig.class})
+<span class="text-indigo-400">@TestMethodOrder</span>(MethodOrderer.OrderAnnotation.class)
+<span class="text-purple-400">public class</span> <span class="text-amber-300">ProduitServiceTest</span> {
+
+    <span class="text-indigo-400">@Autowired</span>
+    <span class="text-purple-400">private</span> IProduitService produitService;
+
+    <span class="text-indigo-400">@Test</span>
+    <span class="text-indigo-400">@Order</span>(1)
+    <span class="text-purple-400">void</span> <span class="text-amber-300">testAjouterProduit</span>() {
+        Produit p = <span class="text-purple-400">new</span> Produit(<span class="text-emerald-300">"Souris Bluetooth"</span>, 350.0, 20);
+        Produit saved = produitService.ajouterProduit(p);
+        <span class="text-purple-400">assertNotNull</span>(saved.getId(), <span class="text-emerald-300">"L'ID doit être auto-généré"</span>);
+        <span class="text-purple-400">assertEquals</span>(<span class="text-emerald-300">"Souris Bluetooth"</span>, saved.getDesignation());
+    }
+
+    <span class="text-indigo-400">@Test</span>
+    <span class="text-indigo-400">@Order</span>(2)
+    <span class="text-purple-400">void</span> <span class="text-amber-300">testConsulterTousProduits</span>() {
+        List&lt;Produit&gt; list = produitService.consulterTousProduits();
+        <span class="text-purple-400">assertTrue</span>(list.size() &gt;= 1);
+    }
+}</div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="p-5 rounded-2xl bg-slate-950 border border-emerald-500/30 flex items-center justify-between">
+            <div>
+              <div class="text-xs text-slate-400 font-mono">RÉSULTAT DE LA COMPILATION & TESTS</div>
+              <div class="text-xl font-bold text-white mt-1">Maven Build : <span class="text-emerald-400">BUILD SUCCESS</span></div>
+              <div class="text-xs text-slate-400 mt-1">Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 10.52s</div>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/20">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800">
+            <h4 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-terminal text-indigo-400 mr-2"></i>Comment lancer les tests en local :</h4>
+            <div class="code-block text-xs">
+# 1. Configurer JDK 21
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21"
+
+# 2. Lancer les tests unitaires
+mvn clean test
+
+# 3. Lancer la classe principale de démonstration
+mvn compile exec:java -Dexec.mainClass="presentation.PresentationSpringHibernate"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 border-t border-slate-800 bg-slate-950 text-center text-sm text-slate-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="font-medium text-slate-400">Documentation Pédagogique Conçue pour Moad Moussaoui • Cours 7 Architecture Microservices</p>
+      <p class="mt-2 text-xs text-slate-600">Dépôts GitHub : <a href="https://github.com/moadms/Tp5-cours2" class="text-indigo-400 hover:underline">moadms/Tp5-cours2</a> | Plateforme : MLIAEdu Toubkal IT</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -184,16 +184,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="text-[10px] text-slate-400 mt-0.5">Prêt pour Recrutement ESN & Big Tech</div>
         </div>
 
-        {/* Direct Link to Standalone HTML Report */}
-        <a
-          href="/rapport-soutenance.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-gradient-to-r from-indigo-600/25 to-purple-600/25 hover:from-indigo-600/40 hover:to-purple-600/40 border border-indigo-500/40 hover:border-indigo-400 text-indigo-200 hover:text-white text-xs font-bold transition-all shadow-md shadow-indigo-950/40 group"
-        >
-          <FileText className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
-          <span>Rapport Soutenance HTML 📄</span>
-        </a>
+        {/* Direct Link to Standalone HTML Reports */}
+        <div className="space-y-1.5">
+          <a
+            href="/rapport-tp5-spring-hibernate.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-600/25 to-teal-600/25 hover:from-emerald-600/40 hover:to-teal-600/40 border border-emerald-500/40 hover:border-emerald-400 text-emerald-200 hover:text-white text-xs font-bold transition-all shadow-md shadow-emerald-950/40 group"
+          >
+            <FileText className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
+            <span>Rapport TP 5 Spring/Hibernate 🍃</span>
+          </a>
+          <a
+            href="/rapport-soutenance.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-2 py-1.5 px-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white text-[11px] font-medium transition-all group"
+          >
+            <FileText className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
+            <span>Rapport Soutenance JPA 📄</span>
+          </a>
+        </div>
 
         {/* GitHub & Vercel Links */}
         <div className="flex items-center gap-2">
